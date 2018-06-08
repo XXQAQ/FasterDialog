@@ -1,0 +1,33 @@
+<resources>
+
+    <style name="BaseDialog" parent="@android:style/Theme.Holo.Dialog">
+        <!--半透明-->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!--背景透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--模糊-->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!--模糊-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="Button_primary" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:padding">@dimen/distance_less</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:textSize">@dimen/text_more</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Button_white" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:padding">@dimen/distance_less</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_more</item>
+        <item name="android:textColor">?colorPrimary</item>
+    </style>
+
+</resources>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:background="@android:color/white"
+    >
+
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_xlarge"
+        android:layout_marginLeft="@dimen/distance_xlarge"
+        android:layout_marginRight="@dimen/distance_xlarge"
+        android:text="提醒"
+        android:textColor="#494949"
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold"
+        android:lines="1"
+        />
+
+    <TextView
+        android:id="@+id/contentView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_more"
+        android:layout_marginLeft="@dimen/distance_xlarge"
+        android:layout_marginRight="@dimen/distance_xlarge"
+        android:gravity="center"
+        android:textIsSelectable="true"
+        android:text="立即充值,只有充值才能变得更强"
+        android:textColor="#494949"
+        android:textSize="@dimen/text_more"
+        android:lineSpacingExtra="8dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="@dimen/icon_xxxlarge_both"
+        android:layout_height="@dimen/icon_xxxlarge_both"
+        android:layout_marginTop="@dimen/distance_large"
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_xlarge"
+        android:orientation="horizontal"
+        >
+
+            <Button
+                android:id="@+id/positiveView"
+                style="@style/Button_white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="声音寻车"
+                />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="?colorPrimary"
+                />
+
+            <Button
+                android:id="@+id/negativeView"
+                style="@style/Button_primary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="寻车轨迹"
+                />
+
+    </LinearLayout>
+
+</LinearLayout>

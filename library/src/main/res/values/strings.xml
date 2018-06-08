@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Library</string>
+
+    <string name="sure">确认</string>
+    <string name="cancle">取消</string>
+
+</resources>
