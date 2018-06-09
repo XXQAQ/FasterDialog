@@ -17,7 +17,7 @@
         android:layout_marginLeft="@dimen/distance_xlarge"
         android:layout_marginRight="@dimen/distance_xlarge"
         android:text="提醒"
-        android:textColor="#494949"
+        android:textColor="?colorPrimary"
         android:textSize="@dimen/text_large"
         android:textStyle="bold"
         android:lines="1"
@@ -63,11 +63,14 @@
 
             <Button
                 android:id="@+id/positiveView"
-                style="@style/Button_white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="声音寻车"
+                android:padding="@dimen/distance_less"
+                android:background="@drawable/pressed_layer_topprimary_solidwhite"
+                android:textSize="@dimen/text_more"
+                android:textColor="?colorPrimary"
                 />
 
             <View
@@ -78,11 +81,14 @@
 
             <Button
                 android:id="@+id/negativeView"
-                style="@style/Button_primary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="寻车轨迹"
+                android:padding="@dimen/distance_less"
+                android:background="@drawable/pressed_layer_topprimary_solidwhite"
+                android:textSize="@dimen/text_more"
+                android:textColor="?colorPrimary"
                 />
 
     </LinearLayout>

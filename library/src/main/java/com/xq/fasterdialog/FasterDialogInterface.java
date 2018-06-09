@@ -23,7 +23,7 @@ public class FasterDialogInterface {
         FasterDialogInterface.imageLoaderd = imageLoaderd;
     }
 
-    private static class DefaultImageLoder implements ImageLoder{
+    private static class DefaultImageLoder implements ImageLoder {
 
         @Override
         public void loadImage(final Context context, final ImageView view, final String url,Object... object) {

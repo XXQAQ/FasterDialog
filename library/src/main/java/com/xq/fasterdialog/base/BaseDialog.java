@@ -44,6 +44,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected int gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
     protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
+    protected int x;        //单位dp
+    protected int y;       //单位dp
     protected int animatStyle;
     protected int autoDismissTime;  //单位毫秒
     protected Object tag;
@@ -79,6 +81,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = width;
         lp.height = height;
+        lp.x= DensityUtils.dip2px(context,x);
+        lp.y= DensityUtils.dip2px(context,y);
         window.setAttributes(lp);
 
         //设置弹窗位置
@@ -279,6 +283,16 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
+    public T setX(int x) {
+        this.x = x;
+        return (T) this;
+    }
+
+    public T setY(int y) {
+        this.y = y;
+        return (T) this;
+    }
+
     public T setCustomView(int layoutId){
         this.layoutId = layoutId;
         return (T) this;
@@ -356,6 +370,14 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public int getAutoDismissTime() {
