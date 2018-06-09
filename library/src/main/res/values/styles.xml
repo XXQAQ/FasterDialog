@@ -1,5 +1,6 @@
 <resources>
 
+
     <style name="BaseDialog" parent="@android:style/Theme.Holo.Dialog">
         <!--半透明-->
         <item name="android:windowIsTranslucent">false</item>
@@ -11,9 +12,13 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="MaterialDialog" parent="Theme.AppCompat.Light.Dialog">
         <!--模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="MaterialAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!--模糊-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>

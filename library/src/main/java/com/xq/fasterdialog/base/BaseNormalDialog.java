@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
-import com.xq.fasterdialog.R;
-
 public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
 
     protected TextView negativeView;
@@ -26,14 +24,6 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
 
     public BaseNormalDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
-    }
-
-    @Override
-    protected void init() {
-        super.init();
-
-        negativeText = context.getResources().getString(R.string.sure);
-        positiveText = context.getResources().getString(R.string.cancle);
     }
 
     @Override

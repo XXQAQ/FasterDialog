@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:background="@android:color/white"
+    >
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        />
+
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/distance_more"
+        android:layout_marginLeft="@dimen/distance_more"
+        android:layout_marginRight="@dimen/distance_more"
+        android:text="提醒"
+        android:textColor="?colorPrimary"
+        android:textSize="@dimen/text_medium"
+        android:textStyle="bold"
+        android:lines="1"
+        />
+
+    <TextView
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/distance_sless"
+        android:layout_marginLeft="@dimen/distance_more"
+        android:layout_marginRight="@dimen/distance_more"
+        android:layout_marginBottom="@dimen/distance_large"
+        android:text="立即充值,只有充值才能变得更强"
+        android:textColor="@color/textcolor_normal"
+        android:textSize="@dimen/text_medium"
+        android:lineSpacingExtra="@dimen/textspacing_min"
+        />
+
+
+</LinearLayout>

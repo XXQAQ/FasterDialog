@@ -4,10 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends BaseSimpleDialog<T> {
 
     protected ProgressBar progressView;
+    protected TextView pgDescriptView;
 
     protected int progress;
 
@@ -24,6 +26,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
         super.onCreate(savedInstanceState);
 
         progressView = findViewById(context.getResources().getIdentifier("progressView", "id", context.getPackageName()));
+        pgDescriptView = findViewById(context.getResources().getIdentifier("pgDescriptView", "id", context.getPackageName()));
 
         setProgressToView(progressView,progress);
     }
@@ -39,5 +42,15 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
         this.progress = progress;
         setProgressToView(progressView,progress);
         return (T) this;
+    }
+
+    public T setProgress(int progress,String pgDescript){
+        setProgress(progress);
+        setTextToView(pgDescriptView,pgDescript);
+        return (T) this;
+    }
+
+    public int getProgress() {
+        return progress;
     }
 }

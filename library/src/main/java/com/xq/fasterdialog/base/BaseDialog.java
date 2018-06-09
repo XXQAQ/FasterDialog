@@ -44,8 +44,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected int gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
     protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
-    protected int x;        //单位dp
-    protected int y;       //单位dp
+    protected int x;
+    protected int y;
     protected int animatStyle;
     protected int autoDismissTime;  //单位毫秒
     protected Object tag;
@@ -81,8 +81,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = width;
         lp.height = height;
-        lp.x= DensityUtils.dip2px(context,x);
-        lp.y= DensityUtils.dip2px(context,y);
+        lp.x= x;
+        lp.y= y;
         window.setAttributes(lp);
 
         //设置弹窗位置
@@ -248,18 +248,28 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
 
     //所有set
-    public T center(int gravity) {
+    public T center() {
         this.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
         return (T) this;
     }
 
-    public T bottom(int gravity) {
+    public T bottom() {
         this.gravity = Gravity.BOTTOM;
         return (T) this;
     }
 
-    public T top(int gravity) {
+    public T top() {
         this.gravity = Gravity.TOP;
+        return (T) this;
+    }
+
+    public T percentWidth(float percent) {
+        this.width = (int) (percent * DensityUtils.getScreenW(context));
+        return (T) this;
+    }
+
+    public T percentHeight(float percent) {
+        this.height = (int) (percent * DensityUtils.getScreenH(context));
         return (T) this;
     }
 

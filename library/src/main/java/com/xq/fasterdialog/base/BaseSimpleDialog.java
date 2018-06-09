@@ -3,14 +3,18 @@ package com.xq.fasterdialog.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.xq.fasterdialog.R;
 
 public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseDialog<T> {
 
     protected TextView titleView;
     protected TextView contentView;
     protected ImageView iconView;
+    protected View closeView;
 
     protected String title;
     protected float titleSize;      //单位sp
@@ -21,7 +25,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     protected int icon;
 
     public BaseSimpleDialog(@NonNull Context context) {
-        super(context);
+        super(context, R.style.MaterialDialog);
     }
 
     public BaseSimpleDialog(@NonNull Context context, int themeResId) {
@@ -35,6 +39,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         titleView = findViewById(context.getResources().getIdentifier("titleView", "id", context.getPackageName()));
         contentView = findViewById(context.getResources().getIdentifier("contentView", "id", context.getPackageName()));
         iconView = findViewById(context.getResources().getIdentifier("iconView", "id", context.getPackageName()));
+        closeView = findViewById(context.getResources().getIdentifier("closeView", "id", context.getPackageName()));
 
         setTextToView(titleView,title);
         setTextSizeToView(titleView,titleSize);
@@ -45,6 +50,13 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         setTextColorToView(contentView,contentColor);
 
         setImageResourceToView(iconView,icon);
+
+        bindDialogClickListenerWithView(closeView, new OnDialogClickListener() {
+            @Override
+            public void onClick(BaseDialog dialog) {
+
+            }
+        });
     }
 
     public T setTitle(String title) {
@@ -83,9 +95,9 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         return (T) this;
     }
 
-    public T setIcon(int icon) {
-        this.icon = icon;
-        setImageResourceToView(iconView,icon);
+    public T setIcon(int resId) {
+        this.icon = resId;
+        setImageResourceToView(iconView,resId);
         return (T) this;
     }
 

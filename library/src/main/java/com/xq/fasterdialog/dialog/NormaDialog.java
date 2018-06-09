@@ -5,12 +5,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.base.BaseSimpleDialog;
+import com.xq.fasterdialog.base.BaseNormalDialog;
 
-public class NormaDialog extends BaseSimpleDialog<NormaDialog> {
+public class NormaDialog extends BaseNormalDialog<NormaDialog> {
 
     public NormaDialog(@NonNull Context context) {
-        super(context, R.style.AlertDialog);
+        super(context, R.style.MaterialAlertDialog);
     }
 
     @Override
