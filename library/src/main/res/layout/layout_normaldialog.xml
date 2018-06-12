@@ -16,6 +16,7 @@
         android:layout_marginTop="@dimen/distance_xlarge"
         android:layout_marginLeft="@dimen/distance_xlarge"
         android:layout_marginRight="@dimen/distance_xlarge"
+        android:layout_marginBottom="@dimen/distance_large"
         android:text="提醒"
         android:textColor="?colorPrimary"
         android:textSize="@dimen/text_large"
@@ -27,9 +28,9 @@
         android:id="@+id/contentView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/text_more"
         android:layout_marginLeft="@dimen/distance_xlarge"
         android:layout_marginRight="@dimen/distance_xlarge"
+        android:layout_marginBottom="@dimen/distance_xlarge"
         android:gravity="center"
         android:text="立即充值,只有充值才能变得更强"
         android:textColor="@color/textcolor_normal"
@@ -41,9 +42,8 @@
         android:id="@+id/iconView"
         android:layout_width="108dp"
         android:layout_height="108dp"
-        android:layout_marginTop="@dimen/distance_xlarge"
         android:layout_marginBottom="@dimen/distance_xlarge"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
         />
 
     <LinearLayout
