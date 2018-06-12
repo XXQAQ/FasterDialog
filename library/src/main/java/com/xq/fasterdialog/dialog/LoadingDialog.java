@@ -15,18 +15,16 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
     private String lodingText;
 
     public LoadingDialog(@NonNull Context context) {
-        super(context);
+        super(context,R.style.MaterialDialog);
     }
 
     @Override
     protected void init() {
         super.init();
 
-        top();
-
-        setY(DensityUtils.dip2px(context,100));
-
         setCustomView(R.layout.layout_loading);
+
+        setCancele(false);
     }
 
     @Override
