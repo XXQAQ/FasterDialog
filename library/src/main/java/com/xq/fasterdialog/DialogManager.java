@@ -1,12 +1,16 @@
-package com.xq.fasterdialog.dialog;
+package com.xq.fasterdialog;
 
 import android.content.DialogInterface;
 
+import com.xq.fasterdialog.base.BaseDialog;
+import com.xq.fasterdialog.base.BaseNormalDialog;
+import com.xq.fasterdialog.dialog.NormalDialog;
+
 public class DialogManager {
 
-    private static NormalDialog dialog;
+    private static BaseDialog dialog;
 
-    public static void showDialog(NormalDialog dialog){
+    public static void showDialog(BaseDialog dialog){
 
         DialogManager.dialog = dialog;
 
