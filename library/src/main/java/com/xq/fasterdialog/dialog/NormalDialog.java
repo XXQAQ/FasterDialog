@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import com.xq.fasterdialog.R;
 import com.xq.fasterdialog.base.BaseNormalDialog;
 
-public class NormaDialog extends BaseNormalDialog<NormaDialog> {
+public class NormalDialog extends BaseNormalDialog<NormalDialog> {
 
-    public NormaDialog(@NonNull Context context) {
+    public NormalDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
     }
 

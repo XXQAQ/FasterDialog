@@ -1,6 +1,7 @@
 package com.xq.fasterdialog;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,16 +12,23 @@ import java.net.URL;
 
 public class FasterDialogInterface {
 
+    private static Application app;
+
     private static ImageLoder imageLoaderd;
+
+    public static void init(Application app,ImageLoder imageLoaderd){
+        FasterDialogInterface.app = app;
+        FasterDialogInterface.imageLoaderd = imageLoaderd;
+    }
 
     public static ImageLoder getImageLoaderd() {
         if (imageLoaderd == null)
-            setImageLoaderd(new DefaultImageLoder());
+            imageLoaderd = new DefaultImageLoder();
         return imageLoaderd;
     }
 
-    public static void setImageLoaderd(ImageLoder imageLoaderd) {
-        FasterDialogInterface.imageLoaderd = imageLoaderd;
+    public static Application getApp() {
+        return app;
     }
 
     private static class DefaultImageLoder implements ImageLoder {

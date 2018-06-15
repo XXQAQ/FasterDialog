@@ -5,7 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
+import com.xq.fasterdialog.FasterDialogInterface;
+import com.xq.fasterdialog.R;
+
 public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
+
+    public static final String SURE = FasterDialogInterface.getApp().getResources().getString(R.string.sure);
+    public static final String CANCLE = FasterDialogInterface.getApp().getResources().getString(R.string.cancle);
 
     protected TextView negativeView;
     protected TextView positiveView;
