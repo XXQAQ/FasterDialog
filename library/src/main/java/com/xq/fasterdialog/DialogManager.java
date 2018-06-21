@@ -19,7 +19,7 @@ public class DialogManager {
             public void onDismiss(DialogInterface dialog) {
                 DialogManager.dialog = null;
             }
-        });
+        }).show();
     }
 
     public static void dismissDialog(){
