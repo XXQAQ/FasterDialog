@@ -12,12 +12,9 @@ import java.net.URL;
 
 public class FasterDialogInterface {
 
-    private static Application app;
-
     private static ImageLoder imageLoaderd;
 
-    public static void init(Application app,ImageLoder imageLoaderd){
-        FasterDialogInterface.app = app;
+    public static void init(ImageLoder imageLoaderd){
         FasterDialogInterface.imageLoaderd = imageLoaderd;
     }
 
@@ -27,12 +24,7 @@ public class FasterDialogInterface {
         return imageLoaderd;
     }
 
-    public static Application getApp() {
-        return app;
-    }
-
     private static class DefaultImageLoder implements ImageLoder {
-
         @Override
         public void loadImage(final Context context, final ImageView view, final String url,Object... object) {
             new Thread(new Runnable() {

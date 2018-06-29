@@ -10,8 +10,8 @@ import com.xq.fasterdialog.R;
 
 public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
 
-    public static final String SURE = FasterDialogInterface.getApp().getResources().getString(R.string.sure);
-    public static final String CANCLE = FasterDialogInterface.getApp().getResources().getString(R.string.cancle);
+    public static String SURE;
+    public static String CANCLE;
 
     protected TextView negativeView;
     protected TextView positiveView;
@@ -30,6 +30,14 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
 
     public BaseNormalDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
+        SURE = context.getResources().getString(R.string.sure);
+        CANCLE = contentView.getResources().getString(R.string.cancle);
     }
 
     @Override
