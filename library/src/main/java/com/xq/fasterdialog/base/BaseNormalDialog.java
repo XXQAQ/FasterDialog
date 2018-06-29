@@ -39,7 +39,7 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         if (SURE == null || CANCLE == null)
         {
             SURE = context.getResources().getString(R.string.sure);
-            CANCLE = contentView.getResources().getString(R.string.cancle);
+            CANCLE = context.getResources().getString(R.string.cancle);
         }
     }
 
