@@ -36,8 +36,11 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
     protected void init() {
         super.init();
 
-        SURE = context.getResources().getString(R.string.sure);
-        CANCLE = contentView.getResources().getString(R.string.cancle);
+        if (SURE == null || CANCLE == null)
+        {
+            SURE = context.getResources().getString(R.string.sure);
+            CANCLE = contentView.getResources().getString(R.string.cancle);
+        }
     }
 
     @Override
