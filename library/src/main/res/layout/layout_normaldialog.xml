@@ -38,11 +38,11 @@
         android:lineSpacingExtra="8dp"
         />
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/iconView"
         android:layout_width="108dp"
         android:layout_height="108dp"
-        android:layout_marginBottom="@dimen/distance_xlarge"
+        android:layout_marginBottom="@dimen/distance_xxlarge"
         android:layout_gravity="center_horizontal"
         />
 
