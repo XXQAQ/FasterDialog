@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/distance_xlarge"
         android:layout_marginLeft="@dimen/distance_xlarge"
         android:layout_marginRight="@dimen/distance_xlarge"
-        android:layout_marginBottom="@dimen/distance_large"
+        android:layout_marginBottom="@dimen/distance_more"
         android:text="提醒"
         android:textColor="?colorPrimary"
         android:textSize="@dimen/text_large"
@@ -42,7 +42,7 @@
         android:id="@+id/iconView"
         android:layout_width="108dp"
         android:layout_height="108dp"
-        android:layout_marginBottom="@dimen/distance_xxlarge"
+        android:layout_marginBottom="@dimen/distance_xlarge"
         android:layout_gravity="center_horizontal"
         />
 
