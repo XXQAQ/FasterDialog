@@ -264,12 +264,12 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     }
 
     public T percentWidth(float percent) {
-        this.width = (int) (percent * DensityUtils.getScreenW(context));
+        this.width = (int) (percent * ScreenUtils.getScreenW(context));
         return (T) this;
     }
 
     public T percentHeight(float percent) {
-        this.height = (int) (percent * DensityUtils.getScreenH(context));
+        this.height = (int) (percent * ScreenUtils.getScreenH(context));
         return (T) this;
     }
 
@@ -491,7 +491,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
                 "setOnKeyListener() is not supported");
     }
 
-    protected static class DensityUtils {
+    protected static class ScreenUtils {
 
         public static int dip2px(Context c, float dpValue) {
             final float scale = c.getResources().getDisplayMetrics().density;
@@ -531,28 +531,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             return c.getResources().getDisplayMetrics().heightPixels;
         }
 
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-        public static int getScreenRealH(Context context) {
-            int h;
-            WindowManager winMgr = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Display display = winMgr.getDefaultDisplay();
-            DisplayMetrics dm = new DisplayMetrics();
-            if (Build.VERSION.SDK_INT >= 17) {
-                display.getRealMetrics(dm);
-                h = dm.heightPixels;
-            } else {
-                try {
-                    Method method = Class.forName("android.view.Display").getMethod("getRealMetrics", DisplayMetrics.class);
-                    method.invoke(display, dm);
-                    h = dm.heightPixels;
-                } catch (Exception e) {
-                    display.getMetrics(dm);
-                    h = dm.heightPixels;
-                }
-            }
-            return h;
-        }
-
         public static int getStatusBarH(Context context) {
             Class<?> c;
             Object obj;
@@ -574,38 +552,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             Resources resources = c.getResources();
             int identifier = resources.getIdentifier("navigation_bar_height", "dimen", "android");
             return resources.getDimensionPixelOffset(identifier);
-        }
-
-        public static String getDensity(Context ctx) {
-            String densityStr = null;
-            final int density = ctx.getResources().getDisplayMetrics().densityDpi;
-            switch (density) {
-                case DisplayMetrics.DENSITY_LOW:
-                    densityStr = "LDPI";
-                    break;
-                case DisplayMetrics.DENSITY_MEDIUM:
-                    densityStr = "MDPI";
-                    break;
-                case DisplayMetrics.DENSITY_TV:
-                    densityStr = "TVDPI";
-                    break;
-                case DisplayMetrics.DENSITY_HIGH:
-                    densityStr = "HDPI";
-                    break;
-                case DisplayMetrics.DENSITY_XHIGH:
-                    densityStr = "XHDPI";
-                    break;
-                case DisplayMetrics.DENSITY_400:
-                    densityStr = "XMHDPI";
-                    break;
-                case DisplayMetrics.DENSITY_XXHIGH:
-                    densityStr = "XXHDPI";
-                    break;
-                case DisplayMetrics.DENSITY_XXXHIGH:
-                    densityStr = "XXXHDPI";
-                    break;
-            }
-            return densityStr;
         }
     }
 }

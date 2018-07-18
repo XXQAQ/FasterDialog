@@ -66,7 +66,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     }
 
     public T setTitleSize(float titleSize) {
-        this.titleSize = DensityUtils.sp2px(context,titleSize);
+        this.titleSize = ScreenUtils.sp2px(context,titleSize);
         setTextSizeToView(titleView,titleSize);
         return (T) this;
     }
@@ -84,7 +84,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     }
 
     public T setContentSize(float contentSize) {
-        this.contentSize = DensityUtils.sp2px(context,contentSize);
+        this.contentSize = ScreenUtils.sp2px(context,contentSize);
         setTextSizeToView(contentView,contentSize);
         return (T) this;
     }
