@@ -102,7 +102,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     }
 
-    protected void setTextToView(TextView view, String text){
+    protected void setTextToView(TextView view, CharSequence text){
         if (view == null)
             return;
 
@@ -548,7 +548,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             return statusBarHeight;
         }
 
-        public static int getNavigationBarrH(Context c) {
+        public static int getNavigationBarH(Context c) {
             Resources resources = c.getResources();
             int identifier = resources.getIdentifier("navigation_bar_height", "dimen", "android");
             return resources.getDimensionPixelOffset(identifier);

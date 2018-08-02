@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/distance_less"
+    android:paddingLeft="@dimen/distance_large"
+    android:paddingRight="@dimen/distance_more"
+    android:paddingTop="@dimen/distance_more">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/distance_large"
+        >
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/iconView"
+            android:layout_width="@dimen/icon_medium_both"
+            android:layout_height="@dimen/icon_medium_both"
+            android:layout_marginLeft="@dimen/distance_medium"
+            android:layout_marginRight="@dimen/distance_medium"
+            android:src="@drawable/shape_solidbackground"
+
+            />
+
+        <TextView
+            android:id="@+id/titleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="立即充值"
+            android:textColor="@color/textcolor_black"
+            android:textSize="@dimen/text_more"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_marginBottom="@dimen/distance_less"
+        android:text="是的只有充钱才能变得更强"
+        android:textColor="@color/textcolor_normal"
+        android:textSize="@dimen/text_medium" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right">
+
+        <TextView
+            android:id="@+id/positiveView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/distance_less"
+            android:layout_marginRight="@dimen/distance_more"
+            android:text="取消"
+            android:textColor="@color/textcolorpressed_normal" />
+
+        <TextView
+            android:id="@+id/neutralView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/distance_more"
+            android:gravity="center"
+            android:padding="@dimen/distance_less"
+            android:text="中立"
+            android:textColor="@color/textcolorpressed_normal" />
+
+        <TextView
+            android:id="@+id/negativeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/distance_less"
+            android:text="确认"
+            android:textColor="@color/textcolorpressed_primary" />
+
+    </LinearLayout>
+
+</LinearLayout>

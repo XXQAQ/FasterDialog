@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/distance_xlarge"
         android:layout_marginRight="@dimen/distance_xlarge"
-        android:layout_marginBottom="@dimen/distance_xlarge"
+        android:layout_marginBottom="@dimen/distance_large"
         android:gravity="center"
         android:text="立即充值,只有充值才能变得更强"
         android:textColor="@color/textcolor_normal"
@@ -41,7 +41,7 @@
     <ProgressBar
         android:layout_width="@dimen/icon_xxlarge_both"
         android:layout_height="@dimen/icon_xxlarge_both"
-        android:layout_marginBottom="@dimen/distance_xlarge"
+        android:layout_marginBottom="@dimen/distance_large"
         android:layout_gravity="center_horizontal"
         />
 

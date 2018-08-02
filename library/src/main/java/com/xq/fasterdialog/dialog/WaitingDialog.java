@@ -16,6 +16,19 @@ public class WaitingDialog extends BaseSimpleDialog<WaitingDialog>{
     protected void init() {
         super.init();
 
-        setCustomView(R.layout.layout_waitingdialog);
+        setCancele(false);
+
+        defaultLayout();
     }
+
+    public WaitingDialog defaultLayout(){
+        setCustomView(R.layout.layout_waitingdialog_default);
+        return this;
+    }
+
+    public WaitingDialog meterailLayout(){
+        setCustomView(R.layout.layout_waitingdialog_meterail);
+        return this;
+    }
+
 }

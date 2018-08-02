@@ -16,12 +16,8 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     protected ImageView iconView;
     protected View closeView;
 
-    protected String title;
-    protected float titleSize;      //单位sp
-    protected int titleColor = -1;
-    protected String content;
-    protected float contentSize;    //单位sp
-    protected int contentColor = -1;
+    protected CharSequence title;
+    protected CharSequence content;
     protected int icon;
 
     public BaseSimpleDialog(@NonNull Context context) {
@@ -42,12 +38,8 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         closeView = findViewById(context.getResources().getIdentifier("closeView", "id", context.getPackageName()));
 
         setTextToView(titleView,title);
-        setTextSizeToView(titleView,titleSize);
-        setTextColorToView(titleView,titleColor);
 
         setTextToView(contentView,content);
-        setTextSizeToView(contentView,contentSize);
-        setTextColorToView(contentView,contentColor);
 
         setImageResourceToView(iconView,icon);
 
@@ -59,70 +51,31 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         });
     }
 
-    public T setTitle(String title) {
+    public T title(CharSequence title) {
         this.title = title;
         setTextToView(titleView,title);
         return (T) this;
     }
 
-    public T setTitleSize(float titleSize) {
-        this.titleSize = ScreenUtils.sp2px(context,titleSize);
-        setTextSizeToView(titleView,titleSize);
-        return (T) this;
-    }
-
-    public T setTitleColor(int titleColor) {
-        this.titleColor = titleColor;
-        setTextColorToView(titleView,titleColor);
-        return (T) this;
-    }
-
-    public T setContent(String content) {
+    public T content(CharSequence content) {
         this.content = content;
         setTextToView(contentView,content);
         return (T) this;
     }
 
-    public T setContentSize(float contentSize) {
-        this.contentSize = ScreenUtils.sp2px(context,contentSize);
-        setTextSizeToView(contentView,contentSize);
-        return (T) this;
-    }
 
-    public T setContentColor(int contentColor) {
-        this.contentColor = contentColor;
-        setTextColorToView(contentView,contentColor);
-        return (T) this;
-    }
-
-    public T setIcon(int resId) {
+    public T icon(int resId) {
         this.icon = resId;
         setImageResourceToView(iconView,resId);
         return (T) this;
     }
 
-    public String getTitle() {
+    public CharSequence getTitle() {
         return title;
     }
 
-    public float getTitleSize() {
-        return titleSize;
-    }
-
-    public int getTitleColor() {
-        return titleColor;
-    }
-
-    public String getContent() {
+    public CharSequence getContent() {
         return content;
-    }
-
-    public float getContentSize() {
-        return contentSize;
-    }
-
-    public int getContentColor() {
-        return contentColor;
     }
 
     public int getIcon() {

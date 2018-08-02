@@ -19,6 +19,17 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
         setCancele(false);
 
-        setCustomView(R.layout.layout_progressdialog);
+        defaultLayout();
     }
+
+    public ProgressDialog defaultLayout(){
+        setCustomView(R.layout.layout_progressdialog_default);
+        return this;
+    }
+
+    public ProgressDialog meterailLayout(){
+        setCustomView(R.layout.layout_progressdialog_meterail);
+        return this;
+    }
+
 }

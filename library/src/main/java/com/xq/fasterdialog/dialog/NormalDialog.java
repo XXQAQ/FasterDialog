@@ -17,6 +17,17 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
     protected void init() {
         super.init();
 
-        setCustomView(R.layout.layout_normaldialog);
+        defaultLayout();
     }
+
+    public NormalDialog defaultLayout(){
+        setCustomView(R.layout.layout_normaldialog_default);
+        return this;
+    }
+
+    public NormalDialog meterailLayout(){
+        setCustomView(R.layout.layout_normaldialog_meterail);
+        return this;
+    }
+
 }

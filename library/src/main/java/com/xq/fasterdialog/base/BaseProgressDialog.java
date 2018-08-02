@@ -44,7 +44,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
         return (T) this;
     }
 
-    public T setProgress(int progress,String pgDescript){
+    public T setProgress(int progress,CharSequence pgDescript){
         setProgress(progress);
         setTextToView(pgDescriptView,pgDescript);
         return (T) this;

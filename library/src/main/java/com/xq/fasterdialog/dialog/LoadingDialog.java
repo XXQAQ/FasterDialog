@@ -10,9 +10,9 @@ import com.xq.fasterdialog.base.BaseDialog;
 
 public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
-    private TextView lodingView;
+    private TextView loadingView;
 
-    private String lodingText;
+    private CharSequence loadingText;
 
     public LoadingDialog(@NonNull Context context) {
         super(context,R.style.MaterialDialog);
@@ -22,27 +22,27 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
     protected void init() {
         super.init();
 
-        setCustomView(R.layout.layout_loading);
-
         setCancele(false);
+
+        setCustomView(R.layout.layout_loadingdialog);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        lodingView = findViewById(context.getResources().getIdentifier("lodingView", "id", context.getPackageName()));
+        loadingView = findViewById(context.getResources().getIdentifier("loadingView", "id", context.getPackageName()));
 
-        setLodingText(lodingText);
+        setLodingText(loadingText);
     }
 
-    public LoadingDialog setLodingText(String lodingText) {
-        this.lodingText = lodingText;
-        setTextToView(lodingView,lodingText);
+    public LoadingDialog setLodingText(CharSequence loadingText) {
+        this.loadingText = loadingText;
+        setTextToView(loadingView,loadingText);
         return this;
     }
 
-    public String getLodingText() {
-        return lodingText;
+    public CharSequence getLodingText() {
+        return loadingText;
     }
 }

@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/distance_xlarge"
         android:layout_marginRight="@dimen/distance_xlarge"
-        android:layout_marginBottom="@dimen/distance_xlarge"
+        android:layout_marginBottom="@dimen/distance_large"
         android:gravity="center"
         android:text="立即充值,只有充值才能变得更强"
         android:textColor="@color/textcolor_normal"
@@ -42,26 +42,52 @@
         android:id="@+id/iconView"
         android:layout_width="108dp"
         android:layout_height="108dp"
-        android:layout_marginBottom="@dimen/distance_xlarge"
+        android:layout_marginBottom="@dimen/distance_large"
         android:layout_gravity="center_horizontal"
+        android:src="@drawable/shape_solidbackground"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/distance_xlarge"
         android:orientation="horizontal"
         >
 
-        <ProgressBar
-            android:id="@+id/progressView"
-            android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:layout_marginLeft="@dimen/distance_xlarge"
-            android:layout_marginRight="@dimen/distance_xlarge"
-            android:progressDrawable="@drawable/progress_radiusmedium_solidprimary"
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-            />
+            <Button
+                android:id="@+id/positiveView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="立即充值"
+                android:padding="@dimen/distance_less"
+                android:background="@drawable/pressed_layer_topleftprimary_solidwhite"
+                android:textSize="@dimen/text_more"
+                android:textColor="?colorPrimary"
+                />
+
+            <Button
+                android:id="@+id/neutralView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="只能选两边"
+                android:padding="@dimen/distance_less"
+                android:background="@drawable/pressed_layer_topleftprimary_solidwhite"
+                android:textSize="@dimen/text_more"
+                android:textColor="?colorPrimary"
+                />
+
+            <Button
+                android:id="@+id/negativeView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="马上充值"
+                android:padding="@dimen/distance_less"
+                android:background="@drawable/pressed_layer_topprimary_solidwhite"
+                android:textSize="@dimen/text_more"
+                android:textColor="?colorPrimary"
+                />
 
     </LinearLayout>
 

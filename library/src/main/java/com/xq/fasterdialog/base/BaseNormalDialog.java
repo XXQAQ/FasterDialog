@@ -17,9 +17,9 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
     protected TextView positiveView;
     protected TextView neutralView;
 
-    protected String negativeText;
-    protected String positiveText;
-    protected String neutralText;
+    protected CharSequence negativeText;
+    protected CharSequence positiveText;
+    protected CharSequence neutralText;
     protected OnDialogClickListener negativeListener;
     protected OnDialogClickListener positiveListener;
     protected OnDialogClickListener neutralListener;
@@ -35,12 +35,8 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
     @Override
     protected void init() {
         super.init();
-
-        if (SURE == null || CANCLE == null)
-        {
-            SURE = context.getResources().getString(R.string.sure);
-            CANCLE = context.getResources().getString(R.string.cancle);
-        }
+        SURE = context.getResources().getString(R.string.sure);
+        CANCLE = context.getResources().getString(R.string.cancle);
     }
 
     @Override
@@ -60,19 +56,19 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         bindDialogClickListenerWithView(neutralView, neutralListener);
     }
 
-    public T setNegativeText(String negativeText) {
+    public T setNegativeText(CharSequence negativeText) {
         this.negativeText = negativeText;
         setTextToView(negativeView, negativeText);
         return (T) this;
     }
 
-    public T setPositiveText(String positiveText) {
+    public T setPositiveText(CharSequence positiveText) {
         this.positiveText = positiveText;
         setTextToView(positiveView, positiveText);
         return (T) this;
     }
 
-    public T setNeutralText(String neutralText) {
+    public T setNeutralText(CharSequence neutralText) {
         this.neutralText = neutralText;
         setTextToView(neutralView, neutralText);
         return (T) this;
@@ -96,15 +92,15 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         return (T) this;
     }
 
-    public String getNegativeText() {
+    public CharSequence getNegativeText() {
         return negativeText;
     }
 
-    public String getPositiveText() {
+    public CharSequence getPositiveText() {
         return positiveText;
     }
 
-    public String getNeutralText() {
+    public CharSequence getNeutralText() {
         return neutralText;
     }
 
