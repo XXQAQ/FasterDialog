@@ -26,4 +26,8 @@ public class DialogManager {
         DialogManager.dialog.dismiss();
     }
 
+    public static BaseDialog getDialog(){
+        return dialog;
+    }
+
 }
