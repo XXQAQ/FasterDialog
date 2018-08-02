@@ -8,13 +8,12 @@
     android:paddingLeft="@dimen/distance_large"
     android:paddingRight="@dimen/distance_large"
     android:background="@color/highlight"
-
     >
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/pressed_radiuslarge_solidwhite"
+        android:background="@drawable/pressed_radius_solidwidely"
         >
 
         <LinearLayout

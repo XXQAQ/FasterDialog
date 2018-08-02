@@ -6,7 +6,9 @@
     android:paddingBottom="@dimen/distance_less"
     android:paddingLeft="@dimen/distance_large"
     android:paddingRight="@dimen/distance_more"
-    android:paddingTop="@dimen/distance_more">
+    android:paddingTop="@dimen/distance_more"
+    android:background="@color/widely"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="立即充值"
-            android:textColor="@color/textcolor_black"
+            android:textColor="@color/text_strong"
             android:textSize="@dimen/text_more"
             android:textStyle="bold" />
 
@@ -44,7 +46,7 @@
         android:gravity="left"
         android:layout_marginBottom="@dimen/distance_less"
         android:text="是的只有充钱才能变得更强"
-        android:textColor="@color/textcolor_normal"
+        android:textColor="@color/text_normal"
         android:textSize="@dimen/text_medium" />
 
     <LinearLayout
@@ -60,7 +62,7 @@
             android:padding="@dimen/distance_less"
             android:layout_marginRight="@dimen/distance_more"
             android:text="取消"
-            android:textColor="@color/textcolorpressed_normal" />
+            android:textColor="@color/text_pressed_normal" />
 
         <TextView
             android:id="@+id/neutralView"
@@ -70,7 +72,7 @@
             android:gravity="center"
             android:padding="@dimen/distance_less"
             android:text="中立"
-            android:textColor="@color/textcolorpressed_normal" />
+            android:textColor="@color/text_pressed_normal" />
 
         <TextView
             android:id="@+id/negativeView"
@@ -79,7 +81,7 @@
             android:gravity="center"
             android:padding="@dimen/distance_less"
             android:text="确认"
-            android:textColor="@color/textcolorpressed_primary" />
+            android:textColor="@color/text_pressed_primary" />
 
     </LinearLayout>
 
