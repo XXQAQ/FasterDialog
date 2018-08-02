@@ -16,7 +16,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     protected ImageView iconView;
     protected View closeView;
 
-    protected CharSequence title;
+    protected CharSequence tile;
     protected CharSequence content;
     protected int icon;
 
@@ -37,7 +37,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         iconView = findViewById(context.getResources().getIdentifier("iconView", "id", context.getPackageName()));
         closeView = findViewById(context.getResources().getIdentifier("closeView", "id", context.getPackageName()));
 
-        setTextToView(titleView,title);
+        setTextToView(titleView, tile);
 
         setTextToView(contentView,content);
 
@@ -51,27 +51,27 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         });
     }
 
-    public T title(CharSequence title) {
-        this.title = title;
+    public T setTile(CharSequence title) {
+        this.tile = title;
         setTextToView(titleView,title);
         return (T) this;
     }
 
-    public T content(CharSequence content) {
+    public T setContent(CharSequence content) {
         this.content = content;
         setTextToView(contentView,content);
         return (T) this;
     }
 
 
-    public T icon(int resId) {
+    public T setIcon(int resId) {
         this.icon = resId;
         setImageResourceToView(iconView,resId);
         return (T) this;
     }
 
-    public CharSequence getTitle() {
-        return title;
+    public CharSequence getTile() {
+        return tile;
     }
 
     public CharSequence getContent() {

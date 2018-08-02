@@ -343,22 +343,22 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T addOnCancelListener(@Nullable OnCancelListener listener) {
+    public T setCancelListener(@Nullable OnCancelListener listener) {
         super.setOnCancelListener(listener);
         return (T) this;
     }
 
-    public T addOnDismissListener(@Nullable OnDismissListener listener) {
+    public T setDismissListener(@Nullable OnDismissListener listener) {
         super.setOnDismissListener(listener);
         return (T) this;
     }
 
-    public T addOnShowListener(@Nullable OnShowListener listener) {
+    public T setShowListener(@Nullable OnShowListener listener) {
         super.setOnShowListener(listener);
         return (T) this;
     }
 
-    public T addOnKeyListener(@Nullable OnKeyListener onKeyListener) {
+    public T setKeyListener(@Nullable OnKeyListener onKeyListener) {
         super.setOnKeyListener(onKeyListener);
         return (T) this;
     }

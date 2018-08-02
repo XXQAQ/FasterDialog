@@ -14,7 +14,7 @@ public class DialogManager {
 
         DialogManager.dialog = dialog;
 
-        dialog.addOnDismissListener(new DialogInterface.OnDismissListener() {
+        dialog.setDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 DialogManager.dialog = null;
