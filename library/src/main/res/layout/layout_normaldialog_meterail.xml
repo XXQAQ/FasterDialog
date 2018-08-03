@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/distance_large"
     android:paddingRight="@dimen/distance_more"
     android:paddingTop="@dimen/distance_more"
-    android:background="@color/widely"
+    android:background="@color/colorWidely"
     >
 
     <LinearLayout

@@ -7,37 +7,34 @@
     android:paddingBottom="@dimen/distance_more"
     android:paddingLeft="@dimen/distance_large"
     android:paddingRight="@dimen/distance_large"
-    android:background="@color/highlight"
+    android:background="#78000000"
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/pressed_radius_solidwidely"
-        >
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ProgressBar
+            android:id="@+id/progressView"
+            android:layout_width="@dimen/icon_less_both"
+            android:layout_height="@dimen/icon_less_both"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/distance_less"
+            />
+
+        <TextView
+            android:id="@+id/loadingView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@android:color/white"
+            android:text="正在加载..." />
 
-            <ProgressBar
-                android:id="@+id/progressView"
-                android:layout_width="@dimen/icon_less_both"
-                android:layout_height="@dimen/icon_less_both"
-                android:layout_gravity="center_vertical" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/loadingView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textSize="@dimen/text_medium"
-                android:text="正在加载..." />
 
-        </LinearLayout>
-
-    </RelativeLayout>
 
 </LinearLayout>

@@ -12,10 +12,20 @@ import java.net.URL;
 
 public class FasterDialogInterface {
 
+    private static Application app;
     private static ImageLoder imageLoaderd;
 
-    public static void init(ImageLoder imageLoaderd){
+    public static void init(Application app){
+        init(app,null);
+    }
+
+    public static void init(Application app,ImageLoder imageLoaderd){
+        FasterDialogInterface.app = app;
         FasterDialogInterface.imageLoaderd = imageLoaderd;
+    }
+
+    public static Application getApp() {
+        return app;
     }
 
     public static ImageLoder getImageLoaderd() {

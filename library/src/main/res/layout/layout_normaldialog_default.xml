@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:background="@color/widely"
+    android:background="@color/colorWidely"
     >
 
     <TextView
@@ -18,7 +18,7 @@
         android:layout_marginRight="@dimen/distance_xlarge"
         android:layout_marginBottom="@dimen/distance_more"
         android:text="提醒"
-        android:textColor="?colorPrimary"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_large"
         android:textStyle="bold"
         android:lines="1"
@@ -62,7 +62,7 @@
                 android:padding="@dimen/distance_less"
                 android:background="@drawable/pressed_layer_lefttopprimary_solidwidely"
                 android:textSize="@dimen/text_more"
-                android:textColor="?colorPrimary"
+                android:textColor="@color/colorPrimary"
                 />
 
             <Button
@@ -74,7 +74,7 @@
                 android:padding="@dimen/distance_less"
                 android:background="@drawable/pressed_layer_lefttopprimary_solidwidely"
                 android:textSize="@dimen/text_more"
-                android:textColor="?colorPrimary"
+                android:textColor="@color/colorPrimary"
                 />
 
             <Button
@@ -86,7 +86,7 @@
                 android:padding="@dimen/distance_less"
                 android:background="@drawable/pressed_layer_topprimary_solidwidely"
                 android:textSize="@dimen/text_more"
-                android:textColor="?colorPrimary"
+                android:textColor="@color/colorPrimary"
                 />
 
     </LinearLayout>

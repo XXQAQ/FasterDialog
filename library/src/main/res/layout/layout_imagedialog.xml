@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:background="@color/widely"
+    android:background="@color/colorWidely"
     >
 
     <pl.droidsonroids.gif.GifImageView
@@ -25,7 +25,7 @@
         android:layout_marginLeft="@dimen/distance_more"
         android:layout_marginRight="@dimen/distance_more"
         android:text="提醒"
-        android:textColor="?colorPrimary"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_medium"
         android:textStyle="bold"
         android:lines="1"

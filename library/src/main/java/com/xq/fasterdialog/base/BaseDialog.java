@@ -1,21 +1,18 @@
 package com.xq.fasterdialog.base;
 
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +24,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xq.fasterdialog.FasterDialogInterface;
+import com.xq.fasterdialog.ImageLoder;
 import com.xq.fasterdialog.R;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
@@ -48,18 +47,17 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected int y;
     protected int animatStyle;
     protected int autoDismissTime;  //单位毫秒
+    protected ImageLoder imageLoder;
     protected Object tag;
-
-
-    public BaseDialog(@NonNull Context context) {
-        this(context, R.style.BaseDialog);
-    }
 
     public BaseDialog(@NonNull Context context, int themeResId) {
         super(context,themeResId);
         this.context = context;
-
         init();
+    }
+
+    public BaseDialog(@NonNull Context context) {
+        this(context, R.style.BaseDialog);
     }
 
     @Deprecated
@@ -152,7 +150,10 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             view.setVisibility(View.GONE);
         else
         {
-            FasterDialogInterface.getImageLoaderd().loadImage(context,view,url);
+            if (imageLoder == null)
+                FasterDialogInterface.getImageLoaderd().loadImage(context,view,url);
+            else
+                imageLoder.loadImage(context,view,url);
             view.setVisibility(View.VISIBLE);
         }
     }
@@ -313,6 +314,11 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
+    public T setImageLoder(ImageLoder imageLoder) {
+        this.imageLoder = imageLoder;
+        return (T) this;
+    }
+
     public T setTag(Object tag) {
         this.tag = tag;
         return (T) this;
@@ -348,20 +354,32 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T setDismissListener(@Nullable OnDismissListener listener) {
-        super.setOnDismissListener(listener);
+    private List<OnDismissListener> list_dismissListener = new LinkedList<>();
+    public T addDismissListener(@Nullable OnDismissListener listener) {
+        list_dismissListener.add(listener);
+        super.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                for (OnDismissListener l : list_dismissListener)
+                    l.onDismiss(dialog);
+            }
+        });
         return (T) this;
     }
 
-    public T setShowListener(@Nullable OnShowListener listener) {
-        super.setOnShowListener(listener);
+    private List<OnShowListener> list_showListener = new LinkedList<>();
+    public T addShowListener(@Nullable OnShowListener listener) {
+        list_showListener.add(listener);
+        super.setOnShowListener(new OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                for(OnShowListener l : list_showListener)
+                    l.onShow(dialog);
+            }
+        });
         return (T) this;
     }
 
-    public T setKeyListener(@Nullable OnKeyListener onKeyListener) {
-        super.setOnKeyListener(onKeyListener);
-        return (T) this;
-    }
 
 
     //所有get
@@ -396,6 +414,10 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     public Object getTag() {
         return tag;
+    }
+
+    public ImageLoder getImageLoder() {
+        return imageLoder;
     }
 
     //以下方法不建议使用了

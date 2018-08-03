@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:background="@color/widely"
+    android:background="@color/colorWidely"
     >
 
     <TextView
@@ -18,7 +18,7 @@
         android:layout_marginRight="@dimen/distance_xlarge"
         android:layout_marginBottom="@dimen/distance_more"
         android:text="提醒"
-        android:textColor="?colorPrimary"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_large"
         android:textStyle="bold"
         android:lines="1"
