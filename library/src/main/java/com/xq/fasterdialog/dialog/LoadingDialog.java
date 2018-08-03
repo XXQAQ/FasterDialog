@@ -15,12 +15,14 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
     private CharSequence loadingText;
 
     public LoadingDialog(@NonNull Context context) {
-        super(context,R.style.MaterialDialog);
+        super(context,R.style.BaseDialog);
     }
 
     @Override
     protected void init() {
         super.init();
+
+        loadingText = context.getResources().getString(R.string.loding);
 
         setCancele(false);
 
