@@ -22,7 +22,7 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
     protected void init() {
         super.init();
 
-        loadingText = context.getResources().getString(R.string.loding);
+        loadingText = context.getResources().getString(R.string.loading);
 
         setCancele(false);
 
