@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/distance_sless"
         android:layout_marginLeft="@dimen/distance_more"
         android:layout_marginRight="@dimen/distance_more"
-        android:layout_marginBottom="@dimen/distance_large"
+        android:layout_marginBottom="@dimen/distance_max"
         android:text="立即充值,只有充值才能变得更强"
         android:textColor="@color/text_normal"
         android:textSize="@dimen/text_medium"

@@ -23,15 +23,13 @@ public class DialogDelegateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaseDialog dialog = contextProvider.onGetContext(this);
+        BaseDialog dialog = contextProvider.showDialig(this);
         dialog.addDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 finish();
             }
         });
-        dialog.show();
-
     }
 
     @Override
@@ -42,9 +40,8 @@ public class DialogDelegateActivity extends AppCompatActivity {
 
     public static interface DialogContextProvider{
 
-        public BaseDialog onGetContext(Context context);
+        public BaseDialog showDialig(Context context);
 
     }
-
 
 }

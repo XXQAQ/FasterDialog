@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/distance_less"
-    android:paddingLeft="@dimen/distance_large"
+    android:paddingLeft="@dimen/distance_max"
     android:paddingRight="@dimen/distance_more"
     android:paddingTop="@dimen/distance_more"
     android:background="@color/colorWidely"
@@ -42,7 +42,7 @@
         android:layout_width="@dimen/icon_medium_both"
         android:layout_height="@dimen/icon_medium_both"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/distance_large"
+        android:layout_marginBottom="@dimen/distance_max"
         />
 
     <TextView

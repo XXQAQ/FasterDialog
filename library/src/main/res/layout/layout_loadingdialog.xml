@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/distance_more"
-    android:paddingBottom="@dimen/distance_more"
-    android:paddingLeft="@dimen/distance_large"
-    android:paddingRight="@dimen/distance_large"
+    android:paddingTop="@dimen/distance_medium"
+    android:paddingBottom="@dimen/distance_medium"
+    android:paddingLeft="@dimen/distance_more"
+    android:paddingRight="@dimen/distance_more"
     android:background="#78000000"
     >
 
@@ -21,7 +21,7 @@
             android:layout_width="@dimen/icon_smedium_both"
             android:layout_height="@dimen/icon_smedium_both"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/distance_less"
+            android:layout_marginBottom="@dimen/distance_medium"
             />
 
         <TextView

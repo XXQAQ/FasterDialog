@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/distance_less"
-    android:paddingLeft="@dimen/distance_large"
+    android:paddingLeft="@dimen/distance_max"
     android:paddingRight="@dimen/distance_more"
     android:paddingTop="@dimen/distance_more"
     android:background="@color/colorWidely"
@@ -42,7 +42,7 @@
         android:id="@+id/progressView"
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:layout_marginBottom="@dimen/distance_large"
+        android:layout_marginBottom="@dimen/distance_max"
         android:progressDrawable="@drawable/progress_radiusmedium_solidprimary"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         />

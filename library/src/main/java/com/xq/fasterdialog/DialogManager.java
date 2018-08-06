@@ -9,7 +9,7 @@ public class DialogManager {
 
     private static BaseDialog dialog;
 
-    public static void anywhere(DialogDelegateActivity.DialogContextProvider contextProvider){
+    public static void showAnywhere(DialogDelegateActivity.DialogContextProvider contextProvider){
         DialogDelegateActivity.show(contextProvider);
     }
 

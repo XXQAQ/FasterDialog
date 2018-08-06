@@ -13,13 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="@dimen/distance_xlarge"
-        android:layout_marginLeft="@dimen/distance_xlarge"
-        android:layout_marginRight="@dimen/distance_xlarge"
+        android:layout_marginTop="@dimen/distance_xmax"
+        android:layout_marginLeft="@dimen/distance_xmax"
+        android:layout_marginRight="@dimen/distance_xmax"
         android:layout_marginBottom="@dimen/distance_more"
         android:text="提醒"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/text_large"
+        android:textSize="@dimen/text_max"
         android:textStyle="bold"
         android:lines="1"
         />
@@ -28,9 +28,9 @@
         android:id="@+id/contentView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/distance_xlarge"
-        android:layout_marginRight="@dimen/distance_xlarge"
-        android:layout_marginBottom="@dimen/distance_large"
+        android:layout_marginLeft="@dimen/distance_xmax"
+        android:layout_marginRight="@dimen/distance_xmax"
+        android:layout_marginBottom="@dimen/distance_max"
         android:gravity="center"
         android:text="立即充值,只有充值才能变得更强"
         android:textColor="@color/text_normal"
@@ -39,9 +39,9 @@
         />
 
     <ProgressBar
-        android:layout_width="@dimen/icon_xxlarge_both"
-        android:layout_height="@dimen/icon_xxlarge_both"
-        android:layout_marginBottom="@dimen/distance_large"
+        android:layout_width="@dimen/icon_xxmax_both"
+        android:layout_height="@dimen/icon_xxmax_both"
+        android:layout_marginBottom="@dimen/distance_max"
         android:layout_gravity="center_horizontal"
         />
 
