@@ -21,7 +21,7 @@
             android:layout_width="@dimen/icon_smedium_both"
             android:layout_height="@dimen/icon_smedium_both"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/distance_medium"
+            android:layout_marginBottom="@dimen/distance_less"
             />
 
         <TextView
@@ -31,10 +31,8 @@
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/text_medium"
             android:textColor="@android:color/white"
-            android:text="正在加载..." />
+            android:text="@string/loading" />
 
     </LinearLayout>
-
-
 
 </LinearLayout>
