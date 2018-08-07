@@ -9,8 +9,8 @@ public class DialogManager {
 
     private static BaseDialog dialog;
 
-    public static void showAnywhere(DialogDelegateActivity.DialogContextProvider contextProvider){
-        DialogDelegateActivity.show(contextProvider);
+    public static void anywhere(DialogDelegateActivity.DialogContextProvider contextProvider){
+        DialogDelegateActivity.startActivity(contextProvider);
     }
 
     public static void showDialog(BaseDialog dialog){

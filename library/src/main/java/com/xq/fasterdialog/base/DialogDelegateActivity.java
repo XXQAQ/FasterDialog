@@ -13,7 +13,7 @@ public class DialogDelegateActivity extends AppCompatActivity {
 
     private static DialogContextProvider contextProvider;
 
-    public static void show(DialogContextProvider contextProvider){
+    public static void startActivity(DialogContextProvider contextProvider){
         DialogDelegateActivity.contextProvider = contextProvider;
         Intent intent = new Intent(FasterDialogInterface.getApp(),DialogDelegateActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
