@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:layout_marginBottom="@dimen/distance_xxxmax"
+        android:layout_marginBottom="@dimen/distance_xxmax"
         android:text="是的只有充钱才能变得更强"
         android:textColor="@color/text_normal"
         android:textSize="@dimen/text_medium" />

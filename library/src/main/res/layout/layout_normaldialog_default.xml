@@ -84,7 +84,7 @@
                 android:layout_weight="1"
                 android:text="立即充值"
                 android:padding="@dimen/distance_less"
-                android:background="@drawable/pressed_layer_topprimary_solidwidely"
+                android:background="@drawable/pressed_layer_lefttopprimary_solidwidely"
                 android:textSize="@dimen/text_more"
                 android:textColor="@color/colorPrimary"
                 />
