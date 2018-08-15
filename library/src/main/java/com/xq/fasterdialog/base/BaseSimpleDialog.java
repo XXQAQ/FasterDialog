@@ -51,7 +51,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         });
     }
 
-    public T setData(CharSequence title,CharSequence content,int resId){
+    public T setData(int resId,CharSequence title,CharSequence content){
         setTile(title);
         setContent(content);
         setIcon(resId);

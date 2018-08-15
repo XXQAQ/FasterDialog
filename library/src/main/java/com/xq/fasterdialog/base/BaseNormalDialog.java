@@ -56,22 +56,22 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         bindDialogClickListenerWithView(neutralView, neutralListener);
     }
 
-    public T setData(CharSequence title,CharSequence content,int resId,CharSequence positiveText,OnDialogClickListener positiveListener){
-        super.setData(title,content,resId);
+    public T setData(int resId,CharSequence title,CharSequence content,CharSequence positiveText,OnDialogClickListener positiveListener){
+        super.setData(resId,title,content);
         setPositiveText(positiveText);
         setPositiveListener(positiveListener);
         return (T) this;
     }
 
-    public T setData(CharSequence title,CharSequence content,int resId,CharSequence positiveText,OnDialogClickListener positiveListener,CharSequence negativeText,OnDialogClickListener negativeListener){
-        this.setData(title,content,resId,positiveText,positiveListener);
+    public T setData(int resId,CharSequence title,CharSequence content,CharSequence positiveText,OnDialogClickListener positiveListener,CharSequence negativeText,OnDialogClickListener negativeListener){
+        this.setData(resId,title,content,positiveText,positiveListener);
         setNegativeText(negativeText);
         setNegativeListener(negativeListener);
         return (T) this;
     }
 
-    public T setData(CharSequence title,CharSequence content,int resId,CharSequence positiveText,OnDialogClickListener positiveListener,CharSequence negativeText,OnDialogClickListener negativeListener,CharSequence neutralText,OnDialogClickListener neutralListener){
-        this.setData(title,content,resId,positiveText,positiveListener,negativeText,negativeListener);
+    public T setData(int resId,CharSequence title,CharSequence content,CharSequence positiveText,OnDialogClickListener positiveListener,CharSequence negativeText,OnDialogClickListener negativeListener,CharSequence neutralText,OnDialogClickListener neutralListener){
+        this.setData(resId,title,content,positiveText,positiveListener,negativeText,negativeListener);
         setNeutralText(neutralText);
         setNeutralListener(neutralListener);
         return (T) this;

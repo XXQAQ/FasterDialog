@@ -33,14 +33,14 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
             setImageResourceToView(imageView,imageResId);
     }
 
-    public T setData(CharSequence title,CharSequence content,int resId,String imageUrl){
-        super.setData(title,content,resId);
+    public T setData(int resId,CharSequence title,CharSequence content,String imageUrl){
+        super.setData(resId,title,content);
         setImageUrl(imageUrl);
         return (T) this;
     }
 
-    public T setData(CharSequence title,CharSequence content,int resId,int imageResId){
-        super.setData(title,content,resId);
+    public T setData(int resId,CharSequence title,CharSequence content,int imageResId){
+        super.setData(resId,title,content);
         setImageResId(imageResId);
         return (T) this;
     }
