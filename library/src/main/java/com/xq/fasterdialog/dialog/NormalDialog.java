@@ -13,6 +13,10 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
         super(context, R.style.MaterialAlertDialog);
     }
 
+    public NormalDialog(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+    }
+
     @Override
     protected void init() {
         super.init();

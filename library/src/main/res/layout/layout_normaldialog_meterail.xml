@@ -54,14 +54,14 @@
         android:layout_gravity="right">
 
         <TextView
-            android:id="@+id/positiveView"
+            android:id="@+id/negativeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/distance_less"
             android:layout_marginRight="@dimen/distance_more"
             android:text="取消"
-            android:textColor="@color/text_pressed_normal" />
+            android:textColor="@color/text_pressed_primary" />
 
         <TextView
             android:id="@+id/neutralView"
@@ -74,13 +74,13 @@
             android:textColor="@color/text_pressed_normal" />
 
         <TextView
-            android:id="@+id/negativeView"
+            android:id="@+id/positiveView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/distance_less"
             android:text="确认"
-            android:textColor="@color/text_pressed_primary" />
+            android:textColor="@color/text_pressed_normal" />
 
     </LinearLayout>
 

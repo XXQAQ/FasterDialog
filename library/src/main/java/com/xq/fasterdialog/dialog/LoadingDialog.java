@@ -18,6 +18,10 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
         super(context);
     }
 
+    public LoadingDialog(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+    }
+
     @Override
     protected void init() {
         super.init();

@@ -13,6 +13,10 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
         super(context, R.style.MaterialAlertDialog);
     }
 
+    public ProgressDialog(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+    }
+
     @Override
     protected void init() {
         super.init();

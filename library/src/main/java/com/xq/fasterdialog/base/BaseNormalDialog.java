@@ -66,7 +66,7 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
     public T setData(CharSequence title,CharSequence content,int resId,CharSequence positiveText,OnDialogClickListener positiveListener,CharSequence negativeText,OnDialogClickListener negativeListener){
         this.setData(title,content,resId,positiveText,positiveListener);
         setNegativeText(negativeText);
-        setNeutralListener(negativeListener);
+        setNegativeListener(negativeListener);
         return (T) this;
     }
 

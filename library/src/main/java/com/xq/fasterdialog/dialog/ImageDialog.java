@@ -13,6 +13,10 @@ public class ImageDialog extends BaseImageDialog<ImageDialog> {
         super(context);
     }
 
+    public ImageDialog(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+    }
+
     @Override
     protected void init() {
         super.init();
