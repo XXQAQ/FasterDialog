@@ -13,13 +13,13 @@ import java.net.URL;
 public class FasterDialogInterface {
 
     private static Application app;
-    private static ImageLoder imageLoaderd;
+    private static DialogImageLoder imageLoaderd;
 
     public static void init(Application app){
         init(app,null);
     }
 
-    public static void init(Application app,ImageLoder imageLoaderd){
+    public static void init(Application app, DialogImageLoder imageLoaderd){
         FasterDialogInterface.app = app;
         FasterDialogInterface.imageLoaderd = imageLoaderd;
     }
@@ -28,34 +28,35 @@ public class FasterDialogInterface {
         return app;
     }
 
-    public static ImageLoder getImageLoaderd() {
+    public static DialogImageLoder getImageLoaderd() {
         if (imageLoaderd == null)
-            imageLoaderd = new DefaultImageLoder();
+        {
+            imageLoaderd = new DialogImageLoder() {
+                @Override
+                public void loadImage(final Context context, final ImageView view, final String url, Object... object) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try
+                            {
+                                final Bitmap bitmap = BitmapFactory.decodeStream(new URL(url).openStream());
+                                ((Activity)context).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        view.setImageBitmap(bitmap);
+                                    }
+                                });
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
+            };
+        }
         return imageLoaderd;
     }
 
-    private static class DefaultImageLoder implements ImageLoder {
-        @Override
-        public void loadImage(final Context context, final ImageView view, final String url,Object... object) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try
-                    {
-                        final Bitmap bitmap = BitmapFactory.decodeStream(new URL(url).openStream());
-                        ((Activity)context).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.setImageBitmap(bitmap);
-                            }
-                        });
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        }
-    }
 }

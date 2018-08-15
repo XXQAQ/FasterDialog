@@ -28,4 +28,10 @@
         <!--模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <style name="Animation_Bottom">
+        <item name="android:windowEnterAnimation">@anim/bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_exit</item>
+    </style>
+
 </resources>

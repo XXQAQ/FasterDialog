@@ -15,7 +15,7 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
     private CharSequence loadingText;
 
     public LoadingDialog(@NonNull Context context) {
-        super(context,R.style.BaseDialog);
+        super(context);
     }
 
     @Override

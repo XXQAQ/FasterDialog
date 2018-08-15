@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xq.fasterdialog.FasterDialogInterface;
-import com.xq.fasterdialog.ImageLoder;
+import com.xq.fasterdialog.DialogImageLoder;
 import com.xq.fasterdialog.R;
 
 import java.lang.reflect.Field;
@@ -46,8 +46,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected int x;
     protected int y;
     protected int animatStyle;
-    protected int autoDismissTime;  //单位毫秒
-    protected ImageLoder imageLoder;
+    protected int autoDismissTime;
+    protected DialogImageLoder dialogImageLoder;
     protected Object tag;
 
     public BaseDialog(@NonNull Context context, int themeResId) {
@@ -63,6 +63,16 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     @Deprecated
     protected BaseDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         this(context);
+    }
+
+    //重写此方法完成初始化工作
+    protected void init() {
+
+    }
+
+    //AutoDismiss进度改变时的回调
+    protected void onAutoDismissProgressChanged(int progress){
+
     }
 
     @Override
@@ -88,135 +98,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
         if (animatStyle != 0)
             window.setWindowAnimations(animatStyle);
-    }
-
-    //重写此方法完成初始化工作
-    protected void init() {
-
-    }
-
-    //AutoDismiss进度改变时的回调
-    protected void onAutoDismissProgressChanged(int progress){
-
-    }
-
-    protected void setTextToView(TextView view, CharSequence text){
-        if (view == null)
-            return;
-
-        if (TextUtils.isEmpty(text))
-            view.setVisibility(View.GONE);
-        else
-        {
-            view.setText(text);
-            view.setVisibility(View.VISIBLE);
-        }
-    }
-
-    protected void setTextSizeToView(TextView view,float textSize){
-        if (view == null)
-            return;
-
-        if (textSize > 0)
-            view.setTextSize(textSize);
-    }
-
-    protected void setTextColorToView(TextView view,int textColor){
-        if (view == null)
-            return;
-
-        if (textColor >= 0)
-            view.setTextColor(textColor);
-    }
-
-    protected void setImageResourceToView(ImageView view, int id){
-        if (view == null)
-            return;
-
-        if (id == 0)
-            view.setVisibility(View.GONE);
-        else
-        {
-            view.setImageResource(id);
-            view.setVisibility(View.VISIBLE);
-        }
-    }
-
-    protected void setImageUrlToView(final ImageView view, final String url){
-        if (view == null)
-            return;
-
-        if (TextUtils.isEmpty(url))
-            view.setVisibility(View.GONE);
-        else
-        {
-            if (imageLoder == null)
-                FasterDialogInterface.getImageLoaderd().loadImage(context,view,url);
-            else
-                imageLoder.loadImage(context,view,url);
-            view.setVisibility(View.VISIBLE);
-        }
-    }
-
-    protected void setProgressToView(ProgressBar view, int progress){
-        if (view == null)
-            return;
-
-        if (progress >=0 )
-            view.setProgress(progress);
-    }
-
-    protected void bindDialogClickListenerWithView(View view, final OnDialogClickListener listener){
-        if (view == null)
-            return;
-
-        if (listener != null)
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(BaseDialog.this);
-                    dismiss();
-                }
-            });
-    }
-
-
-    protected AsyncTask task;
-    protected void autoDismiss() {
-
-        task = new AsyncTask<Object,Float,Void>(){
-
-            @Override
-            protected Void doInBackground(Object... objects) {
-                int a = autoDismissTime/100;
-                for (int i=a;i<autoDismissTime;i=i+a)
-                {
-                    publishProgress(i/(float)autoDismissTime);
-                    try {
-                        Thread.sleep(a);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                if(isCancelled())
-                    return;
-                dismiss();
-            }
-
-            @Override
-            protected void onProgressUpdate(Float... values) {
-                if(isCancelled())
-                    return;
-                if (values[0]<=1)
-                    onAutoDismissProgressChanged((int) (values[0]*100));
-            }
-        };
-        task.execute();
     }
 
     //以下重写Dialog方法
@@ -249,18 +130,12 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
 
     //所有set
-    public T center() {
-        this.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
-        return (T) this;
-    }
 
-    public T bottom() {
-        this.gravity = Gravity.BOTTOM;
-        return (T) this;
-    }
-
-    public T top() {
-        this.gravity = Gravity.TOP;
+    //设置好Dialog将从底部弹出
+    public T bottomDialog(){
+        matchWidth();
+        setAnimatStyle(R.style.Animation_Bottom);
+        setBottom();
         return (T) this;
     }
 
@@ -294,6 +169,16 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
+    public T setWidth(int width) {
+        this.width = width;
+        return (T) this;
+    }
+
+    public T setHeight(int height) {
+        this.height = height;
+        return (T) this;
+    }
+
     public T setX(int x) {
         this.x = x;
         return (T) this;
@@ -301,6 +186,21 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     public T setY(int y) {
         this.y = y;
+        return (T) this;
+    }
+
+    public T setCenter() {
+        this.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
+        return (T) this;
+    }
+
+    public T setBottom() {
+        this.gravity = Gravity.BOTTOM;
+        return (T) this;
+    }
+
+    public T setTop() {
+        this.gravity = Gravity.TOP;
         return (T) this;
     }
 
@@ -314,13 +214,18 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T setImageLoder(ImageLoder imageLoder) {
-        this.imageLoder = imageLoder;
+    public T setDialogImageLoder(DialogImageLoder dialogImageLoder) {
+        this.dialogImageLoder = dialogImageLoder;
         return (T) this;
     }
 
     public T setTag(Object tag) {
         this.tag = tag;
+        return (T) this;
+    }
+
+    public T setAnimatStyle(int animatStyle) {
+        this.animatStyle = animatStyle;
         return (T) this;
     }
 
@@ -380,16 +285,10 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-
-
     //所有get
     //如果在设置layoutId后没有show出来就调用此方法，那么getRootView将返回null
     public View getRootView() {
         return rootView;
-    }
-
-    public int getGravity() {
-        return gravity;
     }
 
     public int getWidth() {
@@ -416,8 +315,123 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return tag;
     }
 
-    public ImageLoder getImageLoder() {
-        return imageLoder;
+    //私有方法
+    protected void setTextToView(TextView view, CharSequence text){
+        if (view == null)
+            return;
+
+        if (TextUtils.isEmpty(text))
+            view.setVisibility(View.GONE);
+        else
+        {
+            view.setText(text);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void setTextSizeToView(TextView view,float textSize){
+        if (view == null)
+            return;
+
+        if (textSize > 0)
+            view.setTextSize(textSize);
+    }
+
+    protected void setTextColorToView(TextView view,int textColor){
+        if (view == null)
+            return;
+
+        if (textColor >= 0)
+            view.setTextColor(textColor);
+    }
+
+    protected void setImageResourceToView(ImageView view, int id){
+        if (view == null)
+            return;
+
+        if (id == 0)
+            view.setVisibility(View.GONE);
+        else
+        {
+            view.setImageResource(id);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void setImageUrlToView(final ImageView view, final String url){
+        if (view == null)
+            return;
+
+        if (TextUtils.isEmpty(url))
+            view.setVisibility(View.GONE);
+        else
+        {
+            if (dialogImageLoder == null)
+                FasterDialogInterface.getImageLoaderd().loadImage(context,view,url);
+            else
+                dialogImageLoder.loadImage(context,view,url);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void setProgressToView(ProgressBar view, int progress){
+        if (view == null)
+            return;
+
+        if (progress >=0 )
+            view.setProgress(progress);
+    }
+
+    protected void bindDialogClickListenerWithView(View view, final OnDialogClickListener listener){
+        if (view == null)
+            return;
+
+        if (listener != null)
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(BaseDialog.this);
+                    dismiss();
+                }
+            });
+    }
+
+    protected AsyncTask task;
+    protected void autoDismiss() {
+
+        task = new AsyncTask<Object,Float,Void>(){
+
+            @Override
+            protected Void doInBackground(Object... objects) {
+                int a = autoDismissTime/100;
+                for (int i=a;i<autoDismissTime;i=i+a)
+                {
+                    publishProgress(i/(float)autoDismissTime);
+                    try {
+                        Thread.sleep(a);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                if(isCancelled())
+                    return;
+                dismiss();
+            }
+
+            @Override
+            protected void onProgressUpdate(Float... values) {
+                if(isCancelled())
+                    return;
+                if (values[0]<=1)
+                    onAutoDismissProgressChanged((int) (values[0]*100));
+            }
+        };
+        task.execute();
     }
 
     //以下方法不建议使用了
@@ -534,7 +548,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             float fontScale = c.getResources().getDisplayMetrics().scaledDensity;
             return (int) (pxValue / fontScale + 0.5f);
         }
-
 
         public static int sp2px(Context c, float spValue) {
             float fontScale = c.getResources().getDisplayMetrics().scaledDensity;

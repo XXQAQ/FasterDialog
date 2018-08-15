@@ -21,7 +21,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     protected int icon;
 
     public BaseSimpleDialog(@NonNull Context context) {
-        super(context, R.style.MaterialDialog);
+        super(context);
     }
 
     public BaseSimpleDialog(@NonNull Context context, int themeResId) {
@@ -49,6 +49,13 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
 
             }
         });
+    }
+
+    public T setData(CharSequence title,CharSequence content,int resId){
+        setTile(title);
+        setContent(content);
+        setIcon(resId);
+        return (T) this;
     }
 
     public T setTile(CharSequence title) {

@@ -6,9 +6,9 @@ import android.support.annotation.NonNull;
 import com.xq.fasterdialog.R;
 import com.xq.fasterdialog.base.BaseSimpleDialog;
 
-public class WaitingDialog extends BaseSimpleDialog<WaitingDialog>{
+public class ProgressSimpleDialog extends BaseSimpleDialog<ProgressSimpleDialog>{
 
-    public WaitingDialog(@NonNull Context context) {
+    public ProgressSimpleDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
     }
 
@@ -21,13 +21,13 @@ public class WaitingDialog extends BaseSimpleDialog<WaitingDialog>{
         defaultLayout();
     }
 
-    public WaitingDialog defaultLayout(){
-        setCustomView(R.layout.layout_waitingdialog_default);
+    public ProgressSimpleDialog defaultLayout(){
+        setCustomView(R.layout.layout_progresssimpledialog_default);
         return this;
     }
 
-    public WaitingDialog meterailLayout(){
-        setCustomView(R.layout.layout_waitingdialog_meterail);
+    public ProgressSimpleDialog meterailLayout(){
+        setCustomView(R.layout.layout_progresssimpledialog_meterail);
         return this;
     }
 

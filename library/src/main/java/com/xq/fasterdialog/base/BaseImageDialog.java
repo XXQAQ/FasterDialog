@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseSimpleDialog<T> {
+public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNormalDialog<T> {
 
     private ImageView imageView;
 
@@ -31,6 +31,18 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseSim
             setImageUrlToView(imageView, imageUrl);
         else
             setImageResourceToView(imageView,imageResId);
+    }
+
+    public T setData(CharSequence title,CharSequence content,int resId,String imageUrl){
+        super.setData(title,content,resId);
+        setImageUrl(imageUrl);
+        return (T) this;
+    }
+
+    public T setData(CharSequence title,CharSequence content,int resId,int imageResId){
+        super.setData(title,content,resId);
+        setImageResId(imageResId);
+        return (T) this;
     }
 
     public T setImageUrl(String imageUrl) {

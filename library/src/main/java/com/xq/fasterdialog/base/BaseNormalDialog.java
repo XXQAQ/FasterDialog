@@ -56,6 +56,27 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         bindDialogClickListenerWithView(neutralView, neutralListener);
     }
 
+    public T setData(CharSequence title,CharSequence content,int resId,CharSequence positiveText,OnDialogClickListener positiveListener){
+        super.setData(title,content,resId);
+        setPositiveText(positiveText);
+        setPositiveListener(positiveListener);
+        return (T) this;
+    }
+
+    public T setData(CharSequence title,CharSequence content,int resId,CharSequence positiveText,OnDialogClickListener positiveListener,CharSequence negativeText,OnDialogClickListener negativeListener){
+        this.setData(title,content,resId,positiveText,positiveListener);
+        setNegativeText(negativeText);
+        setNeutralListener(negativeListener);
+        return (T) this;
+    }
+
+    public T setData(CharSequence title,CharSequence content,int resId,CharSequence positiveText,OnDialogClickListener positiveListener,CharSequence negativeText,OnDialogClickListener negativeListener,CharSequence neutralText,OnDialogClickListener neutralListener){
+        this.setData(title,content,resId,positiveText,positiveListener,negativeText,negativeListener);
+        setNeutralText(neutralText);
+        setNeutralListener(neutralListener);
+        return (T) this;
+    }
+
     public T setNegativeText(CharSequence negativeText) {
         this.negativeText = negativeText;
         setTextToView(negativeView, negativeText);
