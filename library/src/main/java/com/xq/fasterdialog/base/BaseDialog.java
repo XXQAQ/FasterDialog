@@ -100,6 +100,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             window.setWindowAnimations(animatStyle);
     }
 
+
+
     //以下重写Dialog方法
     @Override
     public void show() {
@@ -129,43 +131,21 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     }
 
 
-    //所有set
 
-    //设置好Dialog将从底部弹出
-    public T bottomDialog(){
-        matchWidth();
+    //所有set
+    //设置Dialog从底部弹出
+    public T setPopupFromBottom(){
+        setMatchWidth();
         setAnimatStyle(R.style.Animation_Bottom);
         setBottom();
         return (T) this;
     }
 
-    public T percentWidth(float percent) {
-        this.width = (int) (percent * ScreenUtils.getScreenW(context));
-        return (T) this;
-    }
-
-    public T percentHeight(float percent) {
-        this.height = (int) (percent * ScreenUtils.getScreenH(context));
-        return (T) this;
-    }
-
-    public T wrapWidth() {
-        this.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        return (T) this;
-    }
-
-    public T matchWidth() {
-        this.width = WindowManager.LayoutParams.MATCH_PARENT;
-        return (T) this;
-    }
-
-    public T wrapHeight() {
-        this.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        return (T) this;
-    }
-
-    public T matchHeight() {
-        this.height = WindowManager.LayoutParams.MATCH_PARENT;
+    //设置Dialog从顶部弹出
+    public T setPopupFromTop(){
+        setMatchWidth();
+        setAnimatStyle(R.style.Animation_Top);
+        setTop();
         return (T) this;
     }
 
@@ -176,6 +156,36 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     public T setHeight(int height) {
         this.height = height;
+        return (T) this;
+    }
+
+    public T setPercentWidth(float percent) {
+        this.width = (int) (percent * ScreenUtils.getScreenW(context));
+        return (T) this;
+    }
+
+    public T setPercentHeight(float percent) {
+        this.height = (int) (percent * ScreenUtils.getScreenH(context));
+        return (T) this;
+    }
+
+    public T setWrapWidth() {
+        this.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        return (T) this;
+    }
+
+    public T setMatchWidth() {
+        this.width = WindowManager.LayoutParams.MATCH_PARENT;
+        return (T) this;
+    }
+
+    public T setWrapHeight() {
+        this.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        return (T) this;
+    }
+
+    public T setMatchHeight() {
+        this.height = WindowManager.LayoutParams.MATCH_PARENT;
         return (T) this;
     }
 
@@ -285,9 +295,11 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
+
+
     //所有get
     //如果在设置layoutId后没有show出来就调用此方法，那么getRootView将返回null
-    public View getRootView() {
+    public View getCustomView() {
         return rootView;
     }
 
@@ -314,6 +326,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     public Object getTag() {
         return tag;
     }
+
+
 
     //私有方法
     protected void setTextToView(TextView view, CharSequence text){
@@ -433,6 +447,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         };
         task.execute();
     }
+
+
 
     //以下方法不建议使用了
     @Override
