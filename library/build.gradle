@@ -29,6 +29,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation 'com.android.support:appcompat-v7:27.+'
-    implementation 'com.github.XXQAQ:FasterResource:3.8.5'
+    implementation 'com.github.XXQAQ:FasterResource:3.8.+'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
 }
