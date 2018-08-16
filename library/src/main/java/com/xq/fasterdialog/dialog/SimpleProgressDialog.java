@@ -6,13 +6,13 @@ import android.support.annotation.NonNull;
 import com.xq.fasterdialog.R;
 import com.xq.fasterdialog.base.BaseSimpleDialog;
 
-public class ProgressSimpleDialog extends BaseSimpleDialog<ProgressSimpleDialog>{
+public class SimpleProgressDialog extends BaseSimpleDialog<SimpleProgressDialog>{
 
-    public ProgressSimpleDialog(@NonNull Context context) {
+    public SimpleProgressDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
     }
 
-    public ProgressSimpleDialog(@NonNull Context context, int themeResId) {
+    public SimpleProgressDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
     }
 
@@ -25,13 +25,13 @@ public class ProgressSimpleDialog extends BaseSimpleDialog<ProgressSimpleDialog>
         defaultLayout();
     }
 
-    public ProgressSimpleDialog defaultLayout(){
-        setCustomView(R.layout.layout_progresssimpledialog_default);
+    public SimpleProgressDialog defaultLayout(){
+        setCustomView(R.layout.layout_simpleprogressdialog_default);
         return this;
     }
 
-    public ProgressSimpleDialog meterailLayout(){
-        setCustomView(R.layout.layout_progresssimpledialog_meterail);
+    public SimpleProgressDialog meterailLayout(){
+        setCustomView(R.layout.layout_simpleprogressdialog_meterail);
         return this;
     }
 
