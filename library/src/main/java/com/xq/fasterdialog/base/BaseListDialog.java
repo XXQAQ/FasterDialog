@@ -6,12 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
-
-import com.xq.fasterdialog.R;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,13 +19,19 @@ import java.util.List;
 
 public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T> {
 
+    public static final int TYPE_SINGLE = 1;
+    public static final int TYPE_MULTI = 2;
+
     private int itemLayoutId;
 
     private RecyclerView rv;
 
-    private ItemClickListener listener;
+    private int type = TYPE_SINGLE;
+
+    private OnItemsChosseListener listener;
 
     private List<ItemBean> list_item = new LinkedList<>();
+    private List<ItemBean> list_select = new LinkedList<>();
 
     public BaseListDialog(@NonNull Context context) {
         super(context);
@@ -42,11 +48,44 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         rv = findViewById(context.getResources().getIdentifier("rv", "id", context.getPackageName()));
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(new TitleAdapter());
+        rv.getAdapter().notifyDataSetChanged();
 
+        if (type == TYPE_MULTI)
+        {
+            if (TextUtils.isEmpty(positiveText))
+                setPositiveText(SURE);
+            setPositiveListener(new OnDialogClickListener() {
+                @Override
+                public void onClick(BaseDialog dialog) {
+                    if (listener != null)
+                    {
+                        if (list_select.size() >0)
+                        {
+                            listener.onChoose(BaseListDialog.this,list_select);
+                            dismiss();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    //确认键监听已被默认占用，不建议再自行设置
+    @Deprecated
+    @Override
+    public T setPositiveListener(OnDialogClickListener positiveListener) {
+        this.positiveListener = positiveListener;
+        bindDialogClickListenerWithView(positiveView, positiveListener,false);
+        return (T) this;
     }
 
     public T setItemLayoutId(int itemLayoutId) {
         this.itemLayoutId = itemLayoutId;
+        return (T) this;
+    }
+
+    public T setType(int type){
+        this.type = type;
         return (T) this;
     }
 
@@ -65,7 +104,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public T setItemClickListener(ItemClickListener listener){
+    public T setItemClickListener(OnItemsChosseListener listener){
         this.listener = listener;
         return (T) this;
     }
@@ -75,7 +114,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_listdialog, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(itemLayoutId, parent, false);
             ViewHolder viewHolder = new ViewHolder(view);
             return viewHolder;
         }
@@ -83,14 +122,30 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, final int position) {
             ViewHolder holder = (ViewHolder)h;
-            holder.titleView.setText(list_item.get(position).getTitle());
-            if (listener != null)
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onClick(BaseListDialog.this,list_item.get(position),position);
+            final ItemBean bean = list_item.get(position);
+            holder.titleView.setText(bean.getTitle());
+            if (holder.titleView instanceof CheckBox && type == TYPE_SINGLE)
+                ((CheckBox) holder.titleView).setButtonDrawable(null);
+            holder.titleView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (type == TYPE_SINGLE)
+                    {
+                        list_select.clear();
+                        list_select.add(bean);
+                        if (listener != null)
+                            listener.onChoose(BaseListDialog.this,list_select);
+                        dismiss();
                     }
-                });
+                    else    if (type == TYPE_MULTI)
+                    {
+                        if (!list_select.contains(bean))
+                            list_select.add(bean);
+                        else
+                            list_select.remove(bean);
+                    }
+                }
+            });
         }
 
         @Override
@@ -102,15 +157,14 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             TextView titleView;
             public ViewHolder(View itemView) {
                 super(itemView);
-                titleView = findViewById(R.id.titleView);
+                titleView = itemView.findViewById(context.getResources().getIdentifier("titleView", "id", context.getPackageName()));
             }
         }
-
     }
 
-    public static interface ItemClickListener {
+    public static interface OnItemsChosseListener {
 
-        public void onClick(BaseDialog dialog,ItemBean bean,int position);
+        public void onChoose(BaseDialog dialog, List<ItemBean> list);
 
     }
 
@@ -173,12 +227,16 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
             ItemBean itemBean = (ItemBean) o;
 
-            return title != null ? title.equals(itemBean.title) : itemBean.title == null;
+            if (title != null ? !title.equals(itemBean.title) : itemBean.title != null)
+                return false;
+            return tag != null ? tag.equals(itemBean.tag) : itemBean.tag == null;
         }
 
         @Override
         public int hashCode() {
-            return title != null ? title.hashCode() : 0;
+            int result = title != null ? title.hashCode() : 0;
+            result = 31 * result + (tag != null ? tag.hashCode() : 0);
+            return result;
         }
 
         public CharSequence getTitle() {

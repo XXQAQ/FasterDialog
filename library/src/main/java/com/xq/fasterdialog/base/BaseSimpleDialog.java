@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.xq.fasterdialog.R;
 
 public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseDialog<T> {
 
@@ -48,7 +47,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
             public void onClick(BaseDialog dialog) {
 
             }
-        });
+        },true);
     }
 
     public T setData(int resId,CharSequence title,CharSequence content){

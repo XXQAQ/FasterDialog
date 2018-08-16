@@ -19,7 +19,21 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     @Override
     protected void init() {
         super.init();
-        setCustomView(R.layout.layout_listdialog_default);
-        setItemLayoutId(R.layout.item_listdialog);
+
+        defaultLayout();
+
     }
+
+    public ListDialog defaultLayout(){
+        setCustomView(R.layout.layout_listdialog_default);
+        setItemLayoutId(R.layout.item_listdialog_default);
+        return this;
+    }
+
+    public ListDialog meterailLayout(){
+        setCustomView(R.layout.layout_listdialog_meterail);
+        setItemLayoutId(R.layout.item_listdialog_meterail);
+        return this;
+    }
+
 }

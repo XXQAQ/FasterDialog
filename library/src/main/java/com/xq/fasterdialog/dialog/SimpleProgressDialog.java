@@ -2,11 +2,10 @@ package com.xq.fasterdialog.dialog;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-
 import com.xq.fasterdialog.R;
 import com.xq.fasterdialog.base.BaseSimpleDialog;
 
-public class SimpleProgressDialog extends BaseSimpleDialog<SimpleProgressDialog>{
+public class SimpleProgressDialog extends BaseSimpleDialog<SimpleProgressDialog> {
 
     public SimpleProgressDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);

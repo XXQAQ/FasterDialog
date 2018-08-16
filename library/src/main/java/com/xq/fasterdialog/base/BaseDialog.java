@@ -23,8 +23,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.xq.fasterdialog.FasterDialogInterface;
 import com.xq.fasterdialog.DialogImageLoder;
+import com.xq.fasterdialog.FasterDialogInterface;
 import com.xq.fasterdialog.R;
 
 import java.lang.reflect.Field;
@@ -396,7 +396,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             view.setProgress(progress);
     }
 
-    protected void bindDialogClickListenerWithView(View view, final OnDialogClickListener listener){
+    protected void bindDialogClickListenerWithView(View view, final OnDialogClickListener listener, final boolean isDismiss){
         if (view == null)
             return;
 
@@ -405,7 +405,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
                 @Override
                 public void onClick(View v) {
                     listener.onClick(BaseDialog.this);
-                    dismiss();
+                    if (isDismiss)
+                        dismiss();
                 }
             });
     }

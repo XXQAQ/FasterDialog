@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="1dp"
+    >
+
+    <CheckBox
+        android:id="@+id/titleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/distance_less"
+        android:paddingBottom="@dimen/distance_less"
+        android:paddingLeft="@dimen/distance_more"
+        android:paddingRight="@dimen/distance_more"
+        android:background="@drawable/checked_solidwidely_toprimary"
+        android:gravity="left"
+        android:text="随手写写"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@color/text_checked_normal_towidely"
+        />
+
+</LinearLayout>

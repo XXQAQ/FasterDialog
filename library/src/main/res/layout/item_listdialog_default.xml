@@ -4,14 +4,20 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/distance_more"
+    android:layout_marginTop="1dp"
     >
 
-    <TextView
+    <CheckBox
         android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/distance_medium"
+        android:background="@drawable/checked_solidwidely_toprimary"
+        android:layout_gravity="center"
         android:gravity="center"
+        android:text="随手写写"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@color/text_checked_normal_towidely"
         />
 
 </LinearLayout>
