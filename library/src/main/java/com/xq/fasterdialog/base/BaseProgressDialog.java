@@ -3,6 +3,7 @@ package com.xq.fasterdialog.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -46,7 +47,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
     public T setProgress(int progress,CharSequence pgDescript){
         setProgress(progress);
-        setTextToView(pgDescriptView,pgDescript);
+        setTextToView(pgDescriptView,pgDescript, View.GONE);
         return (T) this;
     }
 

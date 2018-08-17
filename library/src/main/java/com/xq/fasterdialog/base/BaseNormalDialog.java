@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xq.fasterdialog.R;
@@ -47,9 +48,9 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         negativeView = findViewById(context.getResources().getIdentifier("negativeView", "id", context.getPackageName()));
         neutralView = findViewById(context.getResources().getIdentifier("neutralView", "id", context.getPackageName()));
 
-        setTextToView(positiveView, positiveText);
-        setTextToView(negativeView, negativeText);
-        setTextToView(neutralView, neutralText);
+        setPositiveText(positiveText);
+        setNegativeText(negativeText);
+        setNeutralText(neutralText);
 
         OnDialogClickListener defaultListener = new OnDialogClickListener() {
             @Override
@@ -58,14 +59,11 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
             }
         };
         if (!TextUtils.isEmpty(positiveText) && positiveListener == null)
-            positiveListener = defaultListener;
+            setPositiveListener(defaultListener);
         if (!TextUtils.isEmpty(negativeText) && negativeListener == null)
-            negativeListener = defaultListener;
+            setNegativeListener(defaultListener);
         if (!TextUtils.isEmpty(neutralText) && neutralListener == null)
-            neutralListener = defaultListener;
-        bindDialogClickListenerWithView(positiveView, positiveListener,true);
-        bindDialogClickListenerWithView(negativeView, negativeListener,true);
-        bindDialogClickListenerWithView(neutralView, neutralListener,true);
+            setNeutralListener(defaultListener);
     }
 
     public T setData(int resId, CharSequence title, CharSequence content, CharSequence positiveText, OnDialogClickListener positiveListener){
@@ -91,19 +89,19 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
 
     public T setNegativeText(CharSequence negativeText) {
         this.negativeText = negativeText;
-        setTextToView(negativeView, negativeText);
+        setTextToView(negativeView, negativeText, View.GONE);
         return (T) this;
     }
 
     public T setPositiveText(CharSequence positiveText) {
         this.positiveText = positiveText;
-        setTextToView(positiveView, positiveText);
+        setTextToView(positiveView, positiveText, View.GONE);
         return (T) this;
     }
 
     public T setNeutralText(CharSequence neutralText) {
         this.neutralText = neutralText;
-        setTextToView(neutralView, neutralText);
+        setTextToView(neutralView, neutralText, View.GONE);
         return (T) this;
     }
 

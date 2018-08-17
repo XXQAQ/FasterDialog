@@ -333,9 +333,16 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected void setTextToView(TextView view, CharSequence text){
         if (view == null)
             return;
+        if (!TextUtils.isEmpty(text))
+            view.setText(text);
+    }
+
+    protected void setTextToView(TextView view, CharSequence text,int visibilityIfNot){
+        if (view == null)
+            return;
 
         if (TextUtils.isEmpty(text))
-            view.setVisibility(View.GONE);
+            view.setVisibility(visibilityIfNot);
         else
         {
             view.setText(text);
@@ -343,28 +350,19 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         }
     }
 
-    protected void setTextSizeToView(TextView view,float textSize){
-        if (view == null)
-            return;
-
-        if (textSize > 0)
-            view.setTextSize(textSize);
-    }
-
-    protected void setTextColorToView(TextView view,int textColor){
-        if (view == null)
-            return;
-
-        if (textColor >= 0)
-            view.setTextColor(textColor);
-    }
-
     protected void setImageResourceToView(ImageView view, int id){
+        if (view == null)
+            return;
+        if (id != 0)
+            view.setImageResource(id);
+    }
+
+    protected void setImageResourceToView(ImageView view, int id,int visibilityIfNot){
         if (view == null)
             return;
 
         if (id == 0)
-            view.setVisibility(View.GONE);
+            view.setVisibility(visibilityIfNot);
         else
         {
             view.setImageResource(id);
@@ -375,9 +373,19 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected void setImageUrlToView(final ImageView view, final String url){
         if (view == null)
             return;
+        if (!TextUtils.isEmpty(url))
+            if (dialogImageLoder == null)
+                FasterDialogInterface.getImageLoaderd().loadImage(context,view,url);
+            else
+                dialogImageLoder.loadImage(context,view,url);
+    }
+
+    protected void setImageUrlToView(final ImageView view, final String url,int visibilityIfNot){
+        if (view == null)
+            return;
 
         if (TextUtils.isEmpty(url))
-            view.setVisibility(View.GONE);
+            view.setVisibility(visibilityIfNot);
         else
         {
             if (dialogImageLoder == null)

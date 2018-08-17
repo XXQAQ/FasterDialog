@@ -3,6 +3,7 @@ package com.xq.fasterdialog.dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xq.fasterdialog.R;
@@ -44,7 +45,7 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
     public LoadingDialog setLodingText(CharSequence loadingText) {
         this.loadingText = loadingText;
-        setTextToView(loadingView,loadingText);
+        setTextToView(loadingView,loadingText, View.GONE);
         return this;
     }
 

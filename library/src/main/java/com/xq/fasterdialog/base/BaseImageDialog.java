@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 
 public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNormalDialog<T> {
@@ -28,9 +29,9 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
         imageView = findViewById(context.getResources().getIdentifier("imageView", "id", context.getPackageName()));
 
         if (!TextUtils.isEmpty(imageUrl))
-            setImageUrlToView(imageView, imageUrl);
+            setImageUrl(imageUrl);
         else
-            setImageResourceToView(imageView,imageResId);
+            setImageResId(imageResId);
     }
 
     public T setData(int resId,CharSequence title,CharSequence content,String imageUrl){
@@ -48,14 +49,14 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
     public T setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
         this.imageResId = 0;
-        setImageUrlToView(imageView,imageUrl);
+        setImageUrlToView(imageView,imageUrl,View.GONE);
         return (T) this;
     }
 
     public T setImageResId(int imageResId) {
         this.imageResId = imageResId;
         this.imageUrl = null;
-        setImageResourceToView(imageView,imageResId);
+        setImageResourceToView(imageView,imageResId, View.GONE);
         return (T) this;
     }
 

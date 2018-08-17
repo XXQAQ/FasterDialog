@@ -130,10 +130,8 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, final int position) {
             ViewHolder holder = (ViewHolder)h;
             final ItemBean bean = list_item.get(position);
-            holder.titleView.setText(bean.getTitle());
-            if (holder.titleView instanceof CompoundButton && type == TYPE_SINGLE)
-                ((CompoundButton) holder.titleView).setButtonDrawable(new ColorDrawable(Color.TRANSPARENT));
-            holder.titleView.setOnClickListener(new View.OnClickListener() {
+            holder.text1.setText(bean.getTitle());
+            holder.text1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (type == TYPE_SINGLE)
@@ -161,10 +159,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
-            TextView titleView;
+            TextView text1;
             public ViewHolder(View itemView) {
                 super(itemView);
-                titleView = itemView.findViewById(context.getResources().getIdentifier("titleView", "id", context.getPackageName()));
+                text1 = itemView.findViewById(context.getResources().getIdentifier("text1", "id", context.getPackageName()));
             }
         }
     }

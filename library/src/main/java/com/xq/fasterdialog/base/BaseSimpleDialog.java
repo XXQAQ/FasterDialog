@@ -3,6 +3,7 @@ package com.xq.fasterdialog.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,12 +37,13 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         iconView = findViewById(context.getResources().getIdentifier("iconView", "id", context.getPackageName()));
         closeView = findViewById(context.getResources().getIdentifier("closeView", "id", context.getPackageName()));
 
-        setTextToView(titleView, tile);
+        //考虑到TextView中会含有超链接等局部监听，需要进行下处理
+        titleView.setMovementMethod(LinkMovementMethod.getInstance());
+        contentView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        setTextToView(contentView,content);
-
-        setImageResourceToView(iconView,icon);
-
+        setTile(tile);
+        setContent(content);
+        setIcon(icon);
         bindDialogClickListenerWithView(closeView, new OnDialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog) {
@@ -59,20 +61,20 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
 
     public T setTile(CharSequence title) {
         this.tile = title;
-        setTextToView(titleView,title);
+        setTextToView(titleView,title, View.GONE);
         return (T) this;
     }
 
     public T setContent(CharSequence content) {
         this.content = content;
-        setTextToView(contentView,content);
+        setTextToView(contentView,content, View.GONE);
         return (T) this;
     }
 
 
     public T setIcon(int resId) {
         this.icon = resId;
-        setImageResourceToView(iconView,resId);
+        setImageResourceToView(iconView,resId,View.GONE);
         return (T) this;
     }
 

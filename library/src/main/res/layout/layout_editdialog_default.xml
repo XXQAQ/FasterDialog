@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:background="@color/colorWidely">
+
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/distance_xmax"
+        android:layout_marginLeft="@dimen/distance_xmax"
+        android:layout_marginRight="@dimen/distance_xmax"
+        android:layout_marginBottom="@dimen/distance_more"
+        android:text="提醒"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_max"
+        android:textStyle="bold"
+        android:lines="1"
+        />
+
+    <TextView
+        android:id="@+id/contentView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/distance_xmax"
+        android:layout_marginRight="@dimen/distance_xmax"
+        android:layout_marginBottom="@dimen/distance_max"
+        android:gravity="center"
+        android:text="立即充值,只有充值才能变得更强"
+        android:textColor="@color/text_normal"
+        android:textSize="@dimen/text_more"
+        android:lineSpacingExtra="8dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/distance_more"
+        android:layout_marginRight="@dimen/distance_more"
+        android:layout_marginBottom="@dimen/distance_max"
+        >
+
+            <EditText
+                android:id="@+id/edit1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/distance_medium"
+                android:background="@drawable/shape_radiusless_solidbackground"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:lines="1"
+                />
+
+            <EditText
+                android:id="@+id/edit2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/distance_medium"
+                android:layout_marginTop="@dimen/distance_medium"
+                android:background="@drawable/shape_radiusless_solidbackground"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:lines="1"
+                />
+
+            <EditText
+                android:id="@+id/edit3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/distance_medium"
+                android:layout_marginTop="@dimen/distance_medium"
+                android:background="@drawable/shape_radiusless_solidbackground"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:lines="1"
+                />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+            <Button
+                android:id="@+id/negativeView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="停止充值"
+                android:padding="@dimen/distance_less"
+                android:background="@drawable/pressed_layer_toprightprimary_solidwidely"
+                android:textSize="@dimen/text_more"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <Button
+                android:id="@+id/neutralView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="只能选两边"
+                android:padding="@dimen/distance_less"
+                android:background="@drawable/pressed_layer_toprightprimary_solidwidely"
+                android:textSize="@dimen/text_more"
+                android:textColor="@color/colorPrimary"
+                />
+
+            <Button
+                android:id="@+id/positiveView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="立即充值"
+                android:padding="@dimen/distance_less"
+                android:background="@drawable/pressed_layer_topprimary_solidwidely"
+                android:textSize="@dimen/text_more"
+                android:textColor="@color/colorPrimary"
+                />
+
+    </LinearLayout>
+
+</LinearLayout>
