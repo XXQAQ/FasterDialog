@@ -1,6 +1,8 @@
 package com.xq.fasterdialog.base;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -98,6 +101,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             diffResult.dispatchUpdatesTo(rv.getAdapter());
             list_item.clear();
             list_item.addAll(list);
+            //删除多余的选择项
+            for (ItemBean bean : list_select)
+                if (!list_item.contains(bean))
+                    list_item.remove(bean);
         }
         else
             list_item.addAll(list);
@@ -124,8 +131,8 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             ViewHolder holder = (ViewHolder)h;
             final ItemBean bean = list_item.get(position);
             holder.titleView.setText(bean.getTitle());
-            if (holder.titleView instanceof CheckBox && type == TYPE_SINGLE)
-                ((CheckBox) holder.titleView).setButtonDrawable(null);
+            if (holder.titleView instanceof CompoundButton && type == TYPE_SINGLE)
+                ((CompoundButton) holder.titleView).setButtonDrawable(new ColorDrawable(Color.TRANSPARENT));
             holder.titleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
