@@ -169,7 +169,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     public static interface OnItemsChosseListener {
 
-        public void onChoose(BaseDialog dialog, List<ItemBean> list);
+        public void onChoose(BaseListDialog dialog, List<ItemBean> list);
 
     }
 

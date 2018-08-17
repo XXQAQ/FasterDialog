@@ -46,19 +46,18 @@
         android:layout_marginBottom="@dimen/distance_max"
         >
 
-            <EditText
+            <com.xq.fasterdialog.view.FixedEditText
                 android:id="@+id/edit1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/distance_medium"
                 android:background="@drawable/shape_radiusless_solidbackground"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:textSize="@dimen/text_medium"
                 android:lines="1"
                 />
 
-            <EditText
+        <com.xq.fasterdialog.view.FixedEditText
                 android:id="@+id/edit2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,12 +65,11 @@
                 android:layout_marginTop="@dimen/distance_medium"
                 android:background="@drawable/shape_radiusless_solidbackground"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:textSize="@dimen/text_medium"
                 android:lines="1"
                 />
 
-            <EditText
+        <com.xq.fasterdialog.view.FixedEditText
                 android:id="@+id/edit3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +77,6 @@
                 android:layout_marginTop="@dimen/distance_medium"
                 android:background="@drawable/shape_radiusless_solidbackground"
                 android:layout_gravity="center"
-                android:gravity="center"
                 android:textSize="@dimen/text_medium"
                 android:lines="1"
                 />

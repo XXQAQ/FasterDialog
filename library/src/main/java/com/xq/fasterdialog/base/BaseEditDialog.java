@@ -10,16 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+
+import com.xq.fasterdialog.view.FixedEditText;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T>{
 
-    private OnEditListner listener;
+    private OnEditCompleteListner listener;
 
     private SparseArray<EditText> array_edit = new SparseArray<>();
-    private SparseArray<CharSequence> array_text = new SparseArray();
-    private SparseArray<CharSequence> array_hint = new SparseArray();
+    private SparseArray<InputBean> array_input = new SparseArray();
 
     public BaseEditDialog(@NonNull Context context) {
         super(context);
@@ -39,17 +41,16 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         //隐藏所有EditText
         goneAllEditText();
 
-        for (int index=0;index < array_hint.size();index++)
+        for (int index=0;index < array_input.size();index++)
         {
-            int key = array_hint.keyAt(index);
-            CharSequence hint = array_hint.get(key);
-            if (!TextUtils.isEmpty(hint))
-            {
-                EditText editText = findViewById(context.getResources().getIdentifier("edit" + key, "id", context.getPackageName()));
-                array_edit.put(key,editText);
-                setHintToView(editText,hint);
-                setTextToView(editText,array_text.get(key));
-            }
+            int key = array_input.keyAt(index);
+            InputBean bean = array_input.get(key);
+            EditText editText = findViewById(context.getResources().getIdentifier("edit" + key, "id", context.getPackageName()));
+            array_edit.put(key,editText);
+            setHintToView(editText,bean.getHint());
+            setTextToView(editText,bean.getText());
+            if (bean.getFixedText() != null && editText instanceof FixedEditText)
+                ((FixedEditText) editText).setFixedText(bean.getFixedText());
         }
 
         if (TextUtils.isEmpty(positiveText))
@@ -66,7 +67,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
                         EditText editText = array_edit.get(key);
                         array.put(key,editText.getText().toString());
                     }
-                    listener.onEdit(BaseEditDialog.this,array);
+                    listener.onEditComplete(BaseEditDialog.this,array);
                 }
             }
         });
@@ -127,7 +128,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         return (T) this;
     }
 
-    public T setOnEditListner(OnEditListner listener) {
+    public T setOnEditListner(OnEditCompleteListner listener) {
         this.listener = listener;
         return (T) this;
     }
@@ -141,38 +142,105 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         return (T) this;
     }
 
-    public T setText(int no,CharSequence text) {
-        array_text.put(no,text);
+    public T setInputBean(int no,InputBean bean) {
+        array_input.put(no,bean);
         return (T) this;
     }
 
-    public T setText1(CharSequence text) {
-        setText(1,text);
+    public T setInputBean1(InputBean bean) {
+        setInputBean(1,bean);
         return (T) this;
     }
 
-    public T setText2(CharSequence text) {
-        array_text.put(2,text);
+    public T setInputBean2(InputBean bean) {
+        setInputBean(2,bean);
         return (T) this;
     }
 
-    public T setHint(int no,CharSequence text) {
-        array_hint.put(no,text);
-        return (T) this;
+    public static interface OnEditCompleteListner {
+        public void onEditComplete(BaseEditDialog dialog, SparseArray<CharSequence> array);
     }
 
-    public T setHint1(CharSequence hint) {
-        setHint(1,hint);
-        return (T) this;
-    }
+    public static class InputBean{
 
-    public T setHint2(CharSequence hint) {
-        setHint(2,hint);
-        return (T) this;
-    }
+        private CharSequence hint;
+        private CharSequence text;
+        private CharSequence fixedText;
 
-    public static interface OnEditListner{
-        public void onEdit(BaseEditDialog dialog,SparseArray<CharSequence> array);
+        public InputBean() {
+        }
+
+        public InputBean(CharSequence hint) {
+            this.hint = hint;
+        }
+
+        public InputBean(CharSequence hint, CharSequence text) {
+            this.hint = hint;
+            this.text = text;
+        }
+
+        public InputBean(CharSequence hint, CharSequence text, CharSequence fixedText) {
+            this.hint = hint;
+            this.text = text;
+            this.fixedText = fixedText;
+        }
+
+        @Override
+        public String toString() {
+            return "InputBean{" +
+                    "hint=" + hint +
+                    ", text=" + text +
+                    ", fixedText=" + fixedText +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            InputBean inputBean = (InputBean) o;
+
+            if (hint != null ? !hint.equals(inputBean.hint) : inputBean.hint != null) return false;
+            if (fixedText != null ? !fixedText.equals(inputBean.fixedText) : inputBean.fixedText != null)
+                return false;
+            return text != null ? text.equals(inputBean.text) : inputBean.text == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = hint != null ? hint.hashCode() : 0;
+            result = 31 * result + (fixedText != null ? fixedText.hashCode() : 0);
+            result = 31 * result + (text != null ? text.hashCode() : 0);
+            return result;
+        }
+
+        public InputBean setHint(CharSequence hint) {
+            this.hint = hint;
+            return this;
+        }
+
+        public InputBean setFixedText(CharSequence fixedText) {
+            this.fixedText = fixedText;
+            return this;
+        }
+
+        public InputBean setText(CharSequence text) {
+            this.text = text;
+            return this;
+        }
+
+        public CharSequence getHint() {
+            return hint;
+        }
+
+        public CharSequence getFixedText() {
+            return fixedText;
+        }
+
+        public CharSequence getText() {
+            return text;
+        }
     }
 
 }
