@@ -1,6 +1,8 @@
 package com.xq.fasterdialog.base;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
@@ -10,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -126,8 +129,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, final int position) {
             ViewHolder holder = (ViewHolder)h;
             final ItemBean bean = list_item.get(position);
-            holder.text1.setText(bean.getTitle());
-            holder.text1.setOnClickListener(new View.OnClickListener() {
+            if (type == TYPE_SINGLE && holder.text instanceof CompoundButton)
+                ((CompoundButton) holder.text).setButtonDrawable(new ColorDrawable(Color.TRANSPARENT));
+            holder.text.setText(bean.getTitle());
+            holder.text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (type == TYPE_SINGLE)
@@ -155,10 +160,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
-            TextView text1;
+            TextView text;
             public ViewHolder(View itemView) {
                 super(itemView);
-                text1 = itemView.findViewById(context.getResources().getIdentifier("text1", "id", context.getPackageName()));
+                text = itemView.findViewById(context.getResources().getIdentifier("text", "id", context.getPackageName()));
             }
         }
     }
