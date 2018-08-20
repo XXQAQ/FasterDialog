@@ -22,13 +22,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="@dimen/distance_more"
-        android:layout_marginLeft="@dimen/distance_more"
-        android:layout_marginRight="@dimen/distance_more"
+        android:layout_marginLeft="@dimen/distance_max"
+        android:layout_marginRight="@dimen/distance_max"
+        android:layout_marginBottom="@dimen/distance_less"
         android:text="提醒"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_medium"
         android:textStyle="bold"
-        android:lines="1"
         />
 
     <TextView
@@ -36,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="@dimen/distance_sless"
         android:layout_marginLeft="@dimen/distance_more"
         android:layout_marginRight="@dimen/distance_more"
         android:layout_marginBottom="@dimen/distance_max"
