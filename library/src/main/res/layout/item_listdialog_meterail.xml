@@ -15,11 +15,11 @@
         android:paddingBottom="@dimen/distance_less"
         android:paddingLeft="@dimen/distance_more"
         android:paddingRight="@dimen/distance_more"
-        android:background="@drawable/checked_solidwidely_toprimary"
+        android:background="@drawable/selector_solidwidely_toprimary"
         android:gravity="left"
         android:text="随手写写"
         android:textSize="@dimen/text_medium"
-        android:textColor="@color/text_checked_normal_towidely"
+        android:textColor="@color/text_selector_normal_towidely"
         />
 
 </LinearLayout>
