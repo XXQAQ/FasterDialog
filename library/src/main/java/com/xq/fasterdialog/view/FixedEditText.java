@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import com.xq.fasterdialog.R;
 
-public class FixedEditText extends EditText {
+public class FixedEditText extends EditText implements FixedEditInterface{
 
     private CharSequence fixedText;
 
@@ -25,17 +25,17 @@ public class FixedEditText extends EditText {
     }
 
     private void init(AttributeSet attrs) {
-
         TypedArray a = getContext().obtainStyledAttributes(attrs,
                 R.styleable.FixedEditText);
         fixedText = a.getString(R.styleable.FixedEditText_fixedText);
         a.recycle();
     }
 
+    @Override
     public void setFixedText(CharSequence text) {
         fixedText = text;
         leftPadding = getPaddingLeft();
-        int left = (int) getPaint().measureText(fixedText.toString()) + leftPadding*2;
+        int left = (int) getPaint().measureText(fixedText,0,fixedText.length()) + leftPadding*2;
         setPadding(left, getPaddingTop(), getPaddingBottom(), getPaddingRight());
         invalidate();
     }
@@ -48,7 +48,7 @@ public class FixedEditText extends EditText {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (!TextUtils.isEmpty(fixedText)) {
-            canvas.drawText(fixedText.toString(), leftPadding, getBaseline(), getPaint());
+            canvas.drawText(fixedText,0,fixedText.length(), leftPadding, getBaseline(), getPaint());
         }
     }
 

@@ -1,3 +1,5 @@
 <resources>
 
+    <dimen name="distance_iconbottom">-16dp</dimen>
+
 </resources>

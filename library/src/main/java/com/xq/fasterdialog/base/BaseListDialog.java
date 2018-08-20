@@ -1,8 +1,6 @@
 package com.xq.fasterdialog.base;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
@@ -12,8 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -64,7 +60,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                     {
                         if (list_select.size() >0)
                         {
-                            listener.onChoose(BaseListDialog.this,list_select);
+                            listener.onItemsChoose(BaseListDialog.this,list_select);
                             dismiss();
                         }
                     }
@@ -111,7 +107,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public T setItemClickListener(OnItemsChosseListener listener){
+    public T setOnItemsChosseListener(OnItemsChosseListener listener){
         this.listener = listener;
         return (T) this;
     }
@@ -139,7 +135,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                         list_select.clear();
                         list_select.add(bean);
                         if (listener != null)
-                            listener.onChoose(BaseListDialog.this,list_select);
+                            listener.onItemsChoose(BaseListDialog.this,list_select);
                         dismiss();
                     }
                     else    if (type == TYPE_MULTI)
@@ -169,7 +165,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     public static interface OnItemsChosseListener {
 
-        public void onChoose(BaseListDialog dialog, List<ItemBean> list);
+        public void onItemsChoose(BaseListDialog dialog, List<ItemBean> list);
 
     }
 

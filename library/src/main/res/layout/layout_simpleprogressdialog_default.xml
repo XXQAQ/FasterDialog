@@ -8,6 +8,16 @@
     android:background="@color/colorWidely"
     >
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/iconView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_max"
+        android:layout_marginBottom="@dimen/distance_iconbottom"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/shape_solidbackground"
+        />
+
     <TextView
         android:id="@+id/titleView"
         android:layout_width="wrap_content"
@@ -16,7 +26,7 @@
         android:layout_marginTop="@dimen/distance_xmax"
         android:layout_marginLeft="@dimen/distance_xmax"
         android:layout_marginRight="@dimen/distance_xmax"
-        android:layout_marginBottom="@dimen/distance_more"
+        android:layout_marginBottom="@dimen/distance_max"
         android:text="提醒"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/text_max"

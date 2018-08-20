@@ -333,8 +333,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected void setTextToView(TextView view, CharSequence text){
         if (view == null)
             return;
-        if (!TextUtils.isEmpty(text))
-            view.setText(text);
+        view.setText(text);
     }
 
     protected void setTextToView(TextView view, CharSequence text,int visibilityIfNot){
