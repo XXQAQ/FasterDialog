@@ -30,8 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="立即充值"
+            android:lineSpacingExtra="@dimen/textspacing_less"
             android:textColor="@color/text_strong"
-            android:textSize="@dimen/text_more"
+            android:textSize="@dimen/text_max"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -42,9 +43,11 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:layout_marginTop="@dimen/distance_less"
+        android:lineSpacingExtra="@dimen/textspacing_min"
         android:text="是的只有充钱才能变得更强"
         android:textColor="@color/text_normal"
-        android:textSize="@dimen/text_medium" />
+        android:textSize="@dimen/text_medium"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
