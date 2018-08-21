@@ -21,7 +21,6 @@ public class ListDialog extends BaseListDialog<ListDialog> {
         super.init();
 
         defaultLayout();
-
     }
 
     public ListDialog defaultLayout(){

@@ -20,6 +20,17 @@ public class EditDialog extends BaseEditDialog<EditDialog> {
     protected void init() {
         super.init();
 
-        setCustomView(R.layout.layout_editdialog_default);
+        defaultLayout();
     }
+
+    public EditDialog meterailLayout(){
+        setCustomView(R.layout.layout_editdialog_meterail);
+        return this;
+    }
+
+    public EditDialog defaultLayout(){
+        setCustomView(R.layout.layout_editdialog_default);
+        return this;
+    }
+
 }
