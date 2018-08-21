@@ -11,15 +11,14 @@
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/distance_less"
-        android:paddingBottom="@dimen/distance_less"
-        android:paddingLeft="@dimen/distance_more"
+        android:paddingTop="@dimen/distance_medium"
+        android:paddingBottom="@dimen/distance_medium"
+        android:paddingLeft="@dimen/distance_xmax"
         android:paddingRight="@dimen/distance_more"
-        android:background="@drawable/selector_solidwidely_toprimary"
+        android:background="@drawable/selector_solidwidely"
         android:gravity="left"
         android:text="随手写写"
         android:textSize="@dimen/text_medium"
-        android:textColor="@color/text_selector_normal_towidely"
         />
 
 </LinearLayout>

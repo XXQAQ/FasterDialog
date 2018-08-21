@@ -3,26 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingTop="@dimen/distance_max"
     android:paddingBottom="@dimen/distance_more"
-    android:paddingLeft="@dimen/distance_max"
-    android:paddingRight="@dimen/distance_more"
-    android:paddingTop="@dimen/distance_more"
     android:background="@color/colorWidely"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/distance_max"
+        android:paddingRight="@dimen/distance_more"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/distance_less"
         >
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/iconView"
             android:layout_width="@dimen/icon_medium_both"
             android:layout_height="@dimen/icon_medium_both"
-            android:layout_marginLeft="@dimen/distance_medium"
-            android:layout_marginRight="@dimen/distance_medium"
+            android:layout_marginRight="@dimen/distance_more"
             android:src="@drawable/shape_solidbackground"
             />
 
@@ -42,8 +40,11 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_less"
+        android:paddingLeft="@dimen/distance_max"
+        android:paddingRight="@dimen/distance_more"
         android:gravity="left"
-        android:layout_marginBottom="@dimen/distance_less"
+
         android:text="是的只有充钱才能变得更强"
         android:textColor="@color/text_normal"
         android:textSize="@dimen/text_medium" />
@@ -52,12 +53,15 @@
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/distance_max"
+        android:layout_marginTop="@dimen/distance_less"
         />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_max"
+        android:paddingLeft="@dimen/distance_max"
+        android:paddingRight="@dimen/distance_more"
         android:layout_gravity="right">
 
         <TextView
