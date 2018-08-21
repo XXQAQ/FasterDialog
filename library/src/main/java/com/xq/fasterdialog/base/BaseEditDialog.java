@@ -6,21 +6,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import com.xq.fasterdialog.view.FixedEditInterface;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T>{
 
-    private OnEditCompleteListner listener;
+    protected OnEditCompleteListner editListner;
 
-    private SparseArray<EditText> array_edit = new SparseArray<>();
-    private SparseArray<InputBean> array_input = new SparseArray();
+    protected SparseArray<EditText> array_edit = new SparseArray<>();
+    protected SparseArray<InputBean> array_input = new SparseArray();
 
     public BaseEditDialog(@NonNull Context context) {
         super(context);
@@ -48,10 +47,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             setHintToView(editText,bean.getHint());
             setTextToView(editText,bean.getText());
             setMaxLengthToView(editText,bean.getMaxLength());
-            if (bean.getInputType() != -1)
-                editText.setInputType(bean.getInputType());
-            if (!TextUtils.isEmpty(bean.getFixedText()) && editText instanceof FixedEditInterface)
-                ((FixedEditInterface) editText).setFixedText(bean.getFixedText());
+            editText.setInputType(bean.getInputType());
         }
 
         if (TextUtils.isEmpty(positiveText))
@@ -59,7 +55,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         setPositiveListener(new OnDialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog) {
-                if (listener != null)
+                if (editListner != null)
                 {
                     SparseArray<CharSequence> array = new SparseArray<>();
                     for (int index=0;index < array_edit.size();index++)
@@ -68,7 +64,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
                         EditText editText = array_edit.get(key);
                         array.put(key,editText.getText().toString());
                     }
-                    listener.onEditComplete(BaseEditDialog.this,array);
+                    editListner.onEditComplete(BaseEditDialog.this,array);
                 }
             }
         });
@@ -84,7 +80,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
     }
 
     public T setOnEditCompleteListner(OnEditCompleteListner listener) {
-        this.listener = listener;
+        this.editListner = listener;
         return (T) this;
     }
 
@@ -150,8 +146,8 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             editText.setHint(text);
     }
 
-    protected void goneAllEditText() {
-        List<EditText> list_view = getAllEditText(rootView);
+    private void goneAllEditText() {
+        List<EditText> list_view = getAllSomeView(rootView,EditText.class);
         for (EditText et : list_view)
         {
             if (et.getParent().getParent() instanceof TextInputLayout)
@@ -159,23 +155,6 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             else
                 et.setVisibility(View.GONE);
         }
-    }
-
-    private List<EditText> getAllEditText(View view) {
-        List<EditText> allchildren = new ArrayList<>();
-        if (view instanceof ViewGroup)
-        {
-            ViewGroup vp = (ViewGroup) view;
-            for (int i = 0; i < vp.getChildCount(); i++)
-            {
-                View viewchild = vp.getChildAt(i);
-                if (viewchild instanceof EditText)
-                    allchildren.add((EditText) viewchild);
-                //再次 调用本身（递归）
-                allchildren.addAll(getAllEditText(viewchild));
-            }
-        }
-        return allchildren;
     }
 
     public static interface OnEditCompleteListner {
@@ -188,7 +167,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         private CharSequence text;
         private CharSequence fixedText;
         private int maxLength;
-        private int inputType = -1;
+        private int inputType = InputType.TYPE_CLASS_TEXT;
 
         public InputBean() {
         }

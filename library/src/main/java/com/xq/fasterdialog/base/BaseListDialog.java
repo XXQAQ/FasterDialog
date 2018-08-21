@@ -21,19 +21,13 @@ import java.util.List;
 
 public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T> {
 
-    public static final int TYPE_SINGLE = 1;
-    public static final int TYPE_MULTI = 2;
+    protected int itemLayoutId;
 
-    private int itemLayoutId;
+    protected OnItemChosseListener chosseListener;
 
-    private RecyclerView rv;
+    protected RecyclerView rv;
 
-    private int type = TYPE_SINGLE;
-
-    private OnItemsChosseListener listener;
-
-    private List<ItemBean> list_item = new LinkedList<>();
-    private List<ItemBean> list_select = new LinkedList<>();
+    protected List<ItemBean> list_item = new LinkedList<>();
 
     public BaseListDialog(@NonNull Context context) {
         super(context);
@@ -51,43 +45,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(new TitleAdapter());
         rv.getAdapter().notifyDataSetChanged();
-
-        if (type == TYPE_MULTI)
-        {
-            if (TextUtils.isEmpty(positiveText))
-                setPositiveText(SURE);
-            setPositiveListener(new OnDialogClickListener() {
-                @Override
-                public void onClick(BaseDialog dialog) {
-                    if (listener != null)
-                    {
-                        if (list_select.size() >0)
-                        {
-                            listener.onItemsChoose(BaseListDialog.this,list_select);
-                            dismiss();
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    //确认键监听已被默认占用，不建议再自行设置
-    @Deprecated
-    @Override
-    public T setPositiveListener(OnDialogClickListener positiveListener) {
-        this.positiveListener = positiveListener;
-        bindDialogClickListenerWithView(positiveView, positiveListener,false);
-        return (T) this;
     }
 
     public T setItemLayoutId(int itemLayoutId) {
         this.itemLayoutId = itemLayoutId;
-        return (T) this;
-    }
-
-    public T setType(int type){
-        this.type = type;
         return (T) this;
     }
 
@@ -100,18 +61,14 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             diffResult.dispatchUpdatesTo(rv.getAdapter());
             list_item.clear();
             list_item.addAll(list);
-            //删除多余的选择项
-            for (ItemBean bean : list_select)
-                if (!list_item.contains(bean))
-                    list_item.remove(bean);
         }
         else
             list_item.addAll(list);
         return (T) this;
     }
 
-    public T setOnItemsChosseListener(OnItemsChosseListener listener){
-        this.listener = listener;
+    public T setOnItemChosseListener(OnItemChosseListener listener){
+        this.chosseListener = listener;
         return (T) this;
     }
 
@@ -129,27 +86,13 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, final int position) {
             ViewHolder holder = (ViewHolder)h;
             final ItemBean bean = list_item.get(position);
-            if (type == TYPE_SINGLE && holder.text instanceof CompoundButton)
-                ((CompoundButton) holder.text).setButtonDrawable(new ColorDrawable(Color.TRANSPARENT));
             holder.text.setText(bean.getTitle());
             holder.text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (type == TYPE_SINGLE)
-                    {
-                        list_select.clear();
-                        list_select.add(bean);
-                        if (listener != null)
-                            listener.onItemsChoose(BaseListDialog.this,list_select);
-                        dismiss();
-                    }
-                    else    if (type == TYPE_MULTI)
-                    {
-                        if (!list_select.contains(bean))
-                            list_select.add(bean);
-                        else
-                            list_select.remove(bean);
-                    }
+                    if (chosseListener != null)
+                        chosseListener.onItemChoose(BaseListDialog.this,bean);
+                    dismiss();
                 }
             });
         }
@@ -168,9 +111,9 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         }
     }
 
-    public static interface OnItemsChosseListener {
+    public static interface OnItemChosseListener {
 
-        public void onItemsChoose(BaseListDialog dialog, List<ItemBean> list);
+        public void onItemChoose(BaseListDialog dialog, ItemBean bean);
 
     }
 

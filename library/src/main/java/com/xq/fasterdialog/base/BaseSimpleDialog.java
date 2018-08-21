@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     protected TextView contentView;
     protected ImageView iconView;
     protected View closeView;
+    protected CompoundButton checkedView;
 
     protected CharSequence tile;
     protected CharSequence content;
@@ -36,6 +38,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         contentView = findViewById(context.getResources().getIdentifier("contentView", "id", context.getPackageName()));
         iconView = findViewById(context.getResources().getIdentifier("iconView", "id", context.getPackageName()));
         closeView = findViewById(context.getResources().getIdentifier("closeView", "id", context.getPackageName()));
+        checkedView = findViewById(context.getResources().getIdentifier("checkedView", "id", context.getPackageName()));
 
         //考虑到TextView中会含有超链接等局部监听，需要进行下处理
         titleView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -89,4 +92,9 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     public int getIcon() {
         return icon;
     }
+
+    public boolean isChecked(){
+        return checkedView.isChecked();
+    }
+
 }

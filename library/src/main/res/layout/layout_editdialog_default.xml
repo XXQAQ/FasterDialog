@@ -52,7 +52,7 @@
         android:paddingRight="@dimen/distance_more"
         >
 
-            <com.xq.fasterdialog.view.FixedEditText
+            <EditText
                 android:id="@+id/edit1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:maxLines="1"
                 />
 
-            <com.xq.fasterdialog.view.FixedEditText
+            <EditText
                     android:id="@+id/edit2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                     android:maxLines="1"
                     />
 
-            <com.xq.fasterdialog.view.FixedEditText
+            <EditText
                     android:id="@+id/edit3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

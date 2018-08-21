@@ -28,6 +28,7 @@ import com.xq.fasterdialog.FasterDialogInterface;
 import com.xq.fasterdialog.R;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -100,6 +101,44 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             window.setWindowAnimations(animatStyle);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        goneAllEmptyLayout();
+    }
+
+    //如果一个布局中的所有子布局被隐藏，那么直接隐藏该布局
+    private void goneAllEmptyLayout(){
+        List<ViewGroup> list = getAllSomeView(rootView,ViewGroup.class);
+        for (ViewGroup viewGroup : list)
+        {
+            boolean isGone =true;
+            for (int i = 0; i < viewGroup.getChildCount(); i++)
+            {
+                if (viewGroup.getChildAt(i).getVisibility() == View.VISIBLE)
+                    break;
+                if (i == viewGroup.getChildCount()-1 && isGone)
+                    viewGroup.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    protected List getAllSomeView(View container,Class someView) {
+        List allchildren = new ArrayList<>();
+        if (container instanceof ViewGroup)
+        {
+            ViewGroup vp = (ViewGroup) container;
+            for (int i = 0; i < vp.getChildCount(); i++)
+            {
+                View viewchild = vp.getChildAt(i);
+                if (someView.isAssignableFrom(viewchild.getClass()))
+                    allchildren.add(viewchild);
+                //再次 调用本身（递归）
+                allchildren.addAll(getAllSomeView(viewchild,someView));
+            }
+        }
+        return allchildren;
+    }
 
 
     //以下重写Dialog方法
@@ -328,7 +367,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     }
 
 
-
     //私有方法
     protected void setTextToView(TextView view, CharSequence text){
         if (view == null)
@@ -346,6 +384,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         {
             view.setText(text);
             view.setVisibility(View.VISIBLE);
+//            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
+//                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
@@ -366,6 +406,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         {
             view.setImageResource(id);
             view.setVisibility(View.VISIBLE);
+//            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
+//                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
@@ -392,6 +434,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             else
                 dialogImageLoder.loadImage(context,view,url);
             view.setVisibility(View.VISIBLE);
+//            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
+//                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
