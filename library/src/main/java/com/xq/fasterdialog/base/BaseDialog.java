@@ -67,7 +67,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     //重写此方法完成初始化工作
     protected void init() {
-
+//
     }
 
     //AutoDismiss进度改变时的回调
