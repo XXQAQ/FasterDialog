@@ -8,6 +8,9 @@ import com.xq.fasterdialog.base.BaseEditDialog;
 
 public class EditDialog extends BaseEditDialog<EditDialog> {
 
+    public static int LAYOUT_DEFAULT = R.layout.layout_editdialog_default;
+    public static int LAYOUT_METERAIL = R.layout.layout_editdialog_meterail;
+
     public EditDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
     }
@@ -20,17 +23,8 @@ public class EditDialog extends BaseEditDialog<EditDialog> {
     protected void init() {
         super.init();
 
-        defaultLayout();
+        setCustomView(LAYOUT_DEFAULT);
     }
 
-    public EditDialog meterailLayout(){
-        setCustomView(R.layout.layout_editdialog_meterail);
-        return this;
-    }
-
-    public EditDialog defaultLayout(){
-        setCustomView(R.layout.layout_editdialog_default);
-        return this;
-    }
 
 }

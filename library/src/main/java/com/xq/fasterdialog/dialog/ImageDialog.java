@@ -21,7 +21,7 @@ public class ImageDialog extends BaseImageDialog<ImageDialog> {
     protected void init() {
         super.init();
 
-        setPercentWidth(0.8f);
+        setWidthPercent(0.8f);
 
         setCustomView(R.layout.layout_imagedialog);
     }

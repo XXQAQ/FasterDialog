@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.xq.fasterdialog.DialogImageLoder;
 import com.xq.fasterdialog.FasterDialogInterface;
 import com.xq.fasterdialog.R;
 
@@ -172,22 +171,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
 
     //所有set
-    //设置Dialog从底部弹出
-    public T setPopupFromBottom(){
-        setMatchWidth();
-        setAnimatStyle(R.style.Animation_Bottom);
-        setBottom();
-        return (T) this;
-    }
-
-    //设置Dialog从顶部弹出
-    public T setPopupFromTop(){
-        setMatchWidth();
-        setAnimatStyle(R.style.Animation_Top);
-        setTop();
-        return (T) this;
-    }
-
     public T setWidth(int width) {
         this.width = width;
         return (T) this;
@@ -198,32 +181,32 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T setPercentWidth(float percent) {
+    public T setWidthPercent(float percent) {
         this.width = (int) (percent * ScreenUtils.getScreenW(context));
         return (T) this;
     }
 
-    public T setPercentHeight(float percent) {
+    public T setHeightPercent(float percent) {
         this.height = (int) (percent * ScreenUtils.getScreenH(context));
         return (T) this;
     }
 
-    public T setWrapWidth() {
+    public T setWidthWrap() {
         this.width = WindowManager.LayoutParams.WRAP_CONTENT;
         return (T) this;
     }
 
-    public T setMatchWidth() {
+    public T setWidthMatch() {
         this.width = WindowManager.LayoutParams.MATCH_PARENT;
         return (T) this;
     }
 
-    public T setWrapHeight() {
+    public T setHeightWrap() {
         this.height = WindowManager.LayoutParams.WRAP_CONTENT;
         return (T) this;
     }
 
-    public T setMatchHeight() {
+    public T setHeightMatch() {
         this.height = WindowManager.LayoutParams.MATCH_PARENT;
         return (T) this;
     }
@@ -238,17 +221,16 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T setCenter() {
-        this.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
-        return (T) this;
-    }
-
-    public T setBottom() {
+    public T setPopupFromBottom(){
+        setWidthMatch();
+        setAnimatStyle(R.style.Animation_Bottom);
         this.gravity = Gravity.BOTTOM;
         return (T) this;
     }
 
-    public T setTop() {
+    public T setPopupFromTop(){
+        setWidthMatch();
+        setAnimatStyle(R.style.Animation_Top);
         this.gravity = Gravity.TOP;
         return (T) this;
     }
@@ -384,8 +366,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         {
             view.setText(text);
             view.setVisibility(View.VISIBLE);
-//            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
-//                ((View) view.getParent()).setVisibility(View.VISIBLE);
+            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
+                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
@@ -406,8 +388,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         {
             view.setImageResource(id);
             view.setVisibility(View.VISIBLE);
-//            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
-//                ((View) view.getParent()).setVisibility(View.VISIBLE);
+            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
+                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
@@ -434,8 +416,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             else
                 dialogImageLoder.loadImage(context,view,url);
             view.setVisibility(View.VISIBLE);
-//            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
-//                ((View) view.getParent()).setVisibility(View.VISIBLE);
+            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
+                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 

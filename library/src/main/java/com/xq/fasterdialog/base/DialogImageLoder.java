@@ -1,4 +1,4 @@
-package com.xq.fasterdialog;
+package com.xq.fasterdialog.base;
 
 import android.content.Context;
 import android.widget.ImageView;

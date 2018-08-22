@@ -8,6 +8,11 @@ import com.xq.fasterdialog.base.BaseListDialog;
 
 public class ListDialog extends BaseListDialog<ListDialog> {
 
+    public static int LAYOUT_DEFAULT = R.layout.layout_listdialog_default;
+    public static int ITEM_DEFAULT = R.layout.item_listdialog_default;
+    public static int LAYOUT_METERAIL = R.layout.layout_listdialog_meterail;
+    public static int ITEM_METERAIL = R.layout.item_listdialog_meterail;
+
     public ListDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
     }
@@ -20,19 +25,8 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     protected void init() {
         super.init();
 
-        defaultLayout();
-    }
-
-    public ListDialog defaultLayout(){
-        setCustomView(R.layout.layout_listdialog_default);
-        setItemLayoutId(R.layout.item_listdialog_default);
-        return this;
-    }
-
-    public ListDialog meterailLayout(){
-        setCustomView(R.layout.layout_listdialog_meterail);
-        setItemLayoutId(R.layout.item_listdialog_meterail);
-        return this;
+        setCustomView(LAYOUT_DEFAULT);
+        setItemLayoutId(ITEM_DEFAULT);
     }
 
 }

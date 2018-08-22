@@ -9,6 +9,9 @@ import com.xq.fasterdialog.base.BaseProgressDialog;
 
 public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
+    public static int LAYOUT_DEFAULT = R.layout.layout_progressdialog_default;
+    public static int LAYOUT_METERAIL = R.layout.layout_progressdialog_meterail;
+
     public ProgressDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
     }
@@ -23,17 +26,6 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
         setCancele(false);
 
-        defaultLayout();
+        setCustomView(LAYOUT_DEFAULT);
     }
-
-    public ProgressDialog defaultLayout(){
-        setCustomView(R.layout.layout_progressdialog_default);
-        return this;
-    }
-
-    public ProgressDialog meterailLayout(){
-        setCustomView(R.layout.layout_progressdialog_meterail);
-        return this;
-    }
-
 }

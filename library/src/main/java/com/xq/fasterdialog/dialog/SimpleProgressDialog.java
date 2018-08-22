@@ -7,6 +7,9 @@ import com.xq.fasterdialog.base.BaseSimpleDialog;
 
 public class SimpleProgressDialog extends BaseSimpleDialog<SimpleProgressDialog> {
 
+    public static int LAYOUT_DEFAULT = R.layout.layout_simpleprogressdialog_default;
+    public static int LAYOUT_METERAIL = R.layout.layout_simpleprogressdialog_meterail;
+
     public SimpleProgressDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
     }
@@ -21,17 +24,8 @@ public class SimpleProgressDialog extends BaseSimpleDialog<SimpleProgressDialog>
 
         setCancele(false);
 
-        defaultLayout();
+        setCustomView(LAYOUT_DEFAULT);
     }
 
-    public SimpleProgressDialog defaultLayout(){
-        setCustomView(R.layout.layout_simpleprogressdialog_default);
-        return this;
-    }
-
-    public SimpleProgressDialog meterailLayout(){
-        setCustomView(R.layout.layout_simpleprogressdialog_meterail);
-        return this;
-    }
 
 }

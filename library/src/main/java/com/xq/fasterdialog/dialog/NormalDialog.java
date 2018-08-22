@@ -9,6 +9,9 @@ import com.xq.fasterdialog.base.BaseNormalDialog;
 
 public class NormalDialog extends BaseNormalDialog<NormalDialog> {
 
+    public static int LAYOUT_DEFAULT = R.layout.layout_normaldialog_default;
+    public static int LAYOUT_METERAIL = R.layout.layout_normaldialog_meterail;
+
     public NormalDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
     }
@@ -21,17 +24,7 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
     protected void init() {
         super.init();
 
-        defaultLayout();
-    }
-
-    public NormalDialog defaultLayout(){
-        setCustomView(R.layout.layout_normaldialog_default);
-        return this;
-    }
-
-    public NormalDialog meterailLayout(){
-        setCustomView(R.layout.layout_normaldialog_meterail);
-        return this;
+        setCustomView(LAYOUT_DEFAULT);
     }
 
 }

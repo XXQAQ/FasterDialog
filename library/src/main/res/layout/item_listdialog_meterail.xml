@@ -20,6 +20,7 @@
         android:gravity="left|center_vertical"
         android:text="随手写写"
         android:textSize="@dimen/text_medium"
+        android:textColor="@color/text_normal"
         />
 
 </LinearLayout>

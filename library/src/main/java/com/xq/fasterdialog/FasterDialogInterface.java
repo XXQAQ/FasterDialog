@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
+import com.xq.fasterdialog.base.DialogImageLoder;
+
 import java.io.IOException;
 import java.net.URL;
 
