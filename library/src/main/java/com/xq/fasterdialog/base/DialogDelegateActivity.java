@@ -1,7 +1,6 @@
 package com.xq.fasterdialog.base;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,9 +23,9 @@ public class DialogDelegateActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BaseDialog dialog = contextProvider.showDialig(this);
-        dialog.addDismissListener(new DialogInterface.OnDismissListener() {
+        dialog.addDismissListener(new BaseDialog.OnDialogDismissListener() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
+            public void onDismiss(BaseDialog dialog) {
                 finish();
             }
         });

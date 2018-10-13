@@ -45,7 +45,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             //初始化EditText
             setViewVisible(editText);
             setHintToView(editText,bean.getHint());
-            setTextToView(editText,bean.getText());
+            editText.setText(bean.getText());
             setMaxLengthToView(editText,bean.getMaxLength());
             editText.setInputType(bean.getInputType());
         }
@@ -187,17 +187,6 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             this.fixedText = fixedText;
             this.maxLength = maxLength;
             this.inputType = inputType;
-        }
-
-        @Override
-        public String toString() {
-            return "InputBean{" +
-                    "hint=" + hint +
-                    ", text=" + text +
-                    ", fixedText=" + fixedText +
-                    ", maxLength=" + maxLength +
-                    ", inputType=" + inputType +
-                    '}';
         }
 
         public CharSequence getHint() {

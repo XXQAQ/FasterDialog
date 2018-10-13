@@ -29,7 +29,8 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
         progressView = findViewById(context.getResources().getIdentifier("progressView", "id", context.getPackageName()));
         pgDescriptView = findViewById(context.getResources().getIdentifier("pgDescriptView", "id", context.getPackageName()));
 
-        setProgressToView(progressView,progress);
+        if (progressView != null && progress >= 0)
+            progressView.setProgress(progress);
     }
 
     @Override
@@ -41,7 +42,8 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
     public T setProgress(int progress) {
         this.progress = progress;
-        setProgressToView(progressView,progress);
+        if (progressView != null && progress >= 0)
+            progressView.setProgress(progress);
         return (T) this;
     }
 

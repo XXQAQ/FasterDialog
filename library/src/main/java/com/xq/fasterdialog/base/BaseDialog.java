@@ -67,7 +67,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     //重写此方法完成初始化工作
     protected void init() {
-//
+
     }
 
     //AutoDismiss进度改变时的回调
@@ -168,7 +168,42 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return rootView.findViewById(id);
     }
 
+    protected AsyncTask task;
+    protected void autoDismiss() {
+        task = new AsyncTask<Object,Float,Void>(){
 
+            @Override
+            protected Void doInBackground(Object... objects) {
+                int a = autoDismissTime/100;
+                for (int i=a;i<autoDismissTime;i=i+a)
+                {
+                    publishProgress(i/(float)autoDismissTime);
+                    try {
+                        Thread.sleep(a);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                if(isCancelled())
+                    return;
+                dismiss();
+            }
+
+            @Override
+            protected void onProgressUpdate(Float... values) {
+                if(isCancelled())
+                    return;
+                if (values[0]<=1)
+                    onAutoDismissProgressChanged((int) (values[0]*100));
+            }
+        };
+        task.execute();
+    }
 
     //所有set
     public T setWidth(int width) {
@@ -285,32 +320,37 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T setCancelListener(@Nullable OnCancelListener listener) {
-        super.setOnCancelListener(listener);
-        return (T) this;
-    }
-
-    private List<OnDismissListener> list_dismissListener = new LinkedList<>();
-    public T addDismissListener(@Nullable OnDismissListener listener) {
-        list_dismissListener.add(listener);
-        super.setOnDismissListener(new OnDismissListener() {
+    public T setCancelListener(@Nullable final OnDialogCancleListener listener) {
+        super.setOnCancelListener(new OnCancelListener() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
-                for (OnDismissListener l : list_dismissListener)
-                    l.onDismiss(dialog);
+            public void onCancel(DialogInterface dialog) {
+                listener.onCancle(BaseDialog.this);
             }
         });
         return (T) this;
     }
 
-    private List<OnShowListener> list_showListener = new LinkedList<>();
-    public T addShowListener(@Nullable OnShowListener listener) {
+    private List<OnDialogDismissListener> list_dismissListener = new LinkedList<>();
+    public T addDismissListener(@Nullable OnDialogDismissListener listener) {
+        list_dismissListener.add(listener);
+        super.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                for (OnDialogDismissListener l : list_dismissListener)
+                    l.onDismiss(BaseDialog.this);
+            }
+        });
+        return (T) this;
+    }
+
+    private List<OnDialogShowListener> list_showListener = new LinkedList<>();
+    public T addShowListener(@Nullable OnDialogShowListener listener) {
         list_showListener.add(listener);
         super.setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                for(OnShowListener l : list_showListener)
-                    l.onShow(dialog);
+                for(OnDialogShowListener l : list_showListener)
+                    l.onShow(BaseDialog.this);
             }
         });
         return (T) this;
@@ -349,13 +389,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     }
 
 
-    //私有方法
-    protected void setTextToView(TextView view, CharSequence text){
-        if (view == null)
-            return;
-        view.setText(text);
-    }
-
+    //便捷控件设置方法
     protected void setTextToView(TextView view, CharSequence text,int visibilityIfNot){
         if (view == null)
             return;
@@ -371,13 +405,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         }
     }
 
-    protected void setImageResourceToView(ImageView view, int id){
-        if (view == null)
-            return;
-        if (id != 0)
-            view.setImageResource(id);
-    }
-
     protected void setImageResourceToView(ImageView view, int id,int visibilityIfNot){
         if (view == null)
             return;
@@ -391,16 +418,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             if (((View)view.getParent()).getVisibility() != View.VISIBLE)
                 ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
-    }
-
-    protected void setImageUrlToView(final ImageView view, final String url){
-        if (view == null)
-            return;
-        if (!TextUtils.isEmpty(url))
-            if (dialogImageLoder == null)
-                FasterDialogInterface.getImageLoaderd().loadImage(context,view,url);
-            else
-                dialogImageLoder.loadImage(context,view,url);
     }
 
     protected void setImageUrlToView(final ImageView view, final String url,int visibilityIfNot){
@@ -421,14 +438,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         }
     }
 
-    protected void setProgressToView(ProgressBar view, int progress){
-        if (view == null)
-            return;
-
-        if (progress >=0 )
-            view.setProgress(progress);
-    }
-
     protected void bindDialogClickListenerWithView(View view, final OnDialogClickListener listener, final boolean isDismiss){
         if (view == null)
             return;
@@ -442,44 +451,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
                         dismiss();
                 }
             });
-    }
-
-    protected AsyncTask task;
-    protected void autoDismiss() {
-
-        task = new AsyncTask<Object,Float,Void>(){
-
-            @Override
-            protected Void doInBackground(Object... objects) {
-                int a = autoDismissTime/100;
-                for (int i=a;i<autoDismissTime;i=i+a)
-                {
-                    publishProgress(i/(float)autoDismissTime);
-                    try {
-                        Thread.sleep(a);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                if(isCancelled())
-                    return;
-                dismiss();
-            }
-
-            @Override
-            protected void onProgressUpdate(Float... values) {
-                if(isCancelled())
-                    return;
-                if (values[0]<=1)
-                    onAutoDismissProgressChanged((int) (values[0]*100));
-            }
-        };
-        task.execute();
     }
 
 
@@ -577,6 +548,23 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
                 "setOnKeyListener() is not supported");
     }
 
+    //内部工具类或者监听
+    public static interface OnDialogClickListener {
+        public void onClick(BaseDialog dialog);
+    }
+
+    public static interface OnDialogShowListener {
+        public void onShow(BaseDialog dialog);
+    }
+
+    public static interface OnDialogDismissListener {
+        public void onDismiss(BaseDialog dialog);
+    }
+
+    public static interface OnDialogCancleListener {
+        public void onCancle(BaseDialog dialog);
+    }
+
     protected static class ScreenUtils {
 
         public static int dip2px(Context c, float dpValue) {
@@ -592,7 +580,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             final float scale = c.getResources().getDisplayMetrics().density;
             return (int) (pxValue / scale + 0.5f);
         }
-
 
         public static int px2sp(Context c, float pxValue) {
             float fontScale = c.getResources().getDisplayMetrics().scaledDensity;
@@ -614,29 +601,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
         public static int getScreenH(Context c) {
             return c.getResources().getDisplayMetrics().heightPixels;
-        }
-
-        public static int getStatusBarH(Context context) {
-            Class<?> c;
-            Object obj;
-            Field field;
-            int statusBarHeight = 0;
-            try {
-                c = Class.forName("com.android.internal.R$dimen");
-                obj = c.newInstance();
-                field = c.getField("status_bar_height");
-                int x = Integer.parseInt(field.get(obj).toString());
-                statusBarHeight = context.getResources().getDimensionPixelSize(x);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-            return statusBarHeight;
-        }
-
-        public static int getNavigationBarH(Context c) {
-            Resources resources = c.getResources();
-            int identifier = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-            return resources.getDimensionPixelOffset(identifier);
         }
     }
 }
