@@ -60,10 +60,16 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         };
         if (!TextUtils.isEmpty(positiveText) && positiveListener == null)
             setPositiveListener(defaultListener);
+        else
+            setPositiveListener(positiveListener);
         if (!TextUtils.isEmpty(negativeText) && negativeListener == null)
             setNegativeListener(defaultListener);
+        else
+            setNegativeListener(negativeListener);
         if (!TextUtils.isEmpty(neutralText) && neutralListener == null)
             setNeutralListener(defaultListener);
+        else
+            setNeutralListener(neutralListener);
     }
 
     public T setData(int resId, CharSequence title, CharSequence content, CharSequence positiveText, OnDialogClickListener positiveListener){

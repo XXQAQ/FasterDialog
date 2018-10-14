@@ -9,10 +9,10 @@ import android.widget.ImageView;
 
 public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNormalDialog<T> {
 
-    private ImageView imageView;
+    protected ImageView imageView;
 
-    private String imageUrl;
-    private int imageResId;
+    protected String imageUrl;
+    protected int imageResId;
 
     public BaseImageDialog(@NonNull Context context) {
         super(context);

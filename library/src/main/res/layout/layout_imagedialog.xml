@@ -4,45 +4,90 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
     android:background="@color/colorWidely"
     >
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@drawable/shape_solidbackground"
         />
 
-    <TextView
-        android:id="@+id/titleView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/distance_more"
-        android:paddingLeft="@dimen/distance_more"
-        android:paddingRight="@dimen/distance_more"
-        android:layout_marginBottom="@dimen/distance_less"
-        android:text="提醒"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/text_medium"
-        android:textStyle="bold"
-        />
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/distance_more"
+        >
 
-    <TextView
-        android:id="@+id/contentView"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/titleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/distance_more"
+            android:paddingLeft="@dimen/distance_more"
+            android:paddingRight="@dimen/distance_more"
+            android:text="提醒"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_medium"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="@dimen/distance_more"
+            android:paddingRight="@dimen/distance_more"
+            android:layout_marginTop="@dimen/distance_less"
+            android:text="立即充值,只有充值才能变得更强"
+            android:textColor="@color/text_normal"
+            android:textSize="@dimen/text_medium"
+            android:lineSpacingExtra="@dimen/textspacing_min"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingLeft="@dimen/distance_more"
-        android:paddingRight="@dimen/distance_more"
-        android:layout_marginBottom="@dimen/distance_max"
-        android:text="立即充值,只有充值才能变得更强"
-        android:textColor="@color/text_normal"
-        android:textSize="@dimen/text_medium"
-        android:lineSpacingExtra="@dimen/textspacing_min"
-        />
+        android:layout_marginLeft="@dimen/distance_more"
+        android:layout_marginRight="@dimen/distance_more"
+        android:layout_gravity="right"
+        >
+
+        <TextView
+            android:id="@+id/negativeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/distance_less"
+            android:layout_marginRight="@dimen/distance_more"
+            android:text="取消"
+            android:textColor="@color/text_selector_normal" />
+
+        <TextView
+            android:id="@+id/neutralView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/distance_more"
+            android:gravity="center"
+            android:padding="@dimen/distance_less"
+            android:text="中立"
+            android:textColor="@color/text_selector_normal" />
+
+        <TextView
+            android:id="@+id/positiveView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/distance_less"
+            android:text="确认"
+            android:textColor="@color/text_selector_primary" />
+
+    </LinearLayout>
 
 </LinearLayout>

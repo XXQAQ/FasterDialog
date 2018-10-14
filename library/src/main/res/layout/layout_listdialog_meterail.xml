@@ -21,7 +21,6 @@
             android:layout_width="@dimen/icon_medium_both"
             android:layout_height="@dimen/icon_medium_both"
             android:layout_marginRight="@dimen/distance_more"
-            android:src="@drawable/shape_solidbackground"
             />
 
         <TextView

@@ -47,8 +47,14 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         rv.getAdapter().notifyDataSetChanged();
     }
 
-    public T setItemLayoutId(int itemLayoutId) {
+    public T setItemView(int itemLayoutId) {
         this.itemLayoutId = itemLayoutId;
+        return (T) this;
+    }
+
+    public T setData(int resId, CharSequence title, CharSequence content,List<ItemBean> list) {
+        super.setData(resId,title,content);
+        setItemList(list);
         return (T) this;
     }
 

@@ -43,6 +43,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected int gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
     protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
+    protected int maxWidth;
+    protected int maxHeight;
     protected int x;
     protected int y;
     protected int animatStyle;
@@ -85,15 +87,10 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             rootView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(layoutId,null);
         window.setContentView(rootView);
 
-        //强制设置弹窗大小
+        //设置弹窗位置
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.width = width;
-        lp.height = height;
         lp.x= x;
         lp.y= y;
-        window.setAttributes(lp);
-
-        //设置弹窗位置
         window.setGravity(gravity);
 
         if (animatStyle != 0)
@@ -103,10 +100,13 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     @Override
     protected void onStart() {
         super.onStart();
+
         goneAllEmptyLayout();
+
+        measure();
     }
 
-    //如果一个布局中的所有子布局被隐藏，那么直接隐藏该布局
+    //如果一个布局中的所有子控件被隐藏，那么直接隐藏该布局
     private void goneAllEmptyLayout(){
         List<ViewGroup> list = getAllSomeView(rootView,ViewGroup.class);
         for (ViewGroup viewGroup : list)
@@ -138,6 +138,22 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         }
         return allchildren;
     }
+
+    //当Dialog需要动态调整宽高的时候，请调用此方法
+    protected void measure() {
+        Window window = getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
+        if (maxHeight > 0 && rootView.getMeasuredHeight() > maxHeight)
+            lp.height = maxHeight;
+        else
+            lp.height = height;
+        if (maxWidth > 0 && rootView.getMeasuredWidth() > maxWidth)
+            lp.width = maxWidth;
+        else
+            lp.width = width;
+    }
+
 
 
     //以下重写Dialog方法
@@ -231,18 +247,38 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T setWidthMatch() {
-        this.width = WindowManager.LayoutParams.MATCH_PARENT;
-        return (T) this;
-    }
-
     public T setHeightWrap() {
         this.height = WindowManager.LayoutParams.WRAP_CONTENT;
         return (T) this;
     }
 
+    public T setWidthMatch() {
+        this.width = WindowManager.LayoutParams.MATCH_PARENT;
+        return (T) this;
+    }
+
     public T setHeightMatch() {
         this.height = WindowManager.LayoutParams.MATCH_PARENT;
+        return (T) this;
+    }
+
+    public T setMaxWidth(int maxWidth) {
+        this.maxWidth = maxWidth;
+        return (T) this;
+    }
+
+    public T setMaxHeight(int maxHeight) {
+        this.maxHeight = maxHeight;
+        return (T) this;
+    }
+
+    public T setMaxWidthPercent(float percent) {
+        this.maxWidth = (int) (percent * ScreenUtils.getScreenH(context));
+        return (T) this;
+    }
+
+    public T setMaxHeightPercent(float percent) {
+        this.maxHeight = (int) (percent * ScreenUtils.getScreenH(context));
         return (T) this;
     }
 
@@ -272,11 +308,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     public T setCustomView(int layoutId){
         this.layoutId = layoutId;
-        return (T) this;
-    }
-
-    public T setCustomView(View view){
-        this.rootView = view;
         return (T) this;
     }
 
@@ -389,6 +420,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     }
 
 
+
     //便捷控件设置方法
     protected void setTextToView(TextView view, CharSequence text,int visibilityIfNot){
         if (view == null)
@@ -400,8 +432,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         {
             view.setText(text);
             view.setVisibility(View.VISIBLE);
-            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
-                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
@@ -415,8 +445,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         {
             view.setImageResource(id);
             view.setVisibility(View.VISIBLE);
-            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
-                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
@@ -433,8 +461,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             else
                 dialogImageLoder.loadImage(context,view,url);
             view.setVisibility(View.VISIBLE);
-            if (((View)view.getParent()).getVisibility() != View.VISIBLE)
-                ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 

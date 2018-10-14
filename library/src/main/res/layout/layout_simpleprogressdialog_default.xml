@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/distance_min"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/shape_solidbackground"
         />
 
     <TextView

@@ -26,7 +26,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
         super.init();
 
         setCustomView(LAYOUT_DEFAULT);
-        setItemLayoutId(ITEM_DEFAULT);
+        setItemView(ITEM_DEFAULT);
     }
 
 }

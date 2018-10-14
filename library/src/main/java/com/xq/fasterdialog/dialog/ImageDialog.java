@@ -10,7 +10,7 @@ import com.xq.fasterdialog.base.BaseImageDialog;
 public class ImageDialog extends BaseImageDialog<ImageDialog> {
 
     public ImageDialog(@NonNull Context context) {
-        super(context);
+        super(context,R.style.MaterialAlertDialog);
     }
 
     public ImageDialog(@NonNull Context context, int themeResId) {
@@ -20,8 +20,6 @@ public class ImageDialog extends BaseImageDialog<ImageDialog> {
     @Override
     protected void init() {
         super.init();
-
-        setWidthPercent(0.8f);
 
         setCustomView(R.layout.layout_imagedialog);
     }
