@@ -61,7 +61,7 @@
             android:padding="@dimen/distance_less"
             android:layout_marginRight="@dimen/distance_more"
             android:text="取消"
-            android:textColor="@color/text_selector_normal" />
+            android:textColor="@color/press_text_normal" />
 
         <TextView
             android:id="@+id/neutralView"
@@ -71,7 +71,7 @@
             android:gravity="center"
             android:padding="@dimen/distance_less"
             android:text="中立"
-            android:textColor="@color/text_selector_normal" />
+            android:textColor="@color/press_text_normal" />
 
         <TextView
             android:id="@+id/positiveView"
@@ -80,7 +80,7 @@
             android:gravity="center"
             android:padding="@dimen/distance_less"
             android:text="确认"
-            android:textColor="@color/text_selector_primary" />
+            android:textColor="@color/press_text_primary" />
 
     </LinearLayout>
 

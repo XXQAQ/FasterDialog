@@ -18,8 +18,8 @@
 
         <ProgressBar
             android:id="@+id/progressView"
-            android:layout_width="@dimen/icon_smedium_both"
-            android:layout_height="@dimen/icon_smedium_both"
+            android:layout_width="@dimen/icon_xmedium_both"
+            android:layout_height="@dimen/icon_xmedium_both"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/distance_less"
             />
