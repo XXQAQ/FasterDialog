@@ -41,8 +41,10 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         checkedView = findViewById(context.getResources().getIdentifier("checkedView", "id", context.getPackageName()));
 
         //考虑到TextView中会含有超链接等局部监听，需要进行下处理
-        titleView.setMovementMethod(LinkMovementMethod.getInstance());
-        contentView.setMovementMethod(LinkMovementMethod.getInstance());
+        if (titleView != null)
+            titleView.setMovementMethod(LinkMovementMethod.getInstance());
+        if (contentView != null)
+            contentView.setMovementMethod(LinkMovementMethod.getInstance());
 
         setTile(tile);
         setContent(content);
