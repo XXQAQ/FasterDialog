@@ -9,8 +9,9 @@ import com.xq.fasterdialog.base.BaseProgressDialog;
 
 public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
-    public static int LAYOUT_DEFAULT = R.layout.layout_progressdialog_default;
+    public static int LAYOUT_XQ = R.layout.layout_progressdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_progressdialog_meterail;
+    protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
 
     public ProgressDialog(@NonNull Context context) {
         super(context, R.style.MaterialAlertDialog);
@@ -18,6 +19,10 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     public ProgressDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
+    }
+
+    public static void setDefaultLayout(int layoutId){
+        LAYOUT_DEFAULT = layoutId;
     }
 
     @Override

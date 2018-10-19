@@ -18,14 +18,18 @@
         <!--模糊-->
         <item name="android:backgroundDimEnabled">false</item>
     </style>
-
-    <style name="MaterialDialog" parent="Theme.AppCompat.Light.Dialog">
-        <!--模糊-->
+    
+    <style name="TranslucentDialog" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <!--<style name="MaterialDialog" parent="Theme.AppCompat.Light.Dialog">-->
+        <!--<item name="android:backgroundDimEnabled">true</item>-->
+    <!--</style>-->
+
     <style name="MaterialAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!--模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 

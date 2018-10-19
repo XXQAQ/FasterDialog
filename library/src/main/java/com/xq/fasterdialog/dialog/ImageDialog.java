@@ -9,6 +9,9 @@ import com.xq.fasterdialog.base.BaseImageDialog;
 
 public class ImageDialog extends BaseImageDialog<ImageDialog> {
 
+    public static int LAYOUT_XQ = R.layout.layout_imagedialog_xq;
+    protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
+
     public ImageDialog(@NonNull Context context) {
         super(context,R.style.MaterialAlertDialog);
     }
@@ -17,10 +20,15 @@ public class ImageDialog extends BaseImageDialog<ImageDialog> {
         super(context, themeResId);
     }
 
+    public static void setDefaultLayout(int layoutId){
+        LAYOUT_DEFAULT = layoutId;
+    }
+
     @Override
     protected void init() {
         super.init();
 
-        setCustomView(R.layout.layout_imagedialog);
+        setCustomView(LAYOUT_DEFAULT);
     }
+
 }
