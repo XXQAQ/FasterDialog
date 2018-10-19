@@ -84,7 +84,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         Window window = getWindow();
 
         if (rootView == null)
-            rootView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(layoutId,null);
+            rootView = getLayoutInflater().inflate(layoutId,null);
         window.setContentView(rootView);
 
         //设置弹窗位置
