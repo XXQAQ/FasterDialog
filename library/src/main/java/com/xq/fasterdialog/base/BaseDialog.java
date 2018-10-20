@@ -33,6 +33,9 @@ import java.util.List;
 
 public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
+    protected static int STYLE_DEFAULT = R.style.BaseDialog;
+
+    //上下文
     protected Context context;
 
     //根布局
@@ -52,19 +55,23 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected DialogImageLoder dialogImageLoder;
     protected Object tag;
 
+    public BaseDialog(@NonNull Context context) {
+        this(context, STYLE_DEFAULT);
+    }
+
     public BaseDialog(@NonNull Context context, int themeResId) {
         super(context,themeResId);
         this.context = context;
         init();
     }
 
-    public BaseDialog(@NonNull Context context) {
-        this(context, R.style.BaseDialog);
-    }
-
     @Deprecated
     protected BaseDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         this(context);
+    }
+
+    public static void setDefaultStyle(int style){
+        STYLE_DEFAULT = style;
     }
 
     //重写此方法完成初始化工作
