@@ -7,7 +7,7 @@
     android:paddingBottom="@dimen/distance_more"
     android:paddingLeft="@dimen/distance_max"
     android:paddingRight="@dimen/distance_max"
-    android:background="#78000000"
+    android:background="@drawable/rect_radiusless_solidblackglass"
     >
 
     <LinearLayout
