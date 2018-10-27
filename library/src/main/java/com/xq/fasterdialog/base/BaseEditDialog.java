@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -42,12 +43,19 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             InputBean bean = array_input.get(key);
             EditText editText = findViewById(getContext().getResources().getIdentifier("edit" + key, "id", getContext().getPackageName()));
             array_edit.put(key,editText);
-            //初始化EditText
+            //设置EditText
             setViewVisible(editText);
             setHintToView(editText,bean.getHint());
             editText.setText(bean.getText());
             setMaxLengthToView(editText,bean.getMaxLength());
             editText.setInputType(bean.getInputType());
+            //设置固定文字
+            if (!TextUtils.isEmpty(bean.getFixedText()))
+            {
+                TextView fixedView = findViewById(getContext().getResources().getIdentifier("fixed" + key, "id", getContext().getPackageName()));
+                if (fixedView != null)
+                    fixedView.setText(bean.getFixedText());
+            }
         }
 
         if (TextUtils.isEmpty(positiveText))
@@ -100,15 +108,17 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         return (T) this;
     }
 
+    public T setInputBean0(InputBean bean) {
+        setInputBean(0,bean);
+        return (T) this;
+    }
+
     public T setInputBean1(InputBean bean) {
         setInputBean(1,bean);
         return (T) this;
     }
 
-    public T setInputBean2(InputBean bean) {
-        setInputBean(2,bean);
-        return (T) this;
-    }
+
 
     //私有方法
     protected void setViewVisible(EditText editText){
@@ -156,6 +166,8 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
                 et.setVisibility(View.GONE);
         }
     }
+
+
 
     public static interface OnEditCompleteListner {
         public void onEditComplete(BaseEditDialog dialog, SparseArray<CharSequence> array);
@@ -234,6 +246,5 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             return this;
         }
     }
-
 }
 

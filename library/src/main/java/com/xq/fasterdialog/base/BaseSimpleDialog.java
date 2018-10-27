@@ -66,8 +66,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
 
     @Deprecated
     public T setTile(CharSequence title) {
-        this.title = title;
-        setTextToView(titleView,title, View.GONE);
+        setTitle(title);
         return (T) this;
     }
 
@@ -92,7 +91,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
 
     @Deprecated
     public CharSequence getTile() {
-        return title;
+        return getTitle();
     }
 
     public CharSequence getTitle() {
