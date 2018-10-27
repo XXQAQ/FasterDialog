@@ -1,18 +1,14 @@
 package com.xq.fasterdialog.base;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -38,10 +34,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rv = findViewById(context.getResources().getIdentifier("rv", "id", context.getPackageName()));
+        rv = findViewById(getContext().getResources().getIdentifier("rv", "id", getContext().getPackageName()));
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(new TitleAdapter());
         rv.getAdapter().notifyDataSetChanged();
@@ -112,7 +108,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             TextView text;
             public ViewHolder(View itemView) {
                 super(itemView);
-                text = itemView.findViewById(context.getResources().getIdentifier("text", "id", context.getPackageName()));
+                text = itemView.findViewById(getContext().getResources().getIdentifier("text", "id", getContext().getPackageName()));
             }
         }
     }
@@ -142,7 +138,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         }
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return mOldDatas.get(oldItemPosition).equals(mNewDatas.get(newItemPosition));
+            return mNewDatas.get(newItemPosition).getClass().isAssignableFrom(mOldDatas.get(oldItemPosition).getClass());
         }
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {

@@ -1,39 +1,41 @@
 package com.xq.fasterdialog.base;
 
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.xq.fasterdialog.FasterDialogInterface;
 import com.xq.fasterdialog.R;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
+public abstract class BaseDialog<T extends BaseDialog>{
 
-    protected static int STYLE_DEFAULT = R.style.BaseDialog;
+    public static int STYLE_BASEDIALOG = R.style.BaseDialog;
+    public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;
+    public static int STYLE_MATERIALALERTDIALOG = R.style.MaterialAlertDialog;
+
+    //默认style
+    protected static int STYLE_DEFAULT = STYLE_BASEDIALOG;
+
+    //Dialog
+    protected Dialog dialog;
 
     //上下文
     protected Context context;
@@ -52,46 +54,25 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     protected int y;
     protected int animatStyle;
     protected int autoDismissTime;
-    protected DialogImageLoder dialogImageLoder;
     protected Object tag;
+    protected DialogImageLoder dialogImageLoder;
 
     public BaseDialog(@NonNull Context context) {
-        this(context, STYLE_DEFAULT);
+        this(context,STYLE_DEFAULT);
     }
 
     public BaseDialog(@NonNull Context context, int themeResId) {
-        super(context,themeResId);
+        super();
         this.context = context;
-        init();
+        dialog = new Dialog(context,themeResId);
     }
 
-    @Deprecated
-    protected BaseDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
-        this(context);
-    }
+    public void onCreate(Bundle savedInstanceState) {
 
-    public static void setDefaultStyle(int style){
-        STYLE_DEFAULT = style;
-    }
-
-    //重写此方法完成初始化工作
-    protected void init() {
-
-    }
-
-    //AutoDismiss进度改变时的回调
-    protected void onAutoDismissProgressChanged(int progress){
-
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Window window = getWindow();
+        Window window = getDialog().getWindow();
 
         if (rootView == null)
-            rootView = getLayoutInflater().inflate(layoutId,null);
+            rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
         window.setContentView(rootView);
 
         //设置弹窗位置
@@ -104,13 +85,15 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             window.setWindowAnimations(animatStyle);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    public void onStart() {
 
         goneAllEmptyLayout();
 
         measure();
+    }
+
+    public void onDestory(){
+
     }
 
     //如果一个布局中的所有子控件被隐藏，那么直接隐藏该布局
@@ -148,7 +131,7 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
     //当Dialog需要动态调整宽高的时候，请调用此方法
     protected void measure() {
-        Window window = getWindow();
+        Window window = getDialog().getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
         if (maxHeight > 0 && rootView.getMeasuredHeight() > maxHeight)
@@ -161,32 +144,30 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
             lp.width = width;
     }
 
-
-
-    //以下重写Dialog方法
-    @Override
     public void show() {
-        if (((Activity)context).isFinishing())
+        if (((Activity)getContext()).isFinishing())
             return;
 
-        super.show();
+        onCreate(null);
+        onStart();
+        dialog.show();
 
         if (autoDismissTime > 0)
             autoDismiss();
     }
 
-    @Override
     public void dismiss() {
-        if (((Activity)context).isFinishing())
+        if (((Activity)getContext()).isFinishing())
             return;
 
         if (autoDismissTime > 0 && task != null)
             task.cancel(true);
 
-        super.dismiss();
+        onDestory();
+
+        dialog.dismiss();
     }
 
-    @Override
     public <T_VIEW extends View> T_VIEW findViewById(int id) {
         return rootView.findViewById(id);
     }
@@ -228,6 +209,13 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         task.execute();
     }
 
+    //AutoDismiss进度改变时的回调
+    protected void onAutoDismissProgressChanged(int progress){
+
+    }
+
+
+
     //所有set
     public T setWidth(int width) {
         this.width = width;
@@ -240,12 +228,12 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     }
 
     public T setWidthPercent(float percent) {
-        this.width = (int) (percent * ScreenUtils.getScreenW(context));
+        this.width = (int) (percent * ScreenUtils.getScreenW(getContext()));
         return (T) this;
     }
 
     public T setHeightPercent(float percent) {
-        this.height = (int) (percent * ScreenUtils.getScreenH(context));
+        this.height = (int) (percent * ScreenUtils.getScreenH(getContext()));
         return (T) this;
     }
 
@@ -280,12 +268,12 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     }
 
     public T setMaxWidthPercent(float percent) {
-        this.maxWidth = (int) (percent * ScreenUtils.getScreenH(context));
+        this.maxWidth = (int) (percent * ScreenUtils.getScreenH(getContext()));
         return (T) this;
     }
 
     public T setMaxHeightPercent(float percent) {
-        this.maxHeight = (int) (percent * ScreenUtils.getScreenH(context));
+        this.maxHeight = (int) (percent * ScreenUtils.getScreenH(getContext()));
         return (T) this;
     }
 
@@ -323,11 +311,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T setTag(Object tag) {
-        this.tag = tag;
-        return (T) this;
-    }
-
     public T setAnimatStyle(int animatStyle) {
         this.animatStyle = animatStyle;
         return (T) this;
@@ -338,40 +321,38 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         return (T) this;
     }
 
-    public T setCancele(boolean cancel) {
-        super.setCancelable(cancel);
+    public T setCancel(boolean cancel) {
+        getDialog().setCancelable(cancel);
         return (T) this;
     }
 
     public T setCancelOutside(boolean cancel) {
-        super.setCanceledOnTouchOutside(cancel);
+        getDialog().setCanceledOnTouchOutside(cancel);
         return (T) this;
     }
 
-    public T setCancelMsg(@Nullable Message msg) {
-        super.setCancelMessage(msg);
+    public T setTag(Object tag) {
+        this.tag = tag;
         return (T) this;
     }
 
-    public T setDismissMsg(@Nullable Message msg) {
-        super.setDismissMessage(msg);
-        return (T) this;
-    }
-
-    public T setCancelListener(@Nullable final OnDialogCancleListener listener) {
-        super.setOnCancelListener(new OnCancelListener() {
+    private List<OnDialogCancelListener> list_cancelListener = new LinkedList<>();
+    public T addOnCancelListener(@Nullable final OnDialogCancelListener listener) {
+        list_cancelListener.add(listener);
+        getDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                listener.onCancle(BaseDialog.this);
+                for (OnDialogCancelListener l : list_cancelListener)
+                    l.onCancel(BaseDialog.this);
             }
         });
         return (T) this;
     }
 
     private List<OnDialogDismissListener> list_dismissListener = new LinkedList<>();
-    public T addDismissListener(@Nullable OnDialogDismissListener listener) {
+    public T addOnDismissListener(@Nullable OnDialogDismissListener listener) {
         list_dismissListener.add(listener);
-        super.setOnDismissListener(new OnDismissListener() {
+        getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 for (OnDialogDismissListener l : list_dismissListener)
@@ -382,9 +363,9 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
     }
 
     private List<OnDialogShowListener> list_showListener = new LinkedList<>();
-    public T addShowListener(@Nullable OnDialogShowListener listener) {
+    public T addOnShowListener(@Nullable OnDialogShowListener listener) {
         list_showListener.add(listener);
-        super.setOnShowListener(new OnShowListener() {
+        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
                 for(OnDialogShowListener l : list_showListener)
@@ -397,7 +378,14 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
 
     //所有get
-    //如果在设置layoutId后没有show出来就调用此方法，那么getRootView将返回null
+    public Dialog getDialog() {
+        return dialog;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
     public View getCustomView() {
         return rootView;
     }
@@ -464,9 +452,9 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         else
         {
             if (dialogImageLoder == null)
-                FasterDialogInterface.getImageLoaderd().loadImage(context,view,url);
+                FasterDialogInterface.getImageLoaderd().loadImage(getContext(),view,url);
             else
-                dialogImageLoder.loadImage(context,view,url);
+                dialogImageLoder.loadImage(getContext(),view,url);
             view.setVisibility(View.VISIBLE);
         }
     }
@@ -488,99 +476,6 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
 
 
 
-    //以下方法不建议使用了
-    @Override
-    @Deprecated
-    public void setContentView(int layoutResID) throws IllegalAccessError {
-        throw new IllegalAccessError(
-                "setContentView() is not supported");
-    }
-
-    @Override
-    @Deprecated
-    public void setContentView(View view) throws IllegalAccessError {
-        throw new IllegalAccessError(
-                "setContentView() is not supported");
-    }
-
-    @Override
-    @Deprecated
-    public void setContentView(View view, @Nullable ViewGroup.LayoutParams params)
-            throws IllegalAccessError {
-        throw new IllegalAccessError(
-                "setContentView() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setTitle(int titleId) {
-        throw new IllegalAccessError(
-                "setTitle() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setTitle(@Nullable CharSequence title) {
-        throw new IllegalAccessError(
-                "setTitle() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setCancelable(boolean flag) {
-        throw new IllegalAccessError(
-                "setCancelable() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setCanceledOnTouchOutside(boolean cancel) {
-        throw new IllegalAccessError(
-                "setCanceledOnTouchOutside() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setCancelMessage(@Nullable Message msg) {
-        throw new IllegalAccessError(
-                "setCancelMessage() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setDismissMessage(@Nullable Message msg) {
-        throw new IllegalAccessError(
-                "setDismissMessage() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setOnCancelListener(@Nullable OnCancelListener listener) {
-        throw new IllegalAccessError(
-                "setOnCancelListener() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setOnDismissListener(@Nullable OnDismissListener listener) {
-        throw new IllegalAccessError(
-                "setOnDismissListener() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setOnShowListener(@Nullable OnShowListener listener) {
-        throw new IllegalAccessError(
-                "setOnShowListener() is not supported");
-    }
-
-    @Deprecated
-    @Override
-    public void setOnKeyListener(@Nullable OnKeyListener onKeyListener) {
-        throw new IllegalAccessError(
-                "setOnKeyListener() is not supported");
-    }
-
     //内部工具类或者监听
     public static interface OnDialogClickListener {
         public void onClick(BaseDialog dialog);
@@ -594,8 +489,8 @@ public abstract class BaseDialog<T extends BaseDialog> extends Dialog {
         public void onDismiss(BaseDialog dialog);
     }
 
-    public static interface OnDialogCancleListener {
-        public void onCancle(BaseDialog dialog);
+    public static interface OnDialogCancelListener {
+        public void onCancel(BaseDialog dialog);
     }
 
     protected static class ScreenUtils {

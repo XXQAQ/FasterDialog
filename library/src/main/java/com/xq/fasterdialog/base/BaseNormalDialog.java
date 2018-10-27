@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import com.xq.fasterdialog.R;
 
+import static com.xq.fasterdialog.FasterDialogInterface.getApp;
+
 public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
 
-    public static String SURE;
-    public static String CANCLE;
+    public static String SURE = getApp().getResources().getString(R.string.sure);
+    public static String CANCLE = getApp().getResources().getString(R.string.cancle);
 
     protected TextView negativeView;
     protected TextView positiveView;
@@ -34,19 +36,12 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
     }
 
     @Override
-    protected void init() {
-        super.init();
-        SURE = context.getResources().getString(R.string.sure);
-        CANCLE = context.getResources().getString(R.string.cancle);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        positiveView = findViewById(context.getResources().getIdentifier("positiveView", "id", context.getPackageName()));
-        negativeView = findViewById(context.getResources().getIdentifier("negativeView", "id", context.getPackageName()));
-        neutralView = findViewById(context.getResources().getIdentifier("neutralView", "id", context.getPackageName()));
+        positiveView = findViewById(getContext().getResources().getIdentifier("positiveView", "id", getContext().getPackageName()));
+        negativeView = findViewById(getContext().getResources().getIdentifier("negativeView", "id", getContext().getPackageName()));
+        neutralView = findViewById(getContext().getResources().getIdentifier("neutralView", "id", getContext().getPackageName()));
 
         setPositiveText(positiveText);
         setNegativeText(negativeText);

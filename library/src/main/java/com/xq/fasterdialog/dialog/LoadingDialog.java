@@ -11,34 +11,44 @@ import com.xq.fasterdialog.base.BaseDialog;
 
 public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
+    public static int LAYOUT_XQ = R.layout.layout_loadingdialog;
+    protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
+
     private TextView loadingView;
 
     private CharSequence loadingText;
 
     public LoadingDialog(@NonNull Context context) {
-        super(context);
+        this(context,STYLE_DEFAULT);
     }
 
     public LoadingDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
+        init();
+    }
+
+    public static void setDefaultStyle(int style){
+        STYLE_DEFAULT = style;
+    }
+
+    public static void setDefaultLayout(int layoutId){
+        LAYOUT_DEFAULT = layoutId;
+    }
+
+    private void init() {
+
+        loadingText = getContext().getResources().getString(R.string.loading);
+
+        setCancel(false);
+
+        setCustomView(LAYOUT_DEFAULT);
     }
 
     @Override
-    protected void init() {
-        super.init();
-
-        loadingText = context.getResources().getString(R.string.loading);
-
-        setCancele(false);
-
-        setCustomView(R.layout.layout_loadingdialog);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadingView = findViewById(context.getResources().getIdentifier("loadingView", "id", context.getPackageName()));
+        loadingView = findViewById(getContext().getResources().getIdentifier("loadingView", "id", getContext().getPackageName()));
 
         setLodingText(loadingText);
     }

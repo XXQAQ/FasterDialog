@@ -23,7 +23,7 @@ public class DialogDelegateActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BaseDialog dialog = contextProvider.showDialig(this);
-        dialog.addDismissListener(new BaseDialog.OnDialogDismissListener() {
+        dialog.addOnDismissListener(new BaseDialog.OnDialogDismissListener() {
             @Override
             public void onDismiss(BaseDialog dialog) {
                 finish();

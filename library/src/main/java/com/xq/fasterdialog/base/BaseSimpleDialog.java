@@ -18,7 +18,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     protected View closeView;
     protected CompoundButton checkedView;
 
-    protected CharSequence tile;
+    protected CharSequence title;
     protected CharSequence content;
     protected int icon;
 
@@ -31,14 +31,14 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        titleView = findViewById(context.getResources().getIdentifier("titleView", "id", context.getPackageName()));
-        contentView = findViewById(context.getResources().getIdentifier("contentView", "id", context.getPackageName()));
-        iconView = findViewById(context.getResources().getIdentifier("iconView", "id", context.getPackageName()));
-        closeView = findViewById(context.getResources().getIdentifier("closeView", "id", context.getPackageName()));
-        checkedView = findViewById(context.getResources().getIdentifier("checkedView", "id", context.getPackageName()));
+        titleView = findViewById(getContext().getResources().getIdentifier("titleView", "id", getContext().getPackageName()));
+        contentView = findViewById(getContext().getResources().getIdentifier("contentView", "id", getContext().getPackageName()));
+        iconView = findViewById(getContext().getResources().getIdentifier("iconView", "id", getContext().getPackageName()));
+        closeView = findViewById(getContext().getResources().getIdentifier("closeView", "id", getContext().getPackageName()));
+        checkedView = findViewById(getContext().getResources().getIdentifier("checkedView", "id", getContext().getPackageName()));
 
         //考虑到TextView中会含有超链接等局部监听，需要进行下处理
         if (titleView != null)
@@ -46,7 +46,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         if (contentView != null)
             contentView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        setTile(tile);
+        setTitle(title);
         setContent(content);
         setIcon(icon);
         bindDialogClickListenerWithView(closeView, new OnDialogClickListener() {
@@ -58,14 +58,21 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     }
 
     public T setData(int resId,CharSequence title,CharSequence content){
-        setTile(title);
+        setTitle(title);
         setContent(content);
         setIcon(resId);
         return (T) this;
     }
 
+    @Deprecated
     public T setTile(CharSequence title) {
-        this.tile = title;
+        this.title = title;
+        setTextToView(titleView,title, View.GONE);
+        return (T) this;
+    }
+
+    public T setTitle(CharSequence title) {
+        this.title = title;
         setTextToView(titleView,title, View.GONE);
         return (T) this;
     }
@@ -83,8 +90,13 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         return (T) this;
     }
 
+    @Deprecated
     public CharSequence getTile() {
-        return tile;
+        return title;
+    }
+
+    public CharSequence getTitle() {
+        return title;
     }
 
     public CharSequence getContent() {

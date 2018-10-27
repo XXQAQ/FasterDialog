@@ -23,11 +23,11 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        progressView = findViewById(context.getResources().getIdentifier("progressView", "id", context.getPackageName()));
-        pgDescriptView = findViewById(context.getResources().getIdentifier("pgDescriptView", "id", context.getPackageName()));
+        progressView = findViewById(getContext().getResources().getIdentifier("progressView", "id", getContext().getPackageName()));
+        pgDescriptView = findViewById(getContext().getResources().getIdentifier("pgDescriptView", "id", getContext().getPackageName()));
 
         if (progressView != null && progress >= 0)
             progressView.setProgress(progress);

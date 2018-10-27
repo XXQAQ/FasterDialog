@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 import java.util.List;
 
-public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T>{
+public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T> {
 
     protected OnEditCompleteListner editListner;
 
@@ -30,7 +30,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //隐藏所有EditText
@@ -40,7 +40,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         {
             int key = array_input.keyAt(index);
             InputBean bean = array_input.get(key);
-            EditText editText = findViewById(context.getResources().getIdentifier("edit" + key, "id", context.getPackageName()));
+            EditText editText = findViewById(getContext().getResources().getIdentifier("edit" + key, "id", getContext().getPackageName()));
             array_edit.put(key,editText);
             //初始化EditText
             setViewVisible(editText);

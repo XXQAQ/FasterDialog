@@ -23,10 +23,10 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        imageView = findViewById(context.getResources().getIdentifier("imageView", "id", context.getPackageName()));
+        imageView = findViewById(getContext().getResources().getIdentifier("imageView", "id", getContext().getPackageName()));
 
         if (!TextUtils.isEmpty(imageUrl))
             setImageUrl(imageUrl);

@@ -1,7 +1,5 @@
 package com.xq.fasterdialog;
 
-import android.content.DialogInterface;
-
 import com.xq.fasterdialog.base.BaseDialog;
 import com.xq.fasterdialog.base.DialogDelegateActivity;
 
@@ -17,7 +15,7 @@ public class DialogManager {
 
         DialogManager.dialog = dialog;
 
-        dialog.addDismissListener(new BaseDialog.OnDialogDismissListener() {
+        dialog.addOnDismissListener(new BaseDialog.OnDialogDismissListener() {
             @Override
             public void onDismiss(BaseDialog dialog) {
                 DialogManager.dialog = null;
