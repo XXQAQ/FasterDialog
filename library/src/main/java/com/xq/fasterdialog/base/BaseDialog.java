@@ -31,9 +31,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
     public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;
     public static int STYLE_MATERIALALERTDIALOG = R.style.MaterialAlertDialog;
 
-    //默认style
-    protected static int STYLE_DEFAULT = STYLE_BASEDIALOG;
-
     //Dialog
     protected Dialog dialog;
 
@@ -58,7 +55,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     protected DialogImageLoder dialogImageLoder;
 
     public BaseDialog(@NonNull Context context) {
-        this(context,STYLE_DEFAULT);
+        this(context,STYLE_BASEDIALOG);
     }
 
     public BaseDialog(@NonNull Context context, int themeResId) {

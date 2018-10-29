@@ -11,6 +11,8 @@ import com.xq.fasterdialog.base.BaseDialog;
 
 public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
+    private static int STYLE_DEFAULT = BaseDialog.STYLE_BASEDIALOG;
+
     public static int LAYOUT_XQ = R.layout.layout_loadingdialog;
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
 

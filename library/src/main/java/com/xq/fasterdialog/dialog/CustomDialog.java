@@ -9,15 +9,11 @@ import com.xq.fasterdialog.base.BaseDialog;
 public class CustomDialog extends BaseDialog<CustomDialog> {
 
     public CustomDialog(@NonNull Context context) {
-        this(context,STYLE_DEFAULT);
+        this(context,STYLE_BASEDIALOG);
     }
 
     public CustomDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
-    }
-
-    public static void setDefaultStyle(int style){
-        STYLE_DEFAULT = style;
     }
 
     public CustomDialog setCustomView(View view){

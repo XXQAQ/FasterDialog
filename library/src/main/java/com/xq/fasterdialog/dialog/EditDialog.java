@@ -8,9 +8,7 @@ import com.xq.fasterdialog.base.BaseEditDialog;
 
 public class EditDialog extends BaseEditDialog<EditDialog> {
 
-    static {
-        STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
-    }
+    private static int STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
 
     public static int LAYOUT_XQ = R.layout.layout_editdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_editdialog_meterail;
