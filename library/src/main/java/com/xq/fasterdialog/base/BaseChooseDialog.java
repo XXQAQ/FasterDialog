@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T> {
+public class BaseChooseDialog<T extends BaseChooseDialog>extends BaseNormalDialog<T> {
 
     protected int itemLayoutId;
 
@@ -25,11 +25,11 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     protected List<ItemBean> list_item = new LinkedList<>();
 
-    public BaseListDialog(@NonNull Context context) {
+    public BaseChooseDialog(@NonNull Context context) {
         super(context);
     }
 
-    public BaseListDialog(@NonNull Context context, int themeResId) {
+    public BaseChooseDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
     }
 
@@ -93,7 +93,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                 @Override
                 public void onClick(View v) {
                     if (chosseListener != null)
-                        chosseListener.onItemChoose(BaseListDialog.this,bean);
+                        chosseListener.onItemChoose(BaseChooseDialog.this,bean);
                     dismiss();
                 }
             });
@@ -115,7 +115,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     public static interface OnItemChosseListener {
 
-        public void onItemChoose(BaseListDialog dialog, ItemBean bean);
+        public void onItemChoose(BaseChooseDialog dialog, ItemBean bean);
 
     }
 

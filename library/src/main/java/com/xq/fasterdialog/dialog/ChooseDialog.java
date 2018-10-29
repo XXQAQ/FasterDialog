@@ -4,24 +4,24 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.base.BaseListDialog;
+import com.xq.fasterdialog.base.BaseChooseDialog;
 
-public class ListDialog extends BaseListDialog<ListDialog> {
+public class ChooseDialog extends BaseChooseDialog<ChooseDialog> {
 
     private static int STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
 
-    public static int LAYOUT_XQ = R.layout.layout_listdialog_xq;
+    public static int LAYOUT_XQ = R.layout.layout_choosedialog_xq;
     public static int ITEM_XQ = R.layout.item_listdialog_xq;
-    public static int LAYOUT_METERAIL = R.layout.layout_listdialog_meterail;
+    public static int LAYOUT_METERAIL = R.layout.layout_choosedialog_meterail;
     public static int ITEM_METERAIL = R.layout.item_listdialog_meterail;
     private static int LAYOUT_DEFAULT = LAYOUT_XQ;
     private static int ITEM_DEFAULT = ITEM_XQ;
 
-    public ListDialog(@NonNull Context context) {
+    public ChooseDialog(@NonNull Context context) {
         this(context,STYLE_DEFAULT);
     }
 
-    public ListDialog(@NonNull Context context, int themeResId) {
+    public ChooseDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
         init();
     }
