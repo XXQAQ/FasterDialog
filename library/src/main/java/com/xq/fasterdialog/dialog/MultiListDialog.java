@@ -13,8 +13,8 @@ public class MultiListDialog extends BaseMultiListDialog<MultiListDialog> {
     public static int ITEM_XQ = R.layout.item_multilistdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_listdialog_meterail;
     public static int ITEM_METERAIL = R.layout.item_multilistdialog_meterail;
-    private static int LAYOUT_DEFAULT = LAYOUT_XQ;
-    private static int ITEM_DEFAULT = ITEM_XQ;
+    protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
+    protected static int ITEM_DEFAULT = ITEM_XQ;
 
     public MultiListDialog(@NonNull Context context) {
         this(context,STYLE_DEFAULT);
@@ -35,8 +35,11 @@ public class MultiListDialog extends BaseMultiListDialog<MultiListDialog> {
     }
 
     private void init() {
+
         setCustomView(LAYOUT_DEFAULT);
+
         setItemView(ITEM_DEFAULT);
+
     }
 
 }

@@ -14,8 +14,8 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     public static int ITEM_XQ = R.layout.item_listdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_listdialog_meterail;
     public static int ITEM_METERAIL = R.layout.item_listdialog_meterail;
-    private static int LAYOUT_DEFAULT = LAYOUT_XQ;
-    private static int ITEM_DEFAULT = ITEM_XQ;
+    protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
+    protected static int ITEM_DEFAULT = ITEM_XQ;
 
     public ListDialog(@NonNull Context context) {
         this(context,STYLE_DEFAULT);
@@ -36,8 +36,11 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     }
 
     private void init() {
+
         setCustomView(LAYOUT_DEFAULT);
+
         setItemView(ITEM_DEFAULT);
+
     }
 
 }
