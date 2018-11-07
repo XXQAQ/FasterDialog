@@ -6,31 +6,31 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T> {
+public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNormalDialog<T> {
 
     protected int itemLayoutId;
 
-    protected OnItemChosseListener chosseListener;
+    protected OnItemsChosseListener chosseListener;
 
     protected RecyclerView rv;
 
-    protected ItemBean select;
+    protected List<ItemBean> list_select = new LinkedList<>();
     protected List<ItemBean> list_item = new LinkedList<>();
 
-    public BaseListDialog(@NonNull Context context) {
+    public BaseMultiListDialog(@NonNull Context context) {
         super(context);
     }
 
-    public BaseListDialog(@NonNull Context context, int themeResId) {
+    public BaseMultiListDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
     }
 
@@ -42,6 +42,31 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(new TitleAdapter());
         rv.getAdapter().notifyDataSetChanged();
+
+        if (TextUtils.isEmpty(positiveText))
+            setPositiveText(SURE);
+        setPositiveListener(new OnDialogClickListener() {
+            @Override
+            public void onClick(BaseDialog dialog) {
+                if (chosseListener != null)
+                {
+                    if (list_select.size() >0)
+                    {
+                        chosseListener.onItemsChoose(BaseMultiListDialog.this,list_select);
+                        dismiss();
+                    }
+                }
+            }
+        });
+    }
+
+    //确认键监听已被默认占用，不建议再自行设置
+    @Deprecated
+    @Override
+    public T setPositiveListener(OnDialogClickListener positiveListener) {
+        this.positiveListener = positiveListener;
+        bindDialogClickListenerWithView(positiveView, positiveListener,false);
+        return (T) this;
     }
 
     public T setItemView(int itemLayoutId) {
@@ -55,15 +80,15 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public T setData(int resId, CharSequence title, CharSequence content,List<ItemBean> list,ItemBean select) {
-        setData(resId,title,content,list);
-        setSelect(select);
+    public T setData(int resId, CharSequence title, CharSequence content,List<ItemBean> list_item,List<ItemBean> list_select) {
+        setData(resId,title,content,list_item);
+        setSelectList(list_select);
         return (T) this;
     }
 
-
-    public T setSelect(ItemBean select){
-        this.select = select;
+    public T setSelectList(List<ItemBean> list){
+        list_select.clear();
+        list_select.addAll(list);
         if (rv != null)
             rv.getAdapter().notifyDataSetChanged();
         return (T) this;
@@ -78,13 +103,17 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             diffResult.dispatchUpdatesTo(rv.getAdapter());
             list_item.clear();
             list_item.addAll(list);
+            //删除多余的选择项
+            for (ItemBean bean : list_select)
+                if (!list_item.contains(bean))
+                    list_item.remove(bean);
         }
         else
             list_item.addAll(list);
         return (T) this;
     }
 
-    public T setOnItemChosseListener(OnItemChosseListener listener){
+    public T setOnItemsChosseListener(OnItemsChosseListener listener){
         this.chosseListener = listener;
         return (T) this;
     }
@@ -104,24 +133,22 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             ViewHolder holder = (ViewHolder)h;
             final ItemBean bean = list_item.get(position);
             holder.text.setText(bean.getTitle());
-            holder.text.setOnClickListener(new View.OnClickListener() {
+            holder.text.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
+                public void onCheckedChanged(CompoundButton v, boolean b) {
                     if (v.isPressed())
                     {
-                        if (chosseListener != null)
-                            chosseListener.onItemChoose(BaseListDialog.this,bean);
-                        dismiss();
+                        if (v.isChecked())
+                            list_select.add(bean);
+                        else
+                            list_select.remove(bean);
                     }
                 }
             });
-            if (holder.text instanceof CompoundButton)
-            {
-                if (select != null && select.equals(bean))
-                    ((CompoundButton) holder.text).setChecked(true);
-                else
-                    ((CompoundButton) holder.text).setChecked(false);
-            }
+            if (list_select.contains(bean))
+                holder.text.setChecked(true);
+            else
+                holder.text.setChecked(false);
         }
 
         @Override
@@ -130,7 +157,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
-            TextView text;
+            CompoundButton text;
             public ViewHolder(View itemView) {
                 super(itemView);
                 text = itemView.findViewById(getContext().getResources().getIdentifier("text", "id", getContext().getPackageName()));
@@ -138,9 +165,9 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         }
     }
 
-    public static interface OnItemChosseListener {
+    public static interface OnItemsChosseListener {
 
-        public void onItemChoose(BaseListDialog dialog, ItemBean bean);
+        public void onItemsChoose(BaseMultiListDialog dialog, List<ItemBean> list);
 
     }
 
