@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import com.xq.fasterdialog.bean.ItemBean;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -103,6 +104,7 @@ public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNorma
             diffResult.dispatchUpdatesTo(rv.getAdapter());
             list_item.clear();
             list_item.addAll(list);
+
             //删除多余的选择项
             for (ItemBean bean : list_select)
                 if (!list_item.contains(bean))
@@ -195,59 +197,6 @@ public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNorma
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
             return mOldDatas.get(oldItemPosition).equals(mNewDatas.get(newItemPosition));
-        }
-    }
-
-    public static class ItemBean {
-
-        private CharSequence title;
-        private Object tag;
-
-        public ItemBean() {
-        }
-
-        public ItemBean(CharSequence title) {
-            this.title = title;
-        }
-
-        public ItemBean(CharSequence title, Object tag) {
-            this.title = title;
-            this.tag = tag;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            ItemBean itemBean = (ItemBean) o;
-
-            if (title != null ? !title.equals(itemBean.title) : itemBean.title != null)
-                return false;
-            return tag != null ? tag.equals(itemBean.tag) : itemBean.tag == null;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = title != null ? title.hashCode() : 0;
-            result = 31 * result + (tag != null ? tag.hashCode() : 0);
-            return result;
-        }
-
-        public CharSequence getTitle() {
-            return title;
-        }
-
-        public void setTitle(CharSequence title) {
-            this.title = title;
-        }
-
-        public Object getTag() {
-            return tag;
-        }
-
-        public void setTag(Object tag) {
-            this.tag = tag;
         }
     }
 }

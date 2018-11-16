@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".base.DialogDelegateActivity"
+            android:name=".DialogDelegateActivity"
             android:theme="@style/transparent" />
     </application>
 

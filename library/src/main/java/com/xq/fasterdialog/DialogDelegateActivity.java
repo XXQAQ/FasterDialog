@@ -1,4 +1,4 @@
-package com.xq.fasterdialog.base;
+package com.xq.fasterdialog;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.xq.fasterdialog.FasterDialogInterface;
+import com.xq.fasterdialog.base.BaseDialog;
 
 public class DialogDelegateActivity extends AppCompatActivity {
 
