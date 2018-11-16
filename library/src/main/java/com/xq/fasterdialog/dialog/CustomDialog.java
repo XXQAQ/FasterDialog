@@ -24,6 +24,6 @@ public class CustomDialog extends BaseDialog<CustomDialog> {
     @Deprecated
     @Override
     public CustomDialog setCustomView(int layoutId) {
-        return null;
+        return this;
     }
 }
