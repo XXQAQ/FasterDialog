@@ -3,7 +3,6 @@ package com.xq.fasterdialog.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-
 import com.xq.fasterdialog.bean.ItemBean;
-
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T> {
 
@@ -75,12 +71,9 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
     public T setItemList(List<ItemBean> list){
         if (rv != null)
         {
-            List newList = new LinkedList();
-            newList.addAll(list);
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffCallBack(list_item,newList),false);
-            diffResult.dispatchUpdatesTo(rv.getAdapter());
             list_item.clear();
             list_item.addAll(list);
+            rv.getAdapter().notifyDataSetChanged();
         }
         else
             list_item.addAll(list);
@@ -146,32 +139,4 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         public void onItemChoose(BaseListDialog dialog, ItemBean bean);
 
     }
-
-    protected static class DiffCallBack extends DiffUtil.Callback {
-        private List mOldDatas, mNewDatas;
-
-        public DiffCallBack(List mOldDatas, List mNewDatas) {
-            this.mOldDatas = mOldDatas;
-            this.mNewDatas = mNewDatas;
-        }
-
-        @Override
-        public int getOldListSize() {
-            return mOldDatas != null ? mOldDatas.size() : 0;
-        }
-
-        @Override
-        public int getNewListSize() {
-            return mNewDatas != null ? mNewDatas.size() : 0;
-        }
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return mNewDatas.get(newItemPosition).getClass().isAssignableFrom(mOldDatas.get(oldItemPosition).getClass());
-        }
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return mOldDatas.get(oldItemPosition).equals(mNewDatas.get(newItemPosition));
-        }
-    }
-
 }

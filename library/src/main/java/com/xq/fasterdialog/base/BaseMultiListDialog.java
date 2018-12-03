@@ -3,7 +3,6 @@ package com.xq.fasterdialog.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.widget.CompoundButton;
 import com.xq.fasterdialog.bean.ItemBean;
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNormalDialog<T> {
 
@@ -98,17 +96,14 @@ public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNorma
     public T setItemList(List<ItemBean> list){
         if (rv != null)
         {
-            List newList = new LinkedList();
-            newList.addAll(list);
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffCallBack(list_item,newList),false);
-            diffResult.dispatchUpdatesTo(rv.getAdapter());
-            list_item.clear();
-            list_item.addAll(list);
-
             //删除多余的选择项
             for (ItemBean bean : list_select)
                 if (!list_item.contains(bean))
                     list_item.remove(bean);
+
+            list_item.clear();
+            list_item.addAll(list);
+            rv.getAdapter().notifyDataSetChanged();
         }
         else
             list_item.addAll(list);
@@ -173,30 +168,4 @@ public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNorma
 
     }
 
-    protected static class DiffCallBack extends DiffUtil.Callback {
-        private List mOldDatas, mNewDatas;
-
-        public DiffCallBack(List mOldDatas, List mNewDatas) {
-            this.mOldDatas = mOldDatas;
-            this.mNewDatas = mNewDatas;
-        }
-
-        @Override
-        public int getOldListSize() {
-            return mOldDatas != null ? mOldDatas.size() : 0;
-        }
-
-        @Override
-        public int getNewListSize() {
-            return mNewDatas != null ? mNewDatas.size() : 0;
-        }
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return mNewDatas.get(newItemPosition).getClass().isAssignableFrom(mOldDatas.get(oldItemPosition).getClass());
-        }
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return mOldDatas.get(oldItemPosition).equals(mNewDatas.get(newItemPosition));
-        }
-    }
 }
