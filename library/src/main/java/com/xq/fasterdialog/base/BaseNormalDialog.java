@@ -1,7 +1,6 @@
 package com.xq.fasterdialog.base;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -14,8 +13,8 @@ import static com.xq.fasterdialog.FasterDialogInterface.getApp;
 
 public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
 
-    public static String SURE = Resources.getSystem().getString(R.string.sure);
-    public static String CANCLE = Resources.getSystem().getString(R.string.cancle);
+    public static String SURE = getApp() == null?"确定" : getApp().getResources().getString(R.string.sure);
+    public static String CANCLE = getApp() == null?"取消" : getApp().getResources().getString(R.string.cancle);
 
     protected TextView negativeView;
     protected TextView positiveView;
