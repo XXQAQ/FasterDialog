@@ -18,7 +18,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     protected int itemLayoutId;
 
-    protected OnItemChosseListener chosseListener;
+    protected OnItemSelectedListener selectedListener;
 
     protected RecyclerView rv;
 
@@ -80,8 +80,8 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public T setOnItemChosseListener(OnItemChosseListener listener){
-        this.chosseListener = listener;
+    public T setOnItemSelectedListener(OnItemSelectedListener listener){
+        this.selectedListener = listener;
         return (T) this;
     }
 
@@ -105,8 +105,8 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                 public void onClick(View v) {
                     if (v.isPressed())
                     {
-                        if (chosseListener != null)
-                            chosseListener.onItemChoose(BaseListDialog.this,bean);
+                        if (selectedListener != null)
+                            selectedListener.onItemSelected(BaseListDialog.this,bean);
                         dismiss();
                     }
                 }
@@ -134,9 +134,9 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         }
     }
 
-    public static interface OnItemChosseListener {
+    public static interface OnItemSelectedListener {
 
-        public void onItemChoose(BaseListDialog dialog, ItemBean bean);
+        public void onItemSelected(BaseListDialog dialog, ItemBean bean);
 
     }
 }

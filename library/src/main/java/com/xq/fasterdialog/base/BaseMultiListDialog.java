@@ -18,7 +18,7 @@ public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNorma
 
     protected int itemLayoutId;
 
-    protected OnItemsChosseListener chosseListener;
+    protected OnItemsSelectedListener selectedListener;
 
     protected RecyclerView rv;
 
@@ -47,11 +47,11 @@ public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNorma
         setPositiveListener(new OnDialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog) {
-                if (chosseListener != null)
+                if (selectedListener != null)
                 {
                     if (list_select.size() >0)
                     {
-                        chosseListener.onItemsChoose(BaseMultiListDialog.this,list_select);
+                        selectedListener.onItemsSelected(BaseMultiListDialog.this,list_select);
                         dismiss();
                     }
                 }
@@ -110,8 +110,8 @@ public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNorma
         return (T) this;
     }
 
-    public T setOnItemsChosseListener(OnItemsChosseListener listener){
-        this.chosseListener = listener;
+    public T setOnItemsSelectedListener(OnItemsSelectedListener listener){
+        this.selectedListener = listener;
         return (T) this;
     }
 
@@ -162,9 +162,9 @@ public class BaseMultiListDialog<T extends BaseMultiListDialog>extends BaseNorma
         }
     }
 
-    public static interface OnItemsChosseListener {
+    public static interface OnItemsSelectedListener {
 
-        public void onItemsChoose(BaseMultiListDialog dialog, List<ItemBean> list);
+        public void onItemsSelected(BaseMultiListDialog dialog, List<ItemBean> list);
 
     }
 
