@@ -4,7 +4,7 @@
     <application>
         <activity
             android:name=".DialogDelegateActivity"
-            android:theme="@style/transparent" />
+            android:theme="@style/TransparentActivity" />
     </application>
 
 </manifest>
