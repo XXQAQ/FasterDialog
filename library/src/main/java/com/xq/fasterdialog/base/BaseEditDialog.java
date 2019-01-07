@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T> {
 
-    protected OnEditCompleteListner editListner;
+    protected OnEditCompletedListener editListener;
 
     protected SparseArray<EditText> array_edit = new SparseArray<>();
     protected SparseArray<InputBean> array_input = new SparseArray();
@@ -65,7 +64,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         setPositiveListener(new OnDialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog) {
-                if (editListner != null)
+                if (editListener != null)
                 {
                     SparseArray<CharSequence> array = new SparseArray<>();
                     for (int index=0;index < array_edit.size();index++)
@@ -74,7 +73,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
                         EditText editText = array_edit.get(key);
                         array.put(key,editText.getText().toString());
                     }
-                    editListner.onEditComplete(BaseEditDialog.this,array);
+                    editListener.onEditCompleted(BaseEditDialog.this,array);
                 }
             }
         });
@@ -89,8 +88,8 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         return (T) this;
     }
 
-    public T setOnEditCompleteListner(OnEditCompleteListner listener) {
-        this.editListner = listener;
+    public T setOnEditCompletedListener(OnEditCompletedListener listener) {
+        this.editListener = listener;
         return (T) this;
     }
 
@@ -122,7 +121,6 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
 
 
 
-    //私有方法
     protected void setViewVisible(EditText editText){
         if (editText.getParent().getParent() instanceof TextInputLayout)
             ((TextInputLayout) editText.getParent().getParent()).setVisibility(View.VISIBLE);
@@ -169,8 +167,8 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         }
     }
 
-    public static interface OnEditCompleteListner {
-        public void onEditComplete(BaseEditDialog dialog, SparseArray<CharSequence> array);
+    public static interface OnEditCompletedListener {
+        public void onEditCompleted(BaseEditDialog dialog, SparseArray<CharSequence> array);
     }
 }
 

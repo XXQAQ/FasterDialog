@@ -9,7 +9,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseDialog<T> {
 
     protected TextView titleView;
@@ -64,12 +63,6 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         return (T) this;
     }
 
-    @Deprecated
-    public T setTile(CharSequence title) {
-        setTitle(title);
-        return (T) this;
-    }
-
     public T setTitle(CharSequence title) {
         this.title = title;
         setTextToView(titleView,title, View.GONE);
@@ -82,16 +75,10 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         return (T) this;
     }
 
-
     public T setIcon(int resId) {
         this.icon = resId;
         setImageResourceToView(iconView,resId,View.GONE);
         return (T) this;
-    }
-
-    @Deprecated
-    public CharSequence getTile() {
-        return getTitle();
     }
 
     public CharSequence getTitle() {
@@ -107,6 +94,8 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     }
 
     public boolean isChecked(){
+        if (checkedView == null)
+            return false;
         return checkedView.isChecked();
     }
 

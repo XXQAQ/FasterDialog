@@ -17,10 +17,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.xq.fasterdialog.FasterDialogInterface;
+import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.R;
-
+import com.xq.fasterdialog.util.DialogImageLoder;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -449,7 +448,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         else
         {
             if (dialogImageLoder == null)
-                FasterDialogInterface.getImageLoaderd().loadImage(getContext(),view,url);
+                FasterDialog.getImageLoaderd().loadImage(getContext(),view,url);
             else
                 dialogImageLoder.loadImage(getContext(),view,url);
             view.setVisibility(View.VISIBLE);

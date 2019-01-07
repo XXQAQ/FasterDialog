@@ -6,10 +6,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
 import com.xq.fasterdialog.R;
-
-import static com.xq.fasterdialog.FasterDialogInterface.getApp;
+import static com.xq.fasterdialog.FasterDialog.getApp;
 
 public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
 

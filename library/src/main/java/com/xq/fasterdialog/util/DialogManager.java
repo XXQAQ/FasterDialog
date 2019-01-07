@@ -1,5 +1,6 @@
-package com.xq.fasterdialog;
+package com.xq.fasterdialog.util;
 
+import com.xq.fasterdialog.DialogDelegateActivity;
 import com.xq.fasterdialog.base.BaseDialog;
 
 public class DialogManager {

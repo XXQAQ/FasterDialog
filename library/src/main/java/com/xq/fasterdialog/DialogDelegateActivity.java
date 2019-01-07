@@ -14,9 +14,9 @@ public class DialogDelegateActivity extends AppCompatActivity {
 
     public static void startActivity(DialogContextProvider contextProvider){
         DialogDelegateActivity.contextProvider = contextProvider;
-        Intent intent = new Intent(FasterDialogInterface.getApp(), DialogDelegateActivity.class);
+        Intent intent = new Intent(FasterDialog.getApp(), DialogDelegateActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        FasterDialogInterface.getApp().startActivity(intent);
+        FasterDialog.getApp().startActivity(intent);
     }
 
     @Override

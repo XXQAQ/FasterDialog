@@ -6,13 +6,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
-
-import com.xq.fasterdialog.base.DialogImageLoder;
+import com.xq.fasterdialog.util.DialogImageLoder;
 
 import java.io.IOException;
 import java.net.URL;
 
-public class FasterDialogInterface {
+public class FasterDialog {
 
     private static Application app;
     private static DialogImageLoder imageLoaderd;
@@ -22,8 +21,8 @@ public class FasterDialogInterface {
     }
 
     public static void init(Application app, DialogImageLoder imageLoaderd){
-        FasterDialogInterface.app = app;
-        FasterDialogInterface.imageLoaderd = imageLoaderd;
+        FasterDialog.app = app;
+        FasterDialog.imageLoaderd = imageLoaderd;
     }
 
     public static Application getApp() {
