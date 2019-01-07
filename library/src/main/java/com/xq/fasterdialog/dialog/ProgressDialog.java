@@ -9,7 +9,7 @@ import com.xq.fasterdialog.base.BaseProgressDialog;
 
 public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
 
     public static int LAYOUT_XQ = R.layout.layout_progressdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_progressdialog_meterail;

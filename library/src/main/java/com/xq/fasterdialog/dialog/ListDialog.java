@@ -8,7 +8,7 @@ import com.xq.fasterdialog.base.BaseListDialog;
 
 public class ListDialog extends BaseListDialog<ListDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
 
     public static int LAYOUT_XQ = R.layout.layout_listdialog_xq;
     public static int ITEM_XQ = R.layout.item_listdialog_xq;

@@ -12,7 +12,7 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
     protected ImageView imageView;
 
     protected String imageUrl;
-    protected int imageResId;
+    protected int imageRes;
 
     public BaseImageDialog(@NonNull Context context) {
         super(context);
@@ -31,7 +31,7 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
         if (!TextUtils.isEmpty(imageUrl))
             setImageUrl(imageUrl);
         else
-            setImageResId(imageResId);
+            setImageRes(imageRes);
     }
 
     public T setData(int resId,CharSequence title,CharSequence content,String imageUrl){
@@ -40,23 +40,23 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
         return (T) this;
     }
 
-    public T setData(int resId,CharSequence title,CharSequence content,int imageResId){
+    public T setData(int resId,CharSequence title,CharSequence content,int imageRes){
         super.setData(resId,title,content);
-        setImageResId(imageResId);
+        setImageRes(imageRes);
         return (T) this;
     }
 
     public T setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        this.imageResId = 0;
+        this.imageRes = 0;
         setImageUrlToView(imageView,imageUrl,View.GONE);
         return (T) this;
     }
 
-    public T setImageResId(int imageResId) {
-        this.imageResId = imageResId;
+    public T setImageRes(int imageRes) {
+        this.imageRes = imageRes;
         this.imageUrl = null;
-        setImageResourceToView(imageView,imageResId, View.GONE);
+        setImageResourceToView(imageView, this.imageRes, View.GONE);
         return (T) this;
     }
 
@@ -64,7 +64,7 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
         return imageUrl;
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public int getImageRes() {
+        return imageRes;
     }
 }

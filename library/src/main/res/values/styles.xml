@@ -25,11 +25,7 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <!--<style name="MaterialDialog" parent="Theme.AppCompat.Light.Dialog">-->
-        <!--<item name="android:backgroundDimEnabled">true</item>-->
-    <!--</style>-->
-
-    <style name="MaterialAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 

@@ -9,7 +9,7 @@ import com.xq.fasterdialog.base.BaseImageDialog;
 
 public class ImageDialog extends BaseImageDialog<ImageDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
 
     public static int LAYOUT_XQ = R.layout.layout_imagedialog_xq;
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;

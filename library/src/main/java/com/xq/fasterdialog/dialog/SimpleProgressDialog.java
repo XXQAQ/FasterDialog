@@ -8,7 +8,7 @@ import com.xq.fasterdialog.base.BaseSimpleDialog;
 
 public class SimpleProgressDialog extends BaseSimpleDialog<SimpleProgressDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
 
     public static int LAYOUT_XQ = R.layout.layout_simpleprogressdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_simpleprogressdialog_meterail;

@@ -28,7 +28,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public static int STYLE_BASEDIALOG = R.style.BaseDialog;
     public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;
-    public static int STYLE_MATERIALALERTDIALOG = R.style.MaterialAlertDialog;
+    public static int STYLE_ALERTDIALOG = R.style.AlertDialog;
 
     //Dialog
     protected Dialog dialog;

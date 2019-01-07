@@ -9,7 +9,7 @@ import com.xq.fasterdialog.base.BaseNormalDialog;
 
 public class NormalDialog extends BaseNormalDialog<NormalDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
 
     public static int LAYOUT_XQ = R.layout.layout_normaldialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_normaldialog_meterail;

@@ -7,7 +7,7 @@ import com.xq.fasterdialog.base.BaseMultiListDialog;
 
 public class MultiListDialog extends BaseMultiListDialog<MultiListDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_MATERIALALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
 
     public static int LAYOUT_XQ = R.layout.layout_listdialog_xq;
     public static int ITEM_XQ = R.layout.item_multilistdialog_xq;
