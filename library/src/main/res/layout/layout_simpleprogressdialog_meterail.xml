@@ -18,8 +18,8 @@
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/iconView"
-            android:layout_width="@dimen/icon_medium_both"
-            android:layout_height="@dimen/icon_medium_both"
+            android:layout_width="@dimen/icon_medium"
+            android:layout_height="@dimen/icon_medium"
             android:layout_marginRight="@dimen/distance_more"
             />
 
@@ -44,8 +44,8 @@
         >
 
         <ProgressBar
-            android:layout_width="@dimen/icon_medium_both"
-            android:layout_height="@dimen/icon_medium_both"
+            android:layout_width="@dimen/icon_medium"
+            android:layout_height="@dimen/icon_medium"
             android:layout_marginRight="@dimen/distance_more"
             />
 

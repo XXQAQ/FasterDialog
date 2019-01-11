@@ -54,8 +54,8 @@
     </LinearLayout>
 
     <ProgressBar
-        android:layout_width="@dimen/icon_xmax_both"
-        android:layout_height="@dimen/icon_xmax_both"
+        android:layout_width="@dimen/icon_xmax"
+        android:layout_height="@dimen/icon_xmax"
         android:layout_marginTop="@dimen/distance_more"
         android:layout_gravity="center_horizontal"
         />
