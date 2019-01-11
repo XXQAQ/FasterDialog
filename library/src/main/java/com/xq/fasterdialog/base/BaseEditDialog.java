@@ -42,7 +42,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         {
             int key = array_input.keyAt(index);
             InputBean bean = array_input.get(key);
-            EditText editText = findViewById(getContext().getResources().getIdentifier("edit" + key, "id", getContext().getPackageName()));
+            EditText editText = findViewById(getContext().getResources().getIdentifier("edit_" + key, "id", getContext().getPackageName()));
             array_edit.put(key,editText);
             //设置EditText
             setViewVisible(editText);
@@ -53,7 +53,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             //设置固定文字
             if (!TextUtils.isEmpty(bean.getFixedText()))
             {
-                TextView fixedView = findViewById(getContext().getResources().getIdentifier("fixed" + key, "id", getContext().getPackageName()));
+                TextView fixedView = findViewById(getContext().getResources().getIdentifier("fixed_" + key, "id", getContext().getPackageName()));
                 if (fixedView != null)
                     fixedView.setText(bean.getFixedText());
             }

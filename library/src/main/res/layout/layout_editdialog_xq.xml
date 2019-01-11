@@ -61,7 +61,7 @@
         >
 
             <EditText
-                android:id="@+id/edit0"
+                android:id="@+id/edit_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/distance_medium"
@@ -72,7 +72,7 @@
                 />
 
             <EditText
-                    android:id="@+id/edit1"
+                    android:id="@+id/edit_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/distance_medium"
@@ -84,7 +84,7 @@
                     />
 
             <EditText
-                    android:id="@+id/edit2"
+                    android:id="@+id/edit_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/distance_medium"
