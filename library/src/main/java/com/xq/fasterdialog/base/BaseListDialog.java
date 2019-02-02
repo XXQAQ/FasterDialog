@@ -20,7 +20,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     protected OnItemSelectedListener selectedListener;
 
-    protected RecyclerView rv;
+    protected RecyclerView recyclerView;
 
     protected ItemBean select;
     protected List<ItemBean> list_item = new LinkedList<>();
@@ -37,10 +37,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rv = findViewById(getContext().getResources().getIdentifier("rv", "id", getContext().getPackageName()));
-        rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        rv.setAdapter(new TitleAdapter());
-        rv.getAdapter().notifyDataSetChanged();
+        recyclerView = findViewById(getContext().getResources().getIdentifier("recyclerView", "id", getContext().getPackageName()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new TitleAdapter());
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     public T setItemView(int itemLayoutId) {
@@ -63,17 +63,17 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     public T setSelect(ItemBean select){
         this.select = select;
-        if (rv != null)
-            rv.getAdapter().notifyDataSetChanged();
+        if (recyclerView != null)
+            recyclerView.getAdapter().notifyDataSetChanged();
         return (T) this;
     }
 
     public T setItemList(List<ItemBean> list){
-        if (rv != null)
+        if (recyclerView != null)
         {
             list_item.clear();
             list_item.addAll(list);
-            rv.getAdapter().notifyDataSetChanged();
+            recyclerView.getAdapter().notifyDataSetChanged();
         }
         else
             list_item.addAll(list);
