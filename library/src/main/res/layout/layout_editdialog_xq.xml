@@ -102,43 +102,45 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_more"
         android:orientation="horizontal"
+        android:divider="@drawable/line_primary"
+        android:showDividers="middle"
         >
 
-            <Button
-                android:id="@+id/negativeView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="停止充值"
-                android:padding="@dimen/distance_less"
-                android:background="@drawable/press_layer_rect_trprimary_solidwidely"
-                android:textSize="@dimen/text_more"
-                android:textColor="@color/colorPrimary"
-                />
+        <Button
+            android:id="@+id/negativeView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="停止充值"
+            android:padding="@dimen/distance_less"
+            android:background="@drawable/press_layer_rect_topprimary_solidwidely"
+            android:textSize="@dimen/text_more"
+            android:textColor="@color/colorPrimary"
+            />
 
-            <Button
-                android:id="@+id/neutralView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="只能选两边"
-                android:padding="@dimen/distance_less"
-                android:background="@drawable/press_layer_rect_trprimary_solidwidely"
-                android:textSize="@dimen/text_more"
-                android:textColor="@color/colorPrimary"
-                />
+        <Button
+            android:id="@+id/neutralView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="只能选两边"
+            android:padding="@dimen/distance_less"
+            android:background="@drawable/press_layer_rect_topprimary_solidwidely"
+            android:textSize="@dimen/text_more"
+            android:textColor="@color/colorPrimary"
+            />
 
-            <Button
-                android:id="@+id/positiveView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="立即充值"
-                android:padding="@dimen/distance_less"
-                android:background="@drawable/press_layer_rect_topprimary_solidwidely"
-                android:textSize="@dimen/text_more"
-                android:textColor="@color/colorPrimary"
-                />
+        <Button
+            android:id="@+id/positiveView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="立即充值"
+            android:padding="@dimen/distance_less"
+            android:background="@drawable/press_layer_rect_topprimary_solidwidely"
+            android:textSize="@dimen/text_more"
+            android:textColor="@color/colorPrimary"
+            />
 
     </LinearLayout>
 

@@ -30,6 +30,6 @@ dependencies {
 
     implementation 'com.android.support:appcompat-v7:27.+'
     implementation 'com.android.support:design:27.+'
-    implementation 'com.github.XXQAQ:AndroidResource:1.0.0+'
+    implementation 'com.github.XXQAQ:AndroidResource:2.0.0beta1+'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
 }

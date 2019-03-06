@@ -63,6 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:divider="@drawable/line_primary"
+        android:showDividers="middle"
         >
 
         <Button
@@ -72,7 +74,7 @@
             android:layout_weight="1"
             android:text="停止充值"
             android:padding="@dimen/distance_less"
-            android:background="@drawable/press_layer_rect_trprimary_solidwidely"
+            android:background="@drawable/press_layer_rect_topprimary_solidwidely"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
             />
@@ -84,7 +86,7 @@
             android:layout_weight="1"
             android:text="只能选两边"
             android:padding="@dimen/distance_less"
-            android:background="@drawable/press_layer_rect_trprimary_solidwidely"
+            android:background="@drawable/press_layer_rect_topprimary_solidwidely"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
             />
