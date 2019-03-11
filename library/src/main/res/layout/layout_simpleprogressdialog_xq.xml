@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/distance_less"
+        android:layout_marginBottom="@dimen/distance_max"
         >
 
         <pl.droidsonroids.gif.GifImageView
@@ -56,7 +56,6 @@
     <ProgressBar
         android:layout_width="@dimen/icon_xmax"
         android:layout_height="@dimen/icon_xmax"
-        android:layout_marginTop="@dimen/distance_more"
         android:layout_gravity="center_horizontal"
         />
 

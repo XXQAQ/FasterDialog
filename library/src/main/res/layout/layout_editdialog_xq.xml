@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/distance_max"
+        android:layout_marginBottom="@dimen/distance_max"
         >
 
         <pl.droidsonroids.gif.GifImageView
@@ -58,6 +58,7 @@
         android:orientation="vertical"
         android:paddingLeft="@dimen/distance_more"
         android:paddingRight="@dimen/distance_more"
+        android:layout_marginBottom="@dimen/distance_more"
         >
 
             <EditText
@@ -100,7 +101,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_more"
         android:orientation="horizontal"
         android:divider="@drawable/line_primary"
         android:showDividers="middle"
