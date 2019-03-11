@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/distance_less"
         android:orientation="horizontal"
         >
 
@@ -40,7 +41,7 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_less"
+        android:layout_marginBottom="@dimen/distance_max"
         android:gravity="left"
         android:lineSpacingExtra="@dimen/textspacing_min"
         android:text="是的只有充钱才能变得更强"
@@ -51,7 +52,6 @@
         android:id="@+id/progressView"
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:layout_marginTop="@dimen/distance_xmax"
         android:progressDrawable="@drawable/progress_radiusmedium_solidprimary"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         />

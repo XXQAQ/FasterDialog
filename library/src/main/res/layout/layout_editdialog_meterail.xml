@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/distance_less"
         >
 
         <pl.droidsonroids.gif.GifImageView
@@ -40,8 +41,8 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/distance_less"
         android:gravity="left"
-        android:layout_marginTop="@dimen/distance_less"
         android:lineSpacingExtra="@dimen/textspacing_min"
         android:text="是的只有充钱才能变得更强"
         android:textColor="@color/text_normal"
@@ -51,8 +52,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/distance_more"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/distance_less"
         >
 
         <EditText
@@ -92,7 +93,6 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_more"
         android:layout_gravity="right">
 
         <TextView

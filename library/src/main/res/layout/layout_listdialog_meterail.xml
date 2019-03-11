@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/distance_less"
         android:paddingLeft="@dimen/distance_max"
         android:paddingRight="@dimen/distance_more"
         android:orientation="horizontal"
@@ -40,7 +41,7 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_less"
+        android:layout_marginBottom="@dimen/distance_less"
         android:paddingLeft="@dimen/distance_max"
         android:paddingRight="@dimen/distance_more"
         android:gravity="left"
@@ -53,13 +54,12 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_less"
+        android:layout_marginBottom="@dimen/distance_more"
         />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_more"
         android:paddingLeft="@dimen/distance_max"
         android:paddingRight="@dimen/distance_more"
         android:layout_gravity="right">
