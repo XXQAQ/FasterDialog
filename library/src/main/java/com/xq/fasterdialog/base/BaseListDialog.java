@@ -39,7 +39,53 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
         recyclerView = findViewById(getContext().getResources().getIdentifier("recyclerView", "id", getContext().getPackageName()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new TitleAdapter());
+        recyclerView.setAdapter(new RecyclerView.Adapter() {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(itemLayoutId, parent, false);
+                ViewHolder viewHolder = new ViewHolder(view);
+                return viewHolder;
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, final int position) {
+                ViewHolder holder = (ViewHolder)h;
+                final ItemBean bean = list_item.get(position);
+                holder.text.setText(bean.getTitle());
+                holder.text.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (v.isPressed())
+                        {
+                            if (selectedListener != null)
+                                selectedListener.onItemSelected(BaseListDialog.this,bean);
+                            dismiss();
+                        }
+                    }
+                });
+                if (holder.text instanceof CompoundButton)
+                {
+                    if (select != null && select.equals(bean))
+                        ((CompoundButton) holder.text).setChecked(true);
+                    else
+                        ((CompoundButton) holder.text).setChecked(false);
+                }
+            }
+
+            @Override
+            public int getItemCount() {
+                return list_item.size();
+            }
+
+            class ViewHolder extends RecyclerView.ViewHolder{
+                TextView text;
+                public ViewHolder(View itemView) {
+                    super(itemView);
+                    text = itemView.findViewById(getContext().getResources().getIdentifier("text", "id", getContext().getPackageName()));
+                }
+            }
+        });
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 
@@ -83,55 +129,6 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
     public T setOnItemSelectedListener(OnItemSelectedListener listener){
         this.selectedListener = listener;
         return (T) this;
-    }
-
-    protected class TitleAdapter extends RecyclerView.Adapter{
-
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(itemLayoutId, parent, false);
-            ViewHolder viewHolder = new ViewHolder(view);
-            return viewHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, final int position) {
-            ViewHolder holder = (ViewHolder)h;
-            final ItemBean bean = list_item.get(position);
-            holder.text.setText(bean.getTitle());
-            holder.text.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v.isPressed())
-                    {
-                        if (selectedListener != null)
-                            selectedListener.onItemSelected(BaseListDialog.this,bean);
-                        dismiss();
-                    }
-                }
-            });
-            if (holder.text instanceof CompoundButton)
-            {
-                if (select != null && select.equals(bean))
-                    ((CompoundButton) holder.text).setChecked(true);
-                else
-                    ((CompoundButton) holder.text).setChecked(false);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return list_item.size();
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder{
-            TextView text;
-            public ViewHolder(View itemView) {
-                super(itemView);
-                text = itemView.findViewById(getContext().getResources().getIdentifier("text", "id", getContext().getPackageName()));
-            }
-        }
     }
 
     public static interface OnItemSelectedListener {
