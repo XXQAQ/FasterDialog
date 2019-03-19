@@ -104,6 +104,7 @@
         android:orientation="horizontal"
         android:divider="@drawable/line_primary"
         android:showDividers="middle"
+        android:background="@drawable/layer_rect_topprimary_solidtransparent"
         >
 
         <Button
@@ -113,7 +114,7 @@
             android:layout_weight="1"
             android:text="停止充值"
             android:padding="@dimen/spacing_min"
-            android:background="@drawable/press_layer_rect_topprimary_solidwidely"
+            android:background="@drawable/press_rect_solidtransparent"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
             />
@@ -125,7 +126,7 @@
             android:layout_weight="1"
             android:text="只能选两边"
             android:padding="@dimen/spacing_min"
-            android:background="@drawable/press_layer_rect_topprimary_solidwidely"
+            android:background="@drawable/press_rect_solidtransparent"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
             />
@@ -137,7 +138,7 @@
             android:layout_weight="1"
             android:text="立即充值"
             android:padding="@dimen/spacing_min"
-            android:background="@drawable/press_layer_rect_topprimary_solidwidely"
+            android:background="@drawable/press_rect_solidtransparent"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
             />

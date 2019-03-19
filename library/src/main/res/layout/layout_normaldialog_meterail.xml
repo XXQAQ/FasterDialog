@@ -51,6 +51,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:divider="@drawable/spacing_more"
+        android:showDividers="middle"
         android:layout_gravity="right">
 
         <TextView
@@ -59,7 +61,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/spacing_min"
-            android:layout_marginRight="@dimen/spacing_medium"
             android:text="取消"
             android:textColor="@color/press_text_normal" />
 
@@ -67,7 +68,6 @@
             android:id="@+id/neutralView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/spacing_medium"
             android:gravity="center"
             android:padding="@dimen/spacing_min"
             android:text="中立"
