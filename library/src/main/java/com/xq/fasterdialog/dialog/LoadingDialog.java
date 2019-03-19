@@ -52,10 +52,10 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
         loadingView = findViewById(getContext().getResources().getIdentifier("loadingView", "id", getContext().getPackageName()));
 
-        setLodingText(loadingText);
+        setLoadingText(loadingText);
     }
 
-    public LoadingDialog setLodingText(CharSequence loadingText) {
+    public LoadingDialog setLoadingText(CharSequence loadingText) {
         this.loadingText = loadingText;
         setTextToView(loadingView,loadingText, View.GONE);
         return this;

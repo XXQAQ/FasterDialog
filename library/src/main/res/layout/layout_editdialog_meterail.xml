@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/distance_more"
-    android:paddingLeft="@dimen/distance_max"
-    android:paddingRight="@dimen/distance_more"
-    android:paddingTop="@dimen/distance_max"
+    android:paddingBottom="@dimen/spacing_medium"
+    android:paddingLeft="@dimen/spacing_more"
+    android:paddingRight="@dimen/spacing_medium"
+    android:paddingTop="@dimen/spacing_more"
     android:background="@color/colorWidely"
     >
 
@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/distance_less"
+        android:layout_marginBottom="@dimen/spacing_min"
         >
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/iconView"
             android:layout_width="@dimen/icon_medium"
             android:layout_height="@dimen/icon_medium"
-            android:layout_marginRight="@dimen/distance_more"
+            android:layout_marginRight="@dimen/spacing_medium"
             />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="立即充值"
-            android:lineSpacingExtra="@dimen/textspacing_less"
+            android:lineSpacingExtra="@dimen/textSpacing_max"
             android:textColor="@color/text_strong"
             android:textSize="@dimen/text_max"
             android:textStyle="bold" />
@@ -41,9 +41,9 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/distance_less"
+        android:layout_marginBottom="@dimen/spacing_min"
         android:gravity="left"
-        android:lineSpacingExtra="@dimen/textspacing_min"
+        android:lineSpacingExtra="@dimen/textSpacing_medium"
         android:text="是的只有充钱才能变得更强"
         android:textColor="@color/text_normal"
         android:textSize="@dimen/text_medium"
@@ -52,7 +52,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/distance_more"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:divider="@drawable/spacing_xmin"
+        android:showDividers="middle"
         android:orientation="vertical"
         >
 
@@ -60,7 +62,7 @@
             android:id="@+id/edit_0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/distance_medium"
+            android:padding="@dimen/spacing_less"
             android:layout_gravity="left"
             android:textSize="@dimen/text_medium"
             android:maxLines="1"
@@ -70,8 +72,7 @@
             android:id="@+id/edit_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/distance_medium"
-            android:layout_marginTop="@dimen/distance_min"
+            android:padding="@dimen/spacing_less"
             android:layout_gravity="left"
             android:textSize="@dimen/text_medium"
             android:maxLines="1"
@@ -81,8 +82,7 @@
             android:id="@+id/edit_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/distance_medium"
-            android:layout_marginTop="@dimen/distance_min"
+            android:padding="@dimen/spacing_less"
             android:layout_gravity="left"
             android:textSize="@dimen/text_medium"
             android:maxLines="1"
@@ -100,8 +100,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/distance_less"
-            android:layout_marginRight="@dimen/distance_more"
+            android:padding="@dimen/spacing_min"
+            android:layout_marginRight="@dimen/spacing_medium"
             android:text="取消"
             android:textColor="@color/press_text_normal" />
 
@@ -109,9 +109,9 @@
             android:id="@+id/neutralView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/distance_more"
+            android:layout_marginRight="@dimen/spacing_medium"
             android:gravity="center"
-            android:padding="@dimen/distance_less"
+            android:padding="@dimen/spacing_min"
             android:text="中立"
             android:textColor="@color/press_text_normal" />
 
@@ -120,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/distance_less"
+            android:padding="@dimen/spacing_min"
             android:text="确认"
             android:textColor="@color/press_text_primary" />
 

@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/distance_more"
-    android:paddingBottom="@dimen/distance_more"
-    android:paddingLeft="@dimen/distance_max"
-    android:paddingRight="@dimen/distance_max"
+    android:paddingTop="@dimen/spacing_medium"
+    android:paddingBottom="@dimen/spacing_medium"
+    android:paddingLeft="@dimen/spacing_more"
+    android:paddingRight="@dimen/spacing_more"
     android:background="@drawable/rect_radiusless_solidblackglass"
     >
 
@@ -18,10 +18,10 @@
 
         <ProgressBar
             android:id="@+id/progressView"
-            android:layout_width="@dimen/icon_xmedium"
-            android:layout_height="@dimen/icon_xmedium"
+            android:layout_width="@dimen/icon_less"
+            android:layout_height="@dimen/icon_less"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/distance_less"
+            android:layout_marginBottom="@dimen/spacing_min"
             />
 
         <TextView

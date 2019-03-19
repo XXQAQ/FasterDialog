@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/distance_xmax"
+    android:paddingTop="@dimen/spacing_max"
     android:background="@color/colorWidely"
     >
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="@dimen/distance_max"
+        android:layout_marginBottom="@dimen/spacing_more"
         >
 
         <pl.droidsonroids.gif.GifImageView
@@ -27,13 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingLeft="@dimen/distance_more"
-            android:paddingRight="@dimen/distance_more"
+            android:paddingLeft="@dimen/spacing_medium"
+            android:paddingRight="@dimen/spacing_medium"
             android:text="提醒"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_max"
             android:textStyle="bold"
-            android:lineSpacingExtra="@dimen/textspacing_min"
+            android:lineSpacingExtra="@dimen/textSpacing_max"
             />
 
         <TextView
@@ -41,13 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingLeft="@dimen/distance_more"
-            android:paddingRight="@dimen/distance_more"
-            android:layout_marginTop="@dimen/distance_more"
+            android:paddingLeft="@dimen/spacing_medium"
+            android:paddingRight="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_medium"
             android:text="立即充值,只有充值才能变得更强"
             android:textColor="@color/text_normal"
             android:textSize="@dimen/text_more"
-            android:lineSpacingExtra="@dimen/textspacing_min"
+            android:lineSpacingExtra="@dimen/textSpacing_more"
             />
 
     </LinearLayout>
@@ -56,16 +56,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/distance_more"
-        android:paddingRight="@dimen/distance_more"
-        android:layout_marginBottom="@dimen/distance_more"
+        android:divider="@drawable/spacing_less"
+        android:showDividers="middle"
+        android:paddingLeft="@dimen/spacing_medium"
+        android:paddingRight="@dimen/spacing_medium"
+        android:layout_marginBottom="@dimen/spacing_medium"
         >
 
             <EditText
                 android:id="@+id/edit_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/distance_medium"
+                android:padding="@dimen/spacing_less"
                 android:background="@drawable/rect_radiusless_solidbackground"
                 android:layout_gravity="center"
                 android:textSize="@dimen/text_medium"
@@ -76,8 +78,7 @@
                     android:id="@+id/edit_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/distance_medium"
-                    android:layout_marginTop="@dimen/distance_medium"
+                    android:padding="@dimen/spacing_less"
                     android:background="@drawable/rect_radiusless_solidbackground"
                     android:layout_gravity="center"
                     android:textSize="@dimen/text_medium"
@@ -88,8 +89,7 @@
                     android:id="@+id/edit_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/distance_medium"
-                    android:layout_marginTop="@dimen/distance_medium"
+                    android:padding="@dimen/spacing_less"
                     android:background="@drawable/rect_radiusless_solidbackground"
                     android:layout_gravity="center"
                     android:textSize="@dimen/text_medium"
@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="停止充值"
-            android:padding="@dimen/distance_less"
+            android:padding="@dimen/spacing_min"
             android:background="@drawable/press_layer_rect_topprimary_solidwidely"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="只能选两边"
-            android:padding="@dimen/distance_less"
+            android:padding="@dimen/spacing_min"
             android:background="@drawable/press_layer_rect_topprimary_solidwidely"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="立即充值"
-            android:padding="@dimen/distance_less"
+            android:padding="@dimen/spacing_min"
             android:background="@drawable/press_layer_rect_topprimary_solidwidely"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
