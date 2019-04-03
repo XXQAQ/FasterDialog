@@ -41,7 +41,7 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_more"
+        android:layout_marginBottom="@dimen/spacing_max"
         android:gravity="left"
         android:lineSpacingExtra="@dimen/textSpacing_medium"
         android:text="是的只有充钱才能变得更强"
