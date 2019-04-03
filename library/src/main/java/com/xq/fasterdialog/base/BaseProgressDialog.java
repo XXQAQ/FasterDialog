@@ -3,14 +3,11 @@ package com.xq.fasterdialog.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends BaseSimpleDialog<T> {
 
-    protected ProgressBar progressView;
-    protected TextView pgDescriptView;
+    protected ProgressBar progressBar;
 
     protected int progress;
 
@@ -26,11 +23,10 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        progressView = findViewById(getContext().getResources().getIdentifier("progressView", "id", getContext().getPackageName()));
-        pgDescriptView = findViewById(getContext().getResources().getIdentifier("pgDescriptView", "id", getContext().getPackageName()));
+        progressBar = findViewById(getContext().getResources().getIdentifier("progressBar", "id", getContext().getPackageName()));
 
-        if (progressView != null && progress >= 0)
-            progressView.setProgress(progress);
+        if (progressBar != null && progress >= 0)
+            progressBar.setProgress(progress);
     }
 
     @Override
@@ -42,14 +38,8 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
     public T setProgress(int progress) {
         this.progress = progress;
-        if (progressView != null && progress >= 0)
-            progressView.setProgress(progress);
-        return (T) this;
-    }
-
-    public T setProgress(int progress,CharSequence pgDescript){
-        setProgress(progress);
-        setTextToView(pgDescriptView,pgDescript, View.GONE);
+        if (progressBar != null && progress >= 0)
+            progressBar.setProgress(progress);
         return (T) this;
     }
 

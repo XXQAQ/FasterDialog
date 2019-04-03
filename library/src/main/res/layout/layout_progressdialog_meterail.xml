@@ -49,7 +49,7 @@
         android:textSize="@dimen/text_medium" />
 
     <ProgressBar
-        android:id="@+id/progressView"
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:progressDrawable="@drawable/progress_radiusmedium_solidprimary"

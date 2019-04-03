@@ -17,7 +17,6 @@
         android:orientation="vertical">
 
         <ProgressBar
-            android:id="@+id/progressView"
             android:layout_width="@dimen/icon_less"
             android:layout_height="@dimen/icon_less"
             android:layout_gravity="center"
