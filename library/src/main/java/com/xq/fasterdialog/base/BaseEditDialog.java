@@ -54,13 +54,11 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             if (!TextUtils.isEmpty(bean.getFixedText()))
             {
                 TextView fixedView = findViewById(getContext().getResources().getIdentifier("fixed_" + key, "id", getContext().getPackageName()));
-                if (fixedView != null)
-                    fixedView.setText(bean.getFixedText());
+                if (fixedView != null) fixedView.setText(bean.getFixedText());
             }
         }
 
-        if (TextUtils.isEmpty(positiveText))
-            setPositiveText(SURE);
+        if (TextUtils.isEmpty(positiveText)) setPositiveText(SURE);
         setPositiveListener(new OnDialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog) {

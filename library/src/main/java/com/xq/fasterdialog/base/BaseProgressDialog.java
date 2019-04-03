@@ -25,8 +25,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
         progressBar = findViewById(getContext().getResources().getIdentifier("progressBar", "id", getContext().getPackageName()));
 
-        if (progressBar != null && progress >= 0)
-            progressBar.setProgress(progress);
+        if (progressBar != null && progress >= 0) progressBar.setProgress(progress);
     }
 
     @Override
@@ -38,8 +37,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
     public T setProgress(int progress) {
         this.progress = progress;
-        if (progressBar != null && progress >= 0)
-            progressBar.setProgress(progress);
+        if (progressBar != null && progress >= 0) progressBar.setProgress(progress);
         return (T) this;
     }
 

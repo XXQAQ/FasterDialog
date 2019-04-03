@@ -82,9 +82,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
     }
 
     public void onStart() {
-
-        goneAllEmptyLayout();
-
         measure();
     }
 
@@ -92,37 +89,34 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     }
 
-    //如果一个布局中的所有子控件被隐藏，那么直接隐藏该布局
-    private void goneAllEmptyLayout(){
-        List<ViewGroup> list = getAllSomeView(rootView,ViewGroup.class);
-        for (ViewGroup viewGroup : list)
+    //如果指定的ViewGroup下所有子控件均未不可见，则直接隐藏该ViewGroup
+    protected void goneEmptyLayout(ViewGroup viewGroup){
+        boolean isGone =true;
+        for (int i = 0; i < viewGroup.getChildCount(); i++)
         {
-            boolean isGone =true;
-            for (int i = 0; i < viewGroup.getChildCount(); i++)
-            {
-                if (viewGroup.getChildAt(i).getVisibility() == View.VISIBLE)
-                    break;
-                if (i == viewGroup.getChildCount()-1 && isGone)
-                    viewGroup.setVisibility(View.GONE);
-            }
+            if (viewGroup.getChildAt(i).getVisibility() == View.VISIBLE)
+                break;
+            if (i == viewGroup.getChildCount()-1 && isGone)
+                viewGroup.setVisibility(View.GONE);
         }
     }
 
+    //指定控件具体类型，获取Container容器下所有该类型的控件
     protected List getAllSomeView(View container,Class someView) {
-        List allchildren = new ArrayList<>();
+        List list = new ArrayList<>();
         if (container instanceof ViewGroup)
         {
-            ViewGroup vp = (ViewGroup) container;
-            for (int i = 0; i < vp.getChildCount(); i++)
+            ViewGroup viewGroup = (ViewGroup) container;
+            for (int i = 0; i < viewGroup.getChildCount(); i++)
             {
-                View viewchild = vp.getChildAt(i);
-                if (someView.isAssignableFrom(viewchild.getClass()))
-                    allchildren.add(viewchild);
+                View view = viewGroup.getChildAt(i);
+                if (someView.isAssignableFrom(view.getClass()))
+                    list.add(view);
                 //再次 调用本身（递归）
-                allchildren.addAll(getAllSomeView(viewchild,someView));
+                list.addAll(getAllSomeView(view,someView));
             }
         }
-        return allchildren;
+        return list;
     }
 
     //当Dialog需要动态调整宽高的时候，请调用此方法
@@ -412,17 +406,21 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
 
 
-    //便捷控件设置方法
+    //便捷控件设置方法(包含了对父控件的处理)
     protected void setTextToView(TextView view, CharSequence text,int visibilityIfNot){
         if (view == null)
             return;
 
         if (TextUtils.isEmpty(text))
+        {
             view.setVisibility(visibilityIfNot);
+            goneEmptyLayout((ViewGroup) view.getParent());
+        }
         else
         {
             view.setText(text);
             view.setVisibility(View.VISIBLE);
+            ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
@@ -431,11 +429,15 @@ public abstract class BaseDialog<T extends BaseDialog>{
             return;
 
         if (id == 0)
+        {
             view.setVisibility(visibilityIfNot);
+            goneEmptyLayout((ViewGroup) view.getParent());
+        }
         else
         {
             view.setImageResource(id);
             view.setVisibility(View.VISIBLE);
+            ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
@@ -444,7 +446,10 @@ public abstract class BaseDialog<T extends BaseDialog>{
             return;
 
         if (TextUtils.isEmpty(url))
+        {
             view.setVisibility(visibilityIfNot);
+            goneEmptyLayout((ViewGroup) view.getParent());
+        }
         else
         {
             if (dialogImageLoder == null)
@@ -452,10 +457,11 @@ public abstract class BaseDialog<T extends BaseDialog>{
             else
                 dialogImageLoder.loadImage(getContext(),view,url);
             view.setVisibility(View.VISIBLE);
+            ((View) view.getParent()).setVisibility(View.VISIBLE);
         }
     }
 
-    protected void bindDialogClickListenerWithView(View view, final OnDialogClickListener listener, final boolean isDismiss){
+    protected void bindDialogClickListenerWithView(View view, final OnDialogClickListener listener, final boolean isAutoDismiss){
         if (view == null)
             return;
 
@@ -464,8 +470,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
                 @Override
                 public void onClick(View v) {
                     listener.onClick(BaseDialog.this);
-                    if (isDismiss)
-                        dismiss();
+                    if (isAutoDismiss) dismiss();
                 }
             });
     }
