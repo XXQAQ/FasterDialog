@@ -11,11 +11,15 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
 
     public static int LAYOUT_XQ = R.layout.layout_listdialog_xq;
-    public static int ITEM_XQ = R.layout.item_listdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_listdialog_meterail;
-    public static int ITEM_METERAIL = R.layout.item_listdialog_meterail;
+
+    public static int ITEM_SINGLE_XQ = R.layout.item_singlelist_xq;
+    public static int ITEM_SINGLE_METERAIL = R.layout.item_singlelist_meterail;
+    public static int ITEM_MULTI_XQ = R.layout.item_multilist_xq;
+    public static int ITEM_MULTI_METERAIL = R.layout.item_multilist_meterail;
+
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
-    protected static int ITEM_DEFAULT = ITEM_XQ;
+    protected static int ITEM_DEFAULT = ITEM_SINGLE_XQ;
 
     public ListDialog(@NonNull Context context) {
         this(context,STYLE_DEFAULT);
@@ -30,16 +34,14 @@ public class ListDialog extends BaseListDialog<ListDialog> {
         STYLE_DEFAULT = style;
     }
 
-    public static void setDefaultLayout(int layoutId,int itemId){
+    public static void setDefaultLayout(int layoutId,int itemLayoutId){
         LAYOUT_DEFAULT = layoutId;
-        ITEM_DEFAULT = itemId;
+        ITEM_DEFAULT = itemLayoutId;
     }
 
     private void init() {
 
-        setCustomView(LAYOUT_DEFAULT);
-
-        setItemView(ITEM_DEFAULT);
+        setChooseMode(CHOOSEMODE_SINGLE,LAYOUT_DEFAULT,ITEM_DEFAULT);
 
     }
 
