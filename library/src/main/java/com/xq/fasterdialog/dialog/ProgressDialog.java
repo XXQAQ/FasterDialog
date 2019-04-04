@@ -11,9 +11,11 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
 
-    public static int LAYOUT_XQ = R.layout.layout_progressdialog_xq;
-    public static int LAYOUT_METERAIL = R.layout.layout_progressdialog_meterail;
-    protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
+    public static int LAYOUT_HORIZONTAL_XQ = R.layout.layout_horizontalprogressdialog_xq;
+    public static int LAYOUT_HORIZONTAL_METERAIL = R.layout.layout_horizontalprogressdialog_meterail;
+    public static int LAYOUT_CIRCLE_XQ = R.layout.layout_circleprogressdialog_xq;
+    public static int LAYOUT_CIRCLE_METERAIL = R.layout.layout_circleprogressdialog_meterail;
+    protected static int LAYOUT_DEFAULT = LAYOUT_CIRCLE_XQ;
 
     public ProgressDialog(@NonNull Context context) {
         this(context,STYLE_DEFAULT);
@@ -36,6 +38,6 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
         setCancel(false);
 
-        setCustomView(LAYOUT_DEFAULT);
+        setIndeterminate(true,LAYOUT_DEFAULT);
     }
 }

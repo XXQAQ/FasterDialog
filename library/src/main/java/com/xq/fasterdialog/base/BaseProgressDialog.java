@@ -11,6 +11,8 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
     protected int progress;
 
+    private boolean indeterminate = true;
+
     public BaseProgressDialog(@NonNull Context context) {
         super(context);
     }
@@ -25,7 +27,9 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
         progressBar = findViewById(getContext().getResources().getIdentifier("progressBar", "id", getContext().getPackageName()));
 
-        if (progressBar != null && progress >= 0) progressBar.setProgress(progress);
+        setIndeterminate(indeterminate);
+
+        setProgress(progress);
     }
 
     @Override
@@ -38,6 +42,18 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
     public T setProgress(int progress) {
         this.progress = progress;
         if (progressBar != null && progress >= 0) progressBar.setProgress(progress);
+        return (T) this;
+    }
+
+    public T setIndeterminate(boolean indeterminate) {
+        this.indeterminate = indeterminate;
+        if (progressBar != null) progressBar.setIndeterminate(indeterminate);
+        return (T) this;
+    }
+
+    public T setIndeterminate(boolean indeterminate,int layoutId) {
+        setIndeterminate(indeterminate);
+        setCustomView(layoutId);
         return (T) this;
     }
 
