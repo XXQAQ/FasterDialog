@@ -7,33 +7,30 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.base.BaseDialog;
+import java.util.LinkedHashMap;
 
 public class DialogManager {
 
-    private static BaseDialog dialog;
+    private static LinkedHashMap<Integer,BaseDialog> map_dialog;
 
-    public static void anywhere(DialogDelegateActivity.DialogContextProvider contextProvider){
+    public static void showAnywhere(DialogDelegateActivity.DialogContextProvider contextProvider){
         DialogDelegateActivity.startActivity(contextProvider);
     }
 
     public static void showDialog(BaseDialog dialog){
 
-        DialogManager.dialog = dialog;
+        DialogManager.map_dialog.put(dialog.hashCode()&0x0000ffff,dialog);
 
         dialog.addOnDismissListener(new BaseDialog.OnDialogDismissListener() {
             @Override
             public void onDismiss(BaseDialog dialog) {
-                DialogManager.dialog = null;
+                DialogManager.map_dialog.remove(dialog.hashCode()&0x0000ffff);
             }
         }).show();
     }
 
     public static void dismissDialog(){
-        DialogManager.dialog.dismiss();
-    }
-
-    public static BaseDialog getDialog(){
-        return dialog;
+        ((BaseDialog)DialogManager.map_dialog.entrySet().toArray()[DialogManager.map_dialog.size() -1]).dismiss();
     }
 
     public static class DialogDelegateActivity extends AppCompatActivity {
@@ -50,13 +47,14 @@ public class DialogManager {
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            BaseDialog dialog = contextProvider.showDialig(this);
+            BaseDialog dialog = contextProvider.createDialog(this);
             dialog.addOnDismissListener(new BaseDialog.OnDialogDismissListener() {
                 @Override
                 public void onDismiss(BaseDialog dialog) {
                     finish();
                 }
             });
+            dialog.show();
         }
 
         @Override
@@ -67,7 +65,7 @@ public class DialogManager {
 
         public static interface DialogContextProvider{
 
-            public BaseDialog showDialig(Context context);
+            public BaseDialog createDialog(Context context);
 
         }
     }
