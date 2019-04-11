@@ -36,7 +36,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     private void init() {
 
-        setCancel(false);
+        setCancelable(false);
 
         setIndeterminate(true,LAYOUT_DEFAULT);
     }

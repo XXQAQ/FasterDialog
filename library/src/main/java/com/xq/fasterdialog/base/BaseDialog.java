@@ -218,12 +218,12 @@ public abstract class BaseDialog<T extends BaseDialog>{
     }
 
     public T setWidthPercent(float percent) {
-        this.width = (int) (percent * ScreenUtils.getScreenW(getContext()));
+        this.width = (int) (percent * ScreenUtils.getScreenWidth(getContext()));
         return (T) this;
     }
 
     public T setHeightPercent(float percent) {
-        this.height = (int) (percent * ScreenUtils.getScreenH(getContext()));
+        this.height = (int) (percent * ScreenUtils.getScreenHeight(getContext()));
         return (T) this;
     }
 
@@ -258,12 +258,12 @@ public abstract class BaseDialog<T extends BaseDialog>{
     }
 
     public T setMaxWidthPercent(float percent) {
-        this.maxWidth = (int) (percent * ScreenUtils.getScreenH(getContext()));
+        this.maxWidth = (int) (percent * ScreenUtils.getScreenWidth(getContext()));
         return (T) this;
     }
 
     public T setMaxHeightPercent(float percent) {
-        this.maxHeight = (int) (percent * ScreenUtils.getScreenH(getContext()));
+        this.maxHeight = (int) (percent * ScreenUtils.getScreenHeight(getContext()));
         return (T) this;
     }
 
@@ -311,12 +311,12 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
-    public T setCancel(boolean cancel) {
-        getDialog().setCancelable(cancel);
+    public T setCancelable(boolean cancelable) {
+        getDialog().setCancelable(cancelable);
         return (T) this;
     }
 
-    public T setCancelOutside(boolean cancel) {
+    public T setCanceledOnTouchOutside(boolean cancel) {
         getDialog().setCanceledOnTouchOutside(cancel);
         return (T) this;
     }
@@ -524,11 +524,11 @@ public abstract class BaseDialog<T extends BaseDialog>{
             return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, c.getResources().getDisplayMetrics()));
         }
 
-        public static int getScreenW(Context c) {
+        public static int getScreenWidth(Context c) {
             return c.getResources().getDisplayMetrics().widthPixels;
         }
 
-        public static int getScreenH(Context c) {
+        public static int getScreenHeight(Context c) {
             return c.getResources().getDisplayMetrics().heightPixels;
         }
     }

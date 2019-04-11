@@ -41,7 +41,7 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
         loadingText = getContext().getResources().getString(R.string.loading);
 
-        setCancel(false);
+        setCancelable(false);
 
         setCustomView(LAYOUT_DEFAULT);
     }

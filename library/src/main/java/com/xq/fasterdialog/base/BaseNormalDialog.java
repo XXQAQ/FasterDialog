@@ -11,8 +11,8 @@ import static com.xq.fasterdialog.FasterDialog.getApp;
 
 public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
 
-    public static String SURE = getApp() == null?"确定" : getApp().getResources().getString(R.string.sure);
-    public static String CANCLE = getApp() == null?"取消" : getApp().getResources().getString(R.string.cancle);
+    public static String CONFIRM = getApp() == null?"确定" : getApp().getResources().getString(R.string.confirm);
+    public static String CANCEL = getApp() == null?"取消" : getApp().getResources().getString(R.string.cancel);
 
     protected TextView negativeView;
     protected TextView positiveView;

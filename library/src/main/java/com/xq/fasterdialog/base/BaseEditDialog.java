@@ -58,7 +58,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             }
         }
 
-        if (TextUtils.isEmpty(positiveText)) setPositiveText(SURE);
+        if (TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
         setPositiveListener(new OnDialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog) {
