@@ -278,20 +278,19 @@ public abstract class BaseDialog<T extends BaseDialog>{
     }
 
     public T setPopupFromBottom(){
-        setWidthMatch();
         setAnimatStyle(R.style.Animation_Bottom);
         this.gravity = Gravity.BOTTOM;
         return (T) this;
     }
 
     public T setPopupFromTop(){
-        setWidthMatch();
         setAnimatStyle(R.style.Animation_Top);
         this.gravity = Gravity.TOP;
         return (T) this;
     }
 
     public T setPopupFromView(View view){
+        this.gravity = Gravity.TOP|Gravity.LEFT;
         int[] location = new  int[2] ;
         view.getLocationOnScreen(location);
         setX(location[0]);
