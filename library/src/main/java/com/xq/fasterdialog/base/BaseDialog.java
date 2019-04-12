@@ -291,6 +291,14 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
+    public T setPopupFromView(View view){
+        int[] location = new  int[2] ;
+        view.getLocationOnScreen(location);
+        setX(location[0]);
+        setY(location[1]);
+        return (T) this;
+    }
+
     public T setCustomView(int layoutId){
         this.layoutId = layoutId;
         return (T) this;
