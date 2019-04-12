@@ -125,7 +125,6 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
         if (chooseMode == CHOOSEMODE_SINGLE)
         {
-            if (TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
             setPositiveListener(new OnDialogClickListener() {
                 @Override
                 public void onClick(BaseDialog dialog) {

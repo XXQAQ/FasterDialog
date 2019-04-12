@@ -9,13 +9,9 @@
     </style>
 
     <style name="BaseDialog" parent="@android:style/Theme.Holo.Dialog">
-        <!--半透明-->
         <item name="android:windowIsTranslucent">false</item>
-        <!--无标题-->
         <item name="android:windowNoTitle">true</item>
-        <!--背景透明-->
         <item name="android:windowBackground">@android:color/transparent</item>
-        <!--模糊-->
         <item name="android:backgroundDimEnabled">false</item>
     </style>
     
@@ -23,6 +19,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.2</item>
     </style>
 
     <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">

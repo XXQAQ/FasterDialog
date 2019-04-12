@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -53,6 +54,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     protected int autoDismissTime;
     protected Object tag;
     protected DialogImageLoder dialogImageLoder;
+    protected View attchView;
 
     public BaseDialog(@NonNull Context context) {
         this(context,STYLE_BASEDIALOG);
@@ -68,50 +70,26 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
         Window window = getDialog().getWindow();
 
-        if (rootView == null)
-            rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
+        //隐藏Dialog Window状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+
+        if (animatStyle != 0) window.setWindowAnimations(animatStyle);
+
+        if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
         window.setContentView(rootView);
 
-        //设置弹窗位置
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.x= x;
-        lp.y= y;
-        window.setGravity(gravity);
-
-        if (animatStyle != 0)
-            window.setWindowAnimations(animatStyle);
     }
 
-    protected float rawX;
-    protected float rawY;
     public void onStart() {
+
         measure();
 
-        if (attchView != null)
-        {
+        location();
 
-            attchView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    rawX = event.getRawX();
-                    rawY = event.getRawY();
-                    return false;
-                }
-            });
-            int[] location = reckonPopWindowShowPos((int)rawX,(int)rawY);
-            Window window = getDialog().getWindow();
-            WindowManager.LayoutParams lp = window.getAttributes();
-            lp.x = location[0];
-            lp.y = location[1];
-
-//            int[] location = new  int[2] ;
-//            attchView.getLocationOnScreen(location);
-//            location = reckonPopWindowShowPos(location[0],location[1]);
-//            Window window = getDialog().getWindow();
-//            WindowManager.LayoutParams lp = window.getAttributes();
-//            lp.x = location[0];
-//            lp.y = location[1];
-        }
     }
 
     public void onDestory(){
@@ -161,6 +139,65 @@ public abstract class BaseDialog<T extends BaseDialog>{
             lp.width = maxWidth;
         else
             lp.width = width;
+    }
+
+    //当Dialog需要调整弹出位置的时候，请调用此方法
+    protected void location(){
+        Window window = getDialog().getWindow();
+        if (attchView != null)
+        {
+            int[] location = new int[2] ;attchView.getLocationOnScreen(location);
+            location[0] = location[0] + attchView.getMeasuredWidth();
+            location[1] = location[1] + attchView.getMeasuredHeight() - (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT?0:ScreenUtils.getStatusBarHeight());
+            location = resetWindowLocation(location[0],location[1]);
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.x = location[0];
+            lp.y = location[1];
+            window.setGravity(Gravity.TOP|Gravity.START);
+            isSetLocation = true;
+            isSetGravity = true;
+        }
+        else
+        {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            if (isSetGravity)
+                window.setGravity(gravity);
+            else    if (isSetLocation)
+                window.setGravity(Gravity.TOP|Gravity.START);
+            lp.x= x;
+            lp.y= y;
+        }
+    }
+
+    protected int[] resetWindowLocation(int posX, int posY) {
+
+        rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+        int screenH = ScreenUtils.getScreenHeight(context);
+        int screenW = ScreenUtils.getScreenWidth(context);
+
+        int windowsHeight = rootView.getMeasuredHeight();
+        int windowsWidth = rootView.getMeasuredWidth();
+
+        int x = posX, y = posY;    //窗口弹出坐标
+
+        //向上弹出
+        if (screenH - posY < windowsHeight) {
+            y = posY - windowsHeight;
+        } else {  //向下弹出
+
+        }
+        //左弹出
+        if (screenW - posX < windowsWidth) {
+            x = posX - windowsWidth;
+        } else {   //右弹出
+
+        }
+
+        int[] posArr = new int[2];
+        posArr[0] = x;
+        posArr[1] = y;
+        return posArr;
     }
 
     public void show() {
@@ -296,13 +333,24 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
+    //isSetLocation表示是否设置过位置属性
+    private boolean isSetLocation = false;
     public T setX(int x) {
         this.x = x;
+        isSetLocation = true;
         return (T) this;
     }
 
     public T setY(int y) {
         this.y = y;
+        isSetLocation = true;
+        return (T) this;
+    }
+
+    private boolean isSetGravity = false;
+    public T setGravity(int gravity) {
+        this.gravity = gravity;
+        isSetGravity = true;
         return (T) this;
     }
 
@@ -318,52 +366,10 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
-    private View attchView;
     public T setPopupFromView(View view){
-        this.gravity = Gravity.TOP|Gravity.LEFT;
-        attchView = view;
+        this.attchView = view;
         return (T) this;
     }
-
-    public int[] reckonPopWindowShowPos(int posX, int posY) {
-
-        int screenH = ScreenUtils.getScreenHeight(context);
-        int screenW = ScreenUtils.getScreenWidth(context);
-        rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-
-        int windowsHeight = rootView.getMeasuredHeight();
-        int windowsWidth = rootView.getMeasuredWidth();
-        int x = posX, y = posY;    //窗口弹出坐标
-
-        //向上弹出
-        if (screenH - posY < windowsHeight) {
-            y = posY - windowsHeight;
-//            showAtVertical = SHOW_ON_UP;
-        } else {  //向下弹出
-//            showAtVertical = SHOW_ON_DOWN;
-        }
-
-        //左弹出
-        if (screenW - posX < windowsWidth) {
-            x = posX - windowsWidth;
-//            showAtOrientation = SHOW_ON_LEFT;
-        } else {   //右弹出
-//            showAtOrientation = SHOW_ON_RIGHT;
-        }
-
-        int[] posArr = new int[2];
-        posArr[0] = x;
-        posArr[1] = y;
-
-//        //防止设置自适应动画方法在此方法之前调用
-//        if (isSetAutoFitStyle) {
-//            setAutoFitStyle(true);
-//        }
-
-        return posArr;
-
-    }
-
 
     public T setCustomView(int layoutId){
         this.layoutId = layoutId;
@@ -468,6 +474,10 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public int getY() {
         return y;
+    }
+
+    public int getGravity() {
+        return gravity;
     }
 
     public int getAutoDismissTime() {
@@ -605,5 +615,12 @@ public abstract class BaseDialog<T extends BaseDialog>{
         public static int getScreenHeight(Context c) {
             return c.getResources().getDisplayMetrics().heightPixels;
         }
+
+        public static int getStatusBarHeight() {
+            Resources resources = Resources.getSystem();
+            int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+            return resources.getDimensionPixelSize(resourceId);
+        }
+
     }
 }
