@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -81,18 +82,35 @@ public abstract class BaseDialog<T extends BaseDialog>{
             window.setWindowAnimations(animatStyle);
     }
 
+    protected float rawX;
+    protected float rawY;
     public void onStart() {
         measure();
 
         if (attchView != null)
         {
-            int[] location = new  int[2] ;
-            attchView.getLocationOnScreen(location);
-            location = reckonPopWindowShowPos(location[0],location[1]);
+
+            attchView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    rawX = event.getRawX();
+                    rawY = event.getRawY();
+                    return false;
+                }
+            });
+            int[] location = reckonPopWindowShowPos((int)rawX,(int)rawY);
             Window window = getDialog().getWindow();
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.x = location[0];
             lp.y = location[1];
+
+//            int[] location = new  int[2] ;
+//            attchView.getLocationOnScreen(location);
+//            location = reckonPopWindowShowPos(location[0],location[1]);
+//            Window window = getDialog().getWindow();
+//            WindowManager.LayoutParams lp = window.getAttributes();
+//            lp.x = location[0];
+//            lp.y = location[1];
         }
     }
 
