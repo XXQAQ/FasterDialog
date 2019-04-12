@@ -71,7 +71,13 @@ public abstract class BaseDialog<T extends BaseDialog>{
         Window window = getDialog().getWindow();
 
         //隐藏Dialog Window状态栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+        {
+            window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+        else
         {
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -148,7 +154,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         {
             int[] location = new int[2] ;attchView.getLocationOnScreen(location);
             location[0] = location[0] + attchView.getMeasuredWidth();
-            location[1] = location[1] + attchView.getMeasuredHeight() - (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT?0:ScreenUtils.getStatusBarHeight());
+            location[1] = location[1] + attchView.getMeasuredHeight();
             location = resetWindowLocation(location[0],location[1]);
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.x = location[0];
