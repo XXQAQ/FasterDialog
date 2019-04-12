@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 
 public class DialogManager {
 
-    private static LinkedHashMap<Integer,BaseDialog> map_dialog;
+    private static LinkedHashMap<Integer,BaseDialog> map_dialog = new LinkedHashMap<>();
 
     public static void showAnywhere(DialogDelegateActivity.DialogContextProvider contextProvider){
         DialogDelegateActivity.startActivity(contextProvider);
