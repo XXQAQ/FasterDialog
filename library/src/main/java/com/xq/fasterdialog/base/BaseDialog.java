@@ -292,7 +292,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     public T setPopupFromView(View view){
         this.gravity = Gravity.TOP|Gravity.LEFT;
         int[] location = new  int[2] ;
-        view.getLocationOnScreen(location);
+        view.getLocationInWindow(location);
         setX(location[0]);
         setY(location[1]);
         return (T) this;
