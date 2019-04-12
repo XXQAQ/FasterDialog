@@ -83,6 +83,15 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public void onStart() {
         measure();
+
+        if (attchView != null)
+        {
+            int[] location = new  int[2] ;
+            attchView.getLocationOnScreen(location);
+            location = reckonPopWindowShowPos(location[0],location[1]);
+            setX(location[0]);
+            setY(location[1]);
+        }
     }
 
     public void onDestory(){
@@ -289,14 +298,52 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
+    private View attchView;
     public T setPopupFromView(View view){
         this.gravity = Gravity.TOP|Gravity.LEFT;
-        int[] location = new  int[2] ;
-        view.getLocationInWindow(location);
-        setX(location[0]);
-        setY(location[1]);
+        attchView = view;
         return (T) this;
     }
+
+    public int[] reckonPopWindowShowPos(int posX, int posY) {
+
+        int screenH = ScreenUtils.getScreenHeight(context);
+        int screenW = ScreenUtils.getScreenWidth(context);
+        rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+        int windowsHeight = rootView.getMeasuredHeight();
+        int windowsWidth = rootView.getMeasuredWidth();
+        int x = posX, y = posY;    //窗口弹出坐标
+
+        //向上弹出
+        if (screenH - posY < windowsHeight) {
+            y = posY - windowsHeight;
+//            showAtVertical = SHOW_ON_UP;
+        } else {  //向下弹出
+//            showAtVertical = SHOW_ON_DOWN;
+        }
+
+        //左弹出
+        if (screenW - posX < windowsWidth) {
+            x = posX - windowsWidth;
+//            showAtOrientation = SHOW_ON_LEFT;
+        } else {   //右弹出
+//            showAtOrientation = SHOW_ON_RIGHT;
+        }
+
+        int[] posArr = new int[2];
+        posArr[0] = x;
+        posArr[1] = y;
+
+//        //防止设置自适应动画方法在此方法之前调用
+//        if (isSetAutoFitStyle) {
+//            setAutoFitStyle(true);
+//        }
+
+        return posArr;
+
+    }
+
 
     public T setCustomView(int layoutId){
         this.layoutId = layoutId;
