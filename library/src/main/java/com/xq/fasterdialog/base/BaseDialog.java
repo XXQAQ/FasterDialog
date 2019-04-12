@@ -89,8 +89,10 @@ public abstract class BaseDialog<T extends BaseDialog>{
             int[] location = new  int[2] ;
             attchView.getLocationOnScreen(location);
             location = reckonPopWindowShowPos(location[0],location[1]);
-            setX(location[0]);
-            setY(location[1]);
+            Window window = getDialog().getWindow();
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.x = location[0];
+            lp.y = location[1];
         }
     }
 
