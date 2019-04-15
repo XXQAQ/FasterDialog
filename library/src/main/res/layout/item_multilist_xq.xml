@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="1dp"
+    android:layout_marginLeft="1dp"
     >
 
     <CheckBox
@@ -13,8 +14,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/spacing_less"
         android:paddingBottom="@dimen/spacing_less"
-        android:paddingLeft="@dimen/spacing_medium"
-        android:paddingRight="@dimen/spacing_medium"
+        android:paddingLeft="@dimen/spacing_max"
+        android:paddingRight="@dimen/spacing_max"
         android:layout_gravity="center"
         android:gravity="center"
         android:background="@drawable/select_rect_solidwidely_toprimary"

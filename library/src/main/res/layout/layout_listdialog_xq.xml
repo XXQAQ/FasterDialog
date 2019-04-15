@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/spacing_max"
     android:gravity="center_horizontal"
     android:background="@color/colorWidely"
     >
@@ -13,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="@dimen/spacing_max"
         android:layout_marginBottom="@dimen/spacing_more"
         >
 
@@ -25,9 +25,9 @@
 
         <TextView
             android:id="@+id/titleView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_gravity="center_horizontal"
             android:paddingLeft="@dimen/spacing_medium"
             android:paddingRight="@dimen/spacing_medium"
             android:text="提醒"
@@ -68,37 +68,40 @@
         android:background="@drawable/layer_rect_topprimary_solidtransparent"
         >
 
-        <Button
+        <TextView
             android:id="@+id/negativeView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/spacing_less"
             android:text="停止充值"
-            android:padding="@dimen/spacing_min"
             android:background="@drawable/press_rect_solidtransparent"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
             />
 
-        <Button
+        <TextView
             android:id="@+id/neutralView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/spacing_less"
             android:text="只能选两边"
-            android:padding="@dimen/spacing_min"
             android:background="@drawable/press_rect_solidtransparent"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"
             />
 
-        <Button
+        <TextView
             android:id="@+id/positiveView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/spacing_less"
             android:text="立即充值"
-            android:padding="@dimen/spacing_min"
             android:background="@drawable/press_rect_solidtransparent"
             android:textSize="@dimen/text_more"
             android:textColor="@color/colorPrimary"

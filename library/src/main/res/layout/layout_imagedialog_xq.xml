@@ -19,6 +19,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/spacing_medium"
+        android:paddingLeft="@dimen/spacing_more"
+        android:paddingRight="@dimen/spacing_more"
         >
 
         <TextView
@@ -27,8 +29,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:paddingLeft="@dimen/spacing_medium"
-            android:paddingRight="@dimen/spacing_medium"
             android:text="提醒"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_more"
@@ -41,8 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingLeft="@dimen/spacing_medium"
-            android:paddingRight="@dimen/spacing_medium"
             android:layout_marginTop="@dimen/spacing_min"
             android:text="立即充值,只有充值才能变得更强"
             android:textColor="@color/text_normal"
@@ -55,8 +53,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/spacing_medium"
-        android:paddingRight="@dimen/spacing_medium"
+        android:paddingLeft="@dimen/spacing_more"
+        android:paddingRight="@dimen/spacing_more"
         android:layout_gravity="right"
         android:divider="@drawable/spacing_medium"
         android:showDividers="middle"

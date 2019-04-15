@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="1dp"
+    android:layout_marginLeft="1dp"
     >
 
     <TextView
@@ -14,7 +15,7 @@
         android:paddingTop="@dimen/spacing_less"
         android:paddingBottom="@dimen/spacing_less"
         android:paddingLeft="@dimen/spacing_max"
-        android:paddingRight="@dimen/spacing_medium"
+        android:paddingRight="@dimen/spacing_max"
         android:background="@drawable/press_rect_solidwidely"
         android:layout_gravity="center"
         android:gravity="left|center_vertical"

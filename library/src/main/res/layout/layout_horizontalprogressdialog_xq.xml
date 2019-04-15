@@ -4,8 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/spacing_max"
-    android:paddingBottom="@dimen/spacing_more"
     android:background="@color/colorWidely"
     >
 
@@ -13,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="@dimen/spacing_max"
         android:layout_marginBottom="@dimen/spacing_more"
         >
 
@@ -25,9 +24,9 @@
 
         <TextView
             android:id="@+id/titleView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_gravity="center_horizontal"
             android:paddingLeft="@dimen/spacing_medium"
             android:paddingRight="@dimen/spacing_medium"
             android:text="提醒"
@@ -56,6 +55,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_more"
         android:paddingLeft="@dimen/spacing_max"
         android:paddingRight="@dimen/spacing_max"
         >

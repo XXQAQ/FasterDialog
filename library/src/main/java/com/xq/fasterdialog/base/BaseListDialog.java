@@ -208,6 +208,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             list_item.clear();
             list_item.addAll(list);
             recyclerView.getAdapter().notifyDataSetChanged();
+            measure();
         }
         else
             list_item.addAll(list);

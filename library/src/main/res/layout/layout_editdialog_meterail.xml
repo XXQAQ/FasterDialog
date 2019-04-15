@@ -3,18 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/spacing_medium"
-    android:paddingLeft="@dimen/spacing_more"
-    android:paddingRight="@dimen/spacing_medium"
-    android:paddingTop="@dimen/spacing_more"
     android:background="@color/colorWidely"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/spacing_more"
         android:layout_marginBottom="@dimen/spacing_min"
+        android:paddingLeft="@dimen/spacing_more"
+        android:paddingRight="@dimen/spacing_more"
+        android:orientation="horizontal"
         >
 
         <pl.droidsonroids.gif.GifImageView
@@ -42,6 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_min"
+        android:paddingLeft="@dimen/spacing_more"
+        android:paddingRight="@dimen/spacing_more"
         android:gravity="left"
         android:lineSpacingExtra="@dimen/textSpacing_medium"
         android:text="是的只有充钱才能变得更强"
@@ -52,7 +53,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_medium"
+        android:layout_marginBottom="@dimen/spacing_min"
+        android:paddingLeft="@dimen/spacing_more"
+        android:paddingRight="@dimen/spacing_more"
         android:divider="@drawable/spacing_xmin"
         android:showDividers="middle"
         android:orientation="vertical"
@@ -93,6 +96,9 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:paddingLeft="@dimen/spacing_more"
+        android:paddingRight="@dimen/spacing_more"
         android:divider="@drawable/spacing_more"
         android:showDividers="middle"
         android:layout_gravity="right">

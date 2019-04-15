@@ -152,7 +152,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
             int[] location = new int[2] ;attchView.getLocationOnScreen(location);
             location[0] = location[0] + attchView.getMeasuredWidth();
             location[1] = location[1] + attchView.getMeasuredHeight();
-            location = resetWindowLocation(location[0],location[1]);
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.x = location[0];
             lp.y = location[1];
@@ -170,51 +169,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
             lp.x= x;
             lp.y= y;
         }
-    }
-
-    protected int[] resetWindowLocation(int posX, int posY) {
-
-        rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-
-        int screenH = ScreenUtils.getScreenHeight(context);
-        int screenW = ScreenUtils.getScreenWidth(context);
-
-        int windowsHeight = rootView.getMeasuredHeight();
-        int windowsWidth = rootView.getMeasuredWidth();
-
-        int x = posX, y = posY;    //窗口弹出坐标
-
-        if (width == WindowManager.LayoutParams.MATCH_PARENT)
-        {
-            x = 0;
-        }
-        else
-        {
-            if (screenW - posX < windowsWidth)
-            {   //左弹出
-                x = posX - windowsWidth;
-            }
-            else
-            {   //右弹出
-            }
-        }
-
-        if (height == WindowManager.LayoutParams.MATCH_PARENT)
-        {
-            y = 0;
-        }
-        else
-        {
-            if (screenH - posY < windowsHeight)
-            {   //向上弹出
-                y = posY - windowsHeight;
-            }
-            else
-            {   //向下弹出
-            }
-        }
-
-        return new int[]{x,y};
     }
 
     public void show() {
