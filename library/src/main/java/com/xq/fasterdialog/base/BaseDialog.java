@@ -28,9 +28,12 @@ import java.util.List;
 
 public abstract class BaseDialog<T extends BaseDialog>{
 
-    public static int STYLE_BASEDIALOG = R.style.BaseDialog;
-    public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;
-    public static int STYLE_ALERTDIALOG = R.style.AlertDialog;
+    public static int STYLE_BASEDIALOG = R.style.BaseDialog;    //无任何特性,Dialog基础样式
+    public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;  //在上基础上，弹出时附带阴影效果
+    public static int STYLE_ALERTDIALOG = R.style.AlertDialog;  //参照AlertDialog效果，Dialog宽度固定且附带阴影效果
+
+    public static int ATTCHGRAVITY_DEFAULT = 1; //默认为右下角弹出，参考windows的右键菜单
+    public static int ATTCHGRAVITY_BOTTOM = 2;  //底部弹出，并且总会与依附的View保持左右对称
 
     //Dialog
     protected Dialog dialog;
@@ -55,6 +58,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     protected Object tag;
     protected DialogImageLoder dialogImageLoder;
     protected View attchView;
+    protected int attchGravity = ATTCHGRAVITY_DEFAULT;
 
     public BaseDialog(@NonNull Context context) {
         this(context,STYLE_BASEDIALOG);
@@ -150,22 +154,29 @@ public abstract class BaseDialog<T extends BaseDialog>{
         if (attchView != null)
         {
             int[] location = new int[2] ;attchView.getLocationOnScreen(location);
-            location[0] = location[0] + attchView.getMeasuredWidth();
-            location[1] = location[1] + attchView.getMeasuredHeight();
+            if (attchGravity == ATTCHGRAVITY_DEFAULT)
+            {
+                location[0] = location[0] + attchView.getMeasuredWidth();
+                location[1] = location[1] + attchView.getMeasuredHeight();
+            }
+            else    if (attchGravity == ATTCHGRAVITY_BOTTOM)
+            {
+                rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                location[0] = location[0]+((attchView.getMeasuredWidth()-rootView.getMeasuredWidth())/2);
+                location[1] = location[1] + attchView.getMeasuredHeight();
+            }
+            window.setGravity(Gravity.TOP|Gravity.START);
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.x = location[0];
             lp.y = location[1];
-            window.setGravity(Gravity.TOP|Gravity.START);
-            isSetLocation = true;
-            isSetGravity = true;
         }
         else
         {
-            WindowManager.LayoutParams lp = window.getAttributes();
             if (isSetGravity)
                 window.setGravity(gravity);
             else    if (isSetLocation)
                 window.setGravity(Gravity.TOP|Gravity.START);
+            WindowManager.LayoutParams lp = window.getAttributes();
             lp.x= x;
             lp.y= y;
         }
@@ -339,6 +350,12 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public T setPopupFromView(View view){
         this.attchView = view;
+        return (T) this;
+    }
+
+    public T setPopupFromView(View view,int attchGravity){
+        setPopupFromView(view);
+        this.attchGravity = attchGravity;
         return (T) this;
     }
 
