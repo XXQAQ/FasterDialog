@@ -71,13 +71,10 @@ public abstract class BaseDialog<T extends BaseDialog>{
         Window window = getDialog().getWindow();
 
         //隐藏Dialog Window状态栏
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-        {
-            window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-        else
+        window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
         {
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -187,23 +184,37 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
         int x = posX, y = posY;    //窗口弹出坐标
 
-        //向上弹出
-        if (screenH - posY < windowsHeight) {
-            y = posY - windowsHeight;
-        } else {  //向下弹出
-
+        if (width == WindowManager.LayoutParams.MATCH_PARENT)
+        {
+            x = 0;
         }
-        //左弹出
-        if (screenW - posX < windowsWidth) {
-            x = posX - windowsWidth;
-        } else {   //右弹出
-
+        else
+        {
+            if (screenW - posX < windowsWidth)
+            {   //左弹出
+                x = posX - windowsWidth;
+            }
+            else
+            {   //右弹出
+            }
         }
 
-        int[] posArr = new int[2];
-        posArr[0] = x;
-        posArr[1] = y;
-        return posArr;
+        if (height == WindowManager.LayoutParams.MATCH_PARENT)
+        {
+            y = 0;
+        }
+        else
+        {
+            if (screenH - posY < windowsHeight)
+            {   //向上弹出
+                y = posY - windowsHeight;
+            }
+            else
+            {   //向下弹出
+            }
+        }
+
+        return new int[]{x,y};
     }
 
     public void show() {
