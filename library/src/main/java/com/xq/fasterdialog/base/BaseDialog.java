@@ -338,13 +338,13 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public T setPopupFromBottom(){
         setAnimatStyle(R.style.Animation_Bottom);
-        this.gravity = Gravity.BOTTOM;
+        setGravity(Gravity.BOTTOM);
         return (T) this;
     }
 
     public T setPopupFromTop(){
         setAnimatStyle(R.style.Animation_Top);
-        this.gravity = Gravity.TOP;
+        setGravity(Gravity.TOP);
         return (T) this;
     }
 
