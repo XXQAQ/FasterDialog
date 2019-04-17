@@ -42,10 +42,6 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         super(context);
     }
 
-    public BaseListDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

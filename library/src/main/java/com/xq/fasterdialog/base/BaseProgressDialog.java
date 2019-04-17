@@ -17,10 +17,6 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
         super(context);
     }
 
-    public BaseProgressDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

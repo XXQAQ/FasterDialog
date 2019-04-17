@@ -25,10 +25,6 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         super(context);
     }
 
-    public BaseSimpleDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

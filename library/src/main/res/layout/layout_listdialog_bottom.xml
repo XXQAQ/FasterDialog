@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:background="@color/colorWidely"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layer_rect_bottomdivider_solidtransparent"
+        >
+
+        <TextView
+            android:id="@+id/negativeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingTop="@dimen/spacing_less"
+            android:paddingBottom="@dimen/spacing_less"
+            android:paddingLeft="@dimen/spacing_min"
+            android:paddingRight="@dimen/spacing_min"
+            android:text="取消"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/press_text_normal" />
+
+        <TextView
+            android:id="@+id/positiveView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingTop="@dimen/spacing_less"
+            android:paddingBottom="@dimen/spacing_less"
+            android:paddingLeft="@dimen/spacing_min"
+            android:paddingRight="@dimen/spacing_min"
+            android:text="确认"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/press_text_normal" />
+
+        <TextView
+            android:id="@+id/titleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/spacing_less"
+            android:text="选择充值项目"
+            android:textSize="@dimen/text_more"
+            android:textColor="@color/text_strong"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/contentView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/spacing_less"
+            android:text="选择充值项目"
+            android:textSize="@dimen/text_medium"
+            android:textColor="@color/text_normal"
+            />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

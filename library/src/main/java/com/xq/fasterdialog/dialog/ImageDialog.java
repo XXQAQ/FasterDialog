@@ -15,11 +15,7 @@ public class ImageDialog extends BaseImageDialog<ImageDialog> {
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
 
     public ImageDialog(@NonNull Context context) {
-        this(context,STYLE_DEFAULT);
-    }
-
-    public ImageDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
+        super(context);
         init();
     }
 
@@ -32,6 +28,7 @@ public class ImageDialog extends BaseImageDialog<ImageDialog> {
     }
 
     private void init() {
+        setStyle(STYLE_DEFAULT);
         setCustomView(LAYOUT_DEFAULT);
     }
 

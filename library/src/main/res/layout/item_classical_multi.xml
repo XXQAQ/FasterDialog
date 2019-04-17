@@ -4,8 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="1dp"
-    android:layout_marginLeft="1dp"
     >
 
     <CheckBox
@@ -18,11 +16,11 @@
         android:paddingRight="@dimen/spacing_max"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@drawable/select_rect_solidwidely_toprimary"
+        android:background="@drawable/select_rect_solidwidely"
         android:button="@null"
         android:text="随手写写"
         android:textSize="@dimen/text_medium"
-        android:textColor="@color/select_text_normal_towidely"
+        android:textColor="@color/select_text_normal_tostrong"
         />
 
 </LinearLayout>

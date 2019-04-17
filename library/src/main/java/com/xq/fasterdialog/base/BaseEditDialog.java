@@ -27,10 +27,6 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         super(context);
     }
 
-    public BaseEditDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

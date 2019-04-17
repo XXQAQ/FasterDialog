@@ -4,11 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="1dp"
-    android:layout_marginLeft="1dp"
     >
 
-    <CheckBox
+    <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,11 +15,11 @@
         android:paddingLeft="@dimen/spacing_max"
         android:paddingRight="@dimen/spacing_max"
         android:layout_gravity="center"
-        android:gravity="left|center_vertical"
+        android:gravity="center"
         android:background="@drawable/press_rect_solidwidely"
         android:text="随手写写"
         android:textSize="@dimen/text_medium"
-        android:textColor="@color/text_normal"
+        android:textColor="@color/press_text_normal_tostrong"
         />
 
 </LinearLayout>

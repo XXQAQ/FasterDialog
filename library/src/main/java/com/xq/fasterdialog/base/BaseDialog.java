@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -35,16 +36,15 @@ public abstract class BaseDialog<T extends BaseDialog>{
     public static int ATTCHGRAVITY_BOTTOM = 2;  //底部弹出，并且总会与依附的View保持左右对称
 
     //Dialog
-    protected Dialog dialog;
+    private Dialog dialog;
 
     //上下文
-    protected Context context;
+    private Context context;
 
     //根布局
     protected View rootView;
 
     //自定义属性
-    protected int layoutId;
     protected int gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
     protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -52,32 +52,63 @@ public abstract class BaseDialog<T extends BaseDialog>{
     protected int maxHeight;
     protected int x;
     protected int y;
-    protected int animatStyle;
     protected int autoDismissTime;
     protected Object tag;
     protected DialogImageLoder dialogImageLoder;
+    //AttchView的相关属性
     protected View attchView;
     protected int attchGravity = ATTCHGRAVITY_DEFAULT;
+    //需要在初始化的时候传值给Dialog设置的属性
+    protected int style = STYLE_BASEDIALOG;
+    protected int layoutId;
+    protected int animatStyle;
+    protected boolean cancelable = false;
+    protected boolean cancelableOutside = true;
+    protected List<OnDialogCancelListener> list_cancelListener = new LinkedList<>();
+    protected List<OnDialogDismissListener> list_dismissListener = new LinkedList<>();
+    protected List<OnDialogShowListener> list_showListener = new LinkedList<>();
+
+    private boolean isCreated = false;
+    private boolean isSetLocation = false;
+    private boolean isSetGravity = false;
 
     public BaseDialog(@NonNull Context context) {
-        this(context,STYLE_BASEDIALOG);
-    }
-
-    public BaseDialog(@NonNull Context context, int themeResId) {
-        super();
         this.context = context;
-        dialog = new Dialog(context,themeResId);
     }
 
     public void onCreate(Bundle savedInstanceState) {
 
-        Window window = getDialog().getWindow();
+        isCreated = true;
 
-        if (animatStyle != 0) window.setWindowAnimations(animatStyle);
+        dialog = new Dialog(getContext(),style);
 
         if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
-        window.setContentView(rootView);
+        getDialog().getWindow().setContentView(rootView);
 
+        if (animatStyle != 0) getDialog().getWindow().setWindowAnimations(animatStyle);
+        getDialog().setCancelable(cancelable);
+        getDialog().setCanceledOnTouchOutside(cancelableOutside);
+        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                for(OnDialogShowListener l : list_showListener)
+                    l.onShow(BaseDialog.this);
+            }
+        });
+        getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                for (OnDialogDismissListener l : list_dismissListener)
+                    l.onDismiss(BaseDialog.this);
+            }
+        });
+        getDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                for (OnDialogCancelListener l : list_cancelListener)
+                    l.onCancel(BaseDialog.this);
+            }
+        });
     }
 
     public void onStart() {
@@ -88,7 +119,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     }
 
-    public void onDestory(){
+    public void onStop(){
 
     }
 
@@ -164,13 +195,16 @@ public abstract class BaseDialog<T extends BaseDialog>{
         }
         else
         {
+            int[] location = new int[]{x,y};
+            //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
+            location[1] = location[1] - ScreenUtils.getStatusBarHeight();
             if (isSetGravity)
                 window.setGravity(gravity);
             else    if (isSetLocation)
                 window.setGravity(Gravity.TOP|Gravity.START);
             WindowManager.LayoutParams lp = window.getAttributes();
-            lp.x= x;
-            lp.y= y;
+            lp.x = location[0];
+            lp.y = location[1];
         }
     }
 
@@ -178,10 +212,11 @@ public abstract class BaseDialog<T extends BaseDialog>{
         if (((Activity)getContext()).isFinishing())
             return;
 
-        onCreate(null);
+        if (!isCreated) onCreate(null);
+
         onStart();
 
-        dialog.show();
+        getDialog().show();
 
         if (autoDismissTime > 0)
             autoDismiss();
@@ -194,9 +229,9 @@ public abstract class BaseDialog<T extends BaseDialog>{
         if (autoDismissTime > 0 && task != null)
             task.cancel(true);
 
-        onDestory();
+        getDialog().dismiss();
 
-        dialog.dismiss();
+        onStop();
     }
 
     public <T_VIEW extends View> T_VIEW findViewById(int id) {
@@ -248,6 +283,16 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
 
     //所有set
+    public T setStyle(int style) {
+        this.style = style;
+        return (T) this;
+    }
+
+    public T setCustomView(int layoutId){
+        this.layoutId = layoutId;
+        return (T) this;
+    }
+
     public T setWidth(int width) {
         this.width = width;
         return (T) this;
@@ -308,8 +353,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
-    //isSetLocation表示是否设置过位置属性
-    private boolean isSetLocation = false;
     public T setX(int x) {
         this.x = x;
         isSetLocation = true;
@@ -322,7 +365,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
-    private boolean isSetGravity = false;
     public T setGravity(int gravity) {
         this.gravity = gravity;
         isSetGravity = true;
@@ -342,18 +384,25 @@ public abstract class BaseDialog<T extends BaseDialog>{
     }
 
     public T setPopupFromView(View view){
-        this.attchView = view;
+        setPopupFromView(view,ATTCHGRAVITY_DEFAULT);
         return (T) this;
     }
 
     public T setPopupFromView(View view,int attchGravity){
-        setPopupFromView(view);
+        this.attchView = view;
         this.attchGravity = attchGravity;
         return (T) this;
     }
 
-    public T setCustomView(int layoutId){
-        this.layoutId = layoutId;
+    public T bindViewTouchLocation(View view){
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                setX((int) event.getRawX());
+                setY((int) event.getRawY());
+                return false;
+            }
+        });
         return (T) this;
     }
 
@@ -373,12 +422,12 @@ public abstract class BaseDialog<T extends BaseDialog>{
     }
 
     public T setCancelable(boolean cancelable) {
-        getDialog().setCancelable(cancelable);
+        this.cancelable = cancelable;
         return (T) this;
     }
 
-    public T setCanceledOnTouchOutside(boolean cancel) {
-        getDialog().setCanceledOnTouchOutside(cancel);
+    public T setCanceledOnTouchOutside(boolean cancelableOutside) {
+        this.cancelableOutside = cancelableOutside;
         return (T) this;
     }
 
@@ -387,42 +436,18 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
-    private List<OnDialogCancelListener> list_cancelListener = new LinkedList<>();
     public T addOnCancelListener(@Nullable final OnDialogCancelListener listener) {
         list_cancelListener.add(listener);
-        getDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                for (OnDialogCancelListener l : list_cancelListener)
-                    l.onCancel(BaseDialog.this);
-            }
-        });
         return (T) this;
     }
 
-    private List<OnDialogDismissListener> list_dismissListener = new LinkedList<>();
     public T addOnDismissListener(@Nullable OnDialogDismissListener listener) {
         list_dismissListener.add(listener);
-        getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                for (OnDialogDismissListener l : list_dismissListener)
-                    l.onDismiss(BaseDialog.this);
-            }
-        });
         return (T) this;
     }
 
-    private List<OnDialogShowListener> list_showListener = new LinkedList<>();
     public T addOnShowListener(@Nullable OnDialogShowListener listener) {
         list_showListener.add(listener);
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                for(OnDialogShowListener l : list_showListener)
-                    l.onShow(BaseDialog.this);
-            }
-        });
         return (T) this;
     }
 
@@ -455,10 +480,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public int getY() {
         return y;
-    }
-
-    public int getGravity() {
-        return gravity;
     }
 
     public int getAutoDismissTime() {

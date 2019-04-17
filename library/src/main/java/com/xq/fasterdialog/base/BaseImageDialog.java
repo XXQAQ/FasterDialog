@@ -18,10 +18,6 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
         super(context);
     }
 
-    public BaseImageDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

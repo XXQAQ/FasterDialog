@@ -18,11 +18,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     protected static int LAYOUT_DEFAULT = LAYOUT_CIRCLE_XQ;
 
     public ProgressDialog(@NonNull Context context) {
-        this(context,STYLE_DEFAULT);
-    }
-
-    public ProgressDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
+        super(context);
         init();
     }
 
@@ -36,8 +32,9 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     private void init() {
 
-        setCancelable(false);
-
+        setStyle(STYLE_DEFAULT);
         setIndeterminate(true,LAYOUT_DEFAULT);
+
+        setCancelable(false);
     }
 }

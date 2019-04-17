@@ -16,11 +16,7 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
 
     public NormalDialog(@NonNull Context context) {
-        this(context,STYLE_DEFAULT);
-    }
-
-    public NormalDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
+        super(context);
         init();
     }
 
@@ -33,6 +29,7 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
     }
 
     private void init() {
+        setStyle(STYLE_DEFAULT);
         setCustomView(LAYOUT_DEFAULT);
     }
 

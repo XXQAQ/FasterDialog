@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:divider="@drawable/spacing_min"
+        android:divider="@drawable/spacing_less"
         android:showDividers="beginning|middle|end"
         android:background="@drawable/layer_rect_bottomdivider_solidwidely"
         >
@@ -25,7 +25,7 @@
             android:paddingLeft="@dimen/spacing_medium"
             android:paddingRight="@dimen/spacing_medium"
             android:text="提醒"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_strong"
             android:textSize="@dimen/text_more"
             android:textStyle="bold"
             android:lineSpacingExtra="@dimen/textSpacing_more"
@@ -61,36 +61,24 @@
         >
 
         <TextView
-            android:id="@+id/negativeView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/spacing_less"
-            android:text="停止充值"
-            android:background="@drawable/press_rect_solidwidely"
-            android:textSize="@dimen/text_more"
-            android:textColor="@color/text_strong"
-            />
-
-        <TextView
-            android:id="@+id/neutralView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/spacing_less"
-            android:text="只能选两边"
-            android:background="@drawable/press_rect_solidwidely"
-            android:textSize="@dimen/text_more"
-            android:textColor="@color/text_strong"
-            />
-
-        <TextView
             android:id="@+id/positiveView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/spacing_less"
             android:text="立即充值"
+            android:background="@drawable/press_rect_solidwidely"
+            android:textSize="@dimen/text_more"
+            android:textColor="@color/text_strong"
+            />
+
+        <TextView
+            android:id="@+id/negativeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/spacing_less"
+            android:text="停止充值"
             android:background="@drawable/press_rect_solidwidely"
             android:textSize="@dimen/text_more"
             android:textColor="@color/text_strong"

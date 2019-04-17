@@ -20,12 +20,8 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
     private CharSequence loadingText;
 
-    public LoadingDialog(@NonNull Context context) {
-        this(context,STYLE_DEFAULT);
-    }
-
-    public LoadingDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
+    public LoadingDialog(Context context) {
+        super(context);
         init();
     }
 
@@ -41,9 +37,10 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
         loadingText = getContext().getResources().getString(R.string.loading);
 
-        setCancelable(false);
-
+        setStyle(STYLE_DEFAULT);
         setCustomView(LAYOUT_DEFAULT);
+
+        setCancelable(false);
     }
 
     @Override

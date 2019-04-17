@@ -15,11 +15,7 @@ public class EditDialog extends BaseEditDialog<EditDialog> {
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
 
     public EditDialog(@NonNull Context context) {
-        this(context,STYLE_DEFAULT);
-    }
-
-    public EditDialog(@NonNull Context context, int themeResId) {
-        super(context, themeResId);
+        super(context);
         init();
     }
 
@@ -32,6 +28,7 @@ public class EditDialog extends BaseEditDialog<EditDialog> {
     }
 
     private void init() {
+        setStyle(STYLE_DEFAULT);
         setCustomView(LAYOUT_DEFAULT);
     }
 
