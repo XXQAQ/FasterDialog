@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -73,16 +72,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
     public void onCreate(Bundle savedInstanceState) {
 
         Window window = getDialog().getWindow();
-
-        //隐藏Dialog Window状态栏
-        window.setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-        {
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
 
         if (animatStyle != 0) window.setWindowAnimations(animatStyle);
 
@@ -153,7 +142,10 @@ public abstract class BaseDialog<T extends BaseDialog>{
         Window window = getDialog().getWindow();
         if (attchView != null)
         {
+            //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
             int[] location = new int[2] ;attchView.getLocationOnScreen(location);
+            //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
+            location[1] = location[1] - ScreenUtils.getStatusBarHeight();
             if (attchGravity == ATTCHGRAVITY_DEFAULT)
             {
                 location[0] = location[0] + attchView.getMeasuredWidth();
@@ -189,10 +181,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         onCreate(null);
         onStart();
 
-        NavigationBarUtil.focusNotAle(dialog.getWindow());
         dialog.show();
-        NavigationBarUtil.hideNavigationBar(dialog.getWindow());
-        NavigationBarUtil.clearFocusNotAle(dialog.getWindow());
 
         if (autoDismissTime > 0)
             autoDismiss();
@@ -613,56 +602,5 @@ public abstract class BaseDialog<T extends BaseDialog>{
             int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
             return resources.getDimensionPixelSize(resourceId);
         }
-
     }
-
-    protected static class NavigationBarUtil {
-
-        /**
-         * 隐藏虚拟栏 ，显示的时候再隐藏掉
-         * @param window
-         */
-        static public void hideNavigationBar(final Window window) {
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            window.getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-                @Override
-                public void onSystemUiVisibilityChange(int visibility) {
-                    int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                            //布局位于状态栏下方
-                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                            //全屏
-                            View.SYSTEM_UI_FLAG_FULLSCREEN |
-                            //隐藏导航栏
-                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        uiOptions |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-                    } else {
-                        uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
-                    }
-                    window.getDecorView().setSystemUiVisibility(uiOptions);
-                }
-            });
-        }
-
-        /**
-         * dialog 需要全屏的时候用，和clearFocusNotAle() 成对出现
-         * 在show 前调用  focusNotAle   show后调用clearFocusNotAle
-         * @param window
-         */
-        static public void focusNotAle(Window window) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        }
-
-        /**
-         * dialog 需要全屏的时候用，focusNotAle() 成对出现
-         * 在show 前调用  focusNotAle   show后调用clearFocusNotAle
-         * @param window
-         */
-        static public void clearFocusNotAle(Window window) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        }
-    }
-
 }
