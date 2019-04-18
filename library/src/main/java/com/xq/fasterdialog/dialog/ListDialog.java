@@ -119,6 +119,15 @@ public class ListDialog extends BaseListDialog<ListDialog> {
         return this;
     }
 
+    public ListDialog setPopupMenuLayoutStyleOnTouchLocation(View view){
+        setStyle(STYLE_TRANSLUCENTDIALOG);
+        setChooseMode(CHOOSEMODE_SINGLE,LAYOUT_XQ,ITEMLAYOUT_CLASSICAL_SINGLE);
+        setWidthWrap();
+        setHeightWrap();
+        setPopupFromViewTouchLocation(view);
+        return this;
+    }
+
     private void init() {
         setStyle(STYLE_DEFAULT);
         setChooseMode(CHOOSEMODE_SINGLE,LAYOUT_DEFAULT, ITEMLAYOUT_DEFAULT);

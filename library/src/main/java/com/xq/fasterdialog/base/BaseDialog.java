@@ -394,7 +394,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
-    public T bindViewTouchLocation(View view){
+    public T setPopupFromViewTouchLocation(View view){
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
