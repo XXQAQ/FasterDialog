@@ -14,13 +14,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:divider="@drawable/spacing_min"
+        android:showDividers="middle"
+        >
 
         <ProgressBar
             android:layout_width="@dimen/icon_less"
             android:layout_height="@dimen/icon_less"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/spacing_min"
             />
 
         <TextView

@@ -11,8 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/spacing_max"
-        android:layout_marginBottom="@dimen/spacing_more"
+        android:divider="@drawable/spacing_medium"
+        android:showDividers="middle"
+        android:paddingTop="@dimen/spacing_max"
+        android:paddingBottom="@dimen/spacing_more"
         >
 
         <pl.droidsonroids.gif.GifImageView
@@ -20,6 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:visibility="gone"
             />
 
         <TextView
@@ -43,7 +46,6 @@
             android:gravity="center"
             android:paddingLeft="@dimen/spacing_medium"
             android:paddingRight="@dimen/spacing_medium"
-            android:layout_marginTop="@dimen/spacing_medium"
             android:text="立即充值,只有充值才能变得更强"
             android:textColor="@color/text_normal"
             android:textSize="@dimen/text_more"
