@@ -26,9 +26,9 @@
             android:paddingRight="@dimen/spacing_medium"
             android:text="提醒"
             android:textColor="@color/text_strong"
-            android:textSize="@dimen/text_more"
+            android:textSize="@dimen/text_medium"
             android:textStyle="bold"
-            android:lineSpacingExtra="@dimen/textSpacing_more"
+            android:lineSpacingExtra="@dimen/textSpacing_medium"
             />
 
         <TextView
@@ -40,8 +40,8 @@
             android:paddingRight="@dimen/spacing_medium"
             android:text="立即充值,只有充值才能变得更强"
             android:textColor="@color/text_normal"
-            android:textSize="@dimen/text_medium"
-            android:lineSpacingExtra="@dimen/text_medium"
+            android:textSize="@dimen/text_less"
+            android:lineSpacingExtra="@dimen/textSpacing_less"
             />
 
     </LinearLayout>

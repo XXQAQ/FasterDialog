@@ -125,13 +125,28 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     //如果指定的ViewGroup下所有子控件均未不可见，则直接隐藏该ViewGroup
     protected void goneEmptyLayout(ViewGroup viewGroup){
+        if (viewGroup.getParent() == null)  return;
+
         boolean isGone =true;
         for (int i = 0; i < viewGroup.getChildCount(); i++)
         {
             if (viewGroup.getChildAt(i).getVisibility() == View.VISIBLE)
                 break;
             if (i == viewGroup.getChildCount()-1 && isGone)
+            {
                 viewGroup.setVisibility(View.GONE);
+                goneEmptyLayout((ViewGroup) viewGroup.getParent());
+            }
+        }
+    }
+
+    protected void visibleLayout(ViewGroup viewGroup){
+        if (viewGroup.getParent() == null)  return;
+
+        if (viewGroup.getVisibility() != View.VISIBLE)
+        {
+            viewGroup.setVisibility(View.VISIBLE);
+            visibleLayout((ViewGroup) viewGroup.getParent());
         }
     }
 
@@ -506,7 +521,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         {
             view.setText(text);
             view.setVisibility(View.VISIBLE);
-            ((View) view.getParent()).setVisibility(View.VISIBLE);
+            visibleLayout((ViewGroup) view.getParent());
         }
     }
 
@@ -523,7 +538,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         {
             view.setImageResource(id);
             view.setVisibility(View.VISIBLE);
-            ((View) view.getParent()).setVisibility(View.VISIBLE);
+            visibleLayout((ViewGroup) view.getParent());
         }
     }
 
@@ -543,7 +558,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
             else
                 dialogImageLoder.loadImage(getContext(),view,url);
             view.setVisibility(View.VISIBLE);
-            ((View) view.getParent()).setVisibility(View.VISIBLE);
+            visibleLayout((ViewGroup) view.getParent());
         }
     }
 
