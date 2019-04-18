@@ -28,6 +28,22 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
         LAYOUT_DEFAULT = layoutId;
     }
 
+    public NormalDialog setXQLayoutStyle(){
+        setStyle(STYLE_ALERTDIALOG);
+        setCustomView(LAYOUT_XQ);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
+    public NormalDialog setMeterailLayoutStyle(){
+        setStyle(STYLE_ALERTDIALOG);
+        setCustomView(LAYOUT_METERAIL);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
     private void init() {
         setStyle(STYLE_DEFAULT);
         setCustomView(LAYOUT_DEFAULT);

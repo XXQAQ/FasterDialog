@@ -30,7 +30,7 @@
             android:paddingLeft="@dimen/spacing_medium"
             android:paddingRight="@dimen/spacing_medium"
             android:text="提醒"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_strong"
             android:textSize="@dimen/text_max"
             android:textStyle="bold"
             android:lineSpacingExtra="@dimen/textSpacing_max"
@@ -58,6 +58,7 @@
         android:layout_height="@dimen/icon_xmax"
         android:layout_marginBottom="@dimen/spacing_min"
         android:layout_gravity="center_horizontal"
+        android:indeterminateTint="@color/colorPrimary"
         />
 
 </LinearLayout>

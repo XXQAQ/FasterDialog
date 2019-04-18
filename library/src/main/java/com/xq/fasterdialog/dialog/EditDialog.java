@@ -27,6 +27,22 @@ public class EditDialog extends BaseEditDialog<EditDialog> {
         LAYOUT_DEFAULT = layoutId;
     }
 
+    public EditDialog setXQLayoutStyle(){
+        setStyle(STYLE_ALERTDIALOG);
+        setCustomView(LAYOUT_XQ);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
+    public EditDialog setMeterailLayoutStyle(){
+        setStyle(STYLE_ALERTDIALOG);
+        setCustomView(LAYOUT_METERAIL);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
     private void init() {
         setStyle(STYLE_DEFAULT);
         setCustomView(LAYOUT_DEFAULT);

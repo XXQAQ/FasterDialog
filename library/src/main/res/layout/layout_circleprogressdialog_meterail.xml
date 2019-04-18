@@ -50,6 +50,7 @@
             android:layout_width="@dimen/icon_medium"
             android:layout_height="@dimen/icon_medium"
             android:layout_marginRight="@dimen/spacing_medium"
+            android:indeterminateTint="@color/colorPrimary"
             />
 
         <TextView

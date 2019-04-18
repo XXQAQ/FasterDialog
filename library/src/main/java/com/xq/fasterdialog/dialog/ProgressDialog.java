@@ -30,6 +30,48 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
         LAYOUT_DEFAULT = layoutId;
     }
 
+    public ProgressDialog setHorizontalXQLayoutStyle(){
+        setHorizontalXQLayoutStyle(true);
+        return this;
+    }
+
+    public ProgressDialog setHorizontalXQLayoutStyle(boolean indeterminate){
+        setStyle(STYLE_ALERTDIALOG);
+        setIndeterminate(indeterminate,LAYOUT_HORIZONTAL_XQ);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
+    public ProgressDialog setHorizontalMeterailLayoutStyle(){
+        setHorizontalMeterailLayoutStyle(true);
+        return this;
+    }
+
+    public ProgressDialog setHorizontalMeterailLayoutStyle(boolean indeterminate){
+        setStyle(STYLE_ALERTDIALOG);
+        setIndeterminate(indeterminate,LAYOUT_HORIZONTAL_METERAIL);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
+    public ProgressDialog setCircleXQLayoutStyle(){
+        setStyle(STYLE_ALERTDIALOG);
+        setIndeterminate(true,LAYOUT_CIRCLE_XQ);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
+    public ProgressDialog setCircleMeterailLayoutStyle(){
+        setStyle(STYLE_ALERTDIALOG);
+        setIndeterminate(true,LAYOUT_CIRCLE_METERAIL);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
     private void init() {
 
         setStyle(STYLE_DEFAULT);

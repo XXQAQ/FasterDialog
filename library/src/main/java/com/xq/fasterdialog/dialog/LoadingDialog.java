@@ -33,6 +33,14 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
         LAYOUT_DEFAULT = layoutId;
     }
 
+    public LoadingDialog setXQLayoutStyle(){
+        setStyle(STYLE_BASEDIALOG);
+        setCustomView(LAYOUT_XQ);
+        setWidthWrap();
+        setHeightWrap();
+        return this;
+    }
+
     private void init() {
 
         loadingText = getContext().getResources().getString(R.string.loading);

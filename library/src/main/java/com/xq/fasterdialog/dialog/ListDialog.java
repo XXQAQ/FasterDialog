@@ -50,7 +50,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
             setChooseMode(chooseMode,LAYOUT_XQ, ITEMLAYOUT_CLASSICAL_SINGLE);
         else    if (chooseMode == CHOOSEMODE_MULTI)
             setChooseMode(chooseMode,LAYOUT_XQ, ITEMLAYOUT_CLASSICAL_MULTI);
-        setWidthWrap();
+        setWidthMatch();
         setHeightWrap();
         return this;
     }
@@ -66,7 +66,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
             setChooseMode(chooseMode,LAYOUT_METERAIL, ITEMLAYOUT_METERAIL_SINGLE);
         else    if (chooseMode == CHOOSEMODE_MULTI)
             setChooseMode(chooseMode,LAYOUT_METERAIL, ITEMLAYOUT_METERAIL_MULTI);
-        setWidthWrap();
+        setWidthMatch();
         setHeightWrap();
         return this;
     }

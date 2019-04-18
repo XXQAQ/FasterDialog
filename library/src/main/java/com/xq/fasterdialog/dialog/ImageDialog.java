@@ -27,6 +27,14 @@ public class ImageDialog extends BaseImageDialog<ImageDialog> {
         LAYOUT_DEFAULT = layoutId;
     }
 
+    public ImageDialog setXQLayoutStyle(){
+        setStyle(STYLE_ALERTDIALOG);
+        setCustomView(LAYOUT_XQ);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
+    }
+
     private void init() {
         setStyle(STYLE_DEFAULT);
         setCustomView(LAYOUT_DEFAULT);

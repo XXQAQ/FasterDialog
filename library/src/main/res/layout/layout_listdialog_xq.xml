@@ -102,9 +102,9 @@
             android:gravity="center"
             android:padding="@dimen/spacing_less"
             android:text="立即充值"
-            android:background="@drawable/press_rect_solidtransparent"
+            android:background="@drawable/press_rect_solidprimary"
             android:textSize="@dimen/text_more"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorWidely"
             />
 
     </LinearLayout>
