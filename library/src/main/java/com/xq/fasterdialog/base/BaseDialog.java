@@ -62,7 +62,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     protected int style = STYLE_BASEDIALOG;
     protected int layoutId;
     protected int animatStyle;
-    protected boolean cancelable = false;
+    protected boolean cancelable = true;
     protected boolean cancelableOutside = true;
     protected List<OnDialogCancelListener> list_cancelListener = new LinkedList<>();
     protected List<OnDialogDismissListener> list_dismissListener = new LinkedList<>();
@@ -124,7 +124,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     }
 
     //如果指定的ViewGroup下所有子控件均未不可见，则直接隐藏该ViewGroup
-    protected void goneEmptyLayout(ViewGroup viewGroup){
+    protected void invisibleEmptyLayout(ViewGroup viewGroup,int visibilityIfNot){
         if (viewGroup.getParent() == null)  return;
 
         boolean isGone =true;
@@ -135,7 +135,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
             if (i == viewGroup.getChildCount()-1 && isGone)
             {
                 viewGroup.setVisibility(View.GONE);
-                goneEmptyLayout((ViewGroup) viewGroup.getParent());
+                invisibleEmptyLayout((ViewGroup) viewGroup.getParent(),visibilityIfNot);
             }
         }
     }
@@ -438,6 +438,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public T setCancelable(boolean cancelable) {
         this.cancelable = cancelable;
+        if (!cancelable)    setCanceledOnTouchOutside(false);
         return (T) this;
     }
 
@@ -515,7 +516,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         if (TextUtils.isEmpty(text))
         {
             view.setVisibility(visibilityIfNot);
-            goneEmptyLayout((ViewGroup) view.getParent());
+            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
         }
         else
         {
@@ -532,7 +533,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         if (id == 0)
         {
             view.setVisibility(visibilityIfNot);
-            goneEmptyLayout((ViewGroup) view.getParent());
+            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
         }
         else
         {
@@ -549,7 +550,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         if (TextUtils.isEmpty(url))
         {
             view.setVisibility(visibilityIfNot);
-            goneEmptyLayout((ViewGroup) view.getParent());
+            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
         }
         else
         {

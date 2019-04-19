@@ -31,7 +31,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     }
 
     public ProgressDialog setHorizontalXQLayoutStyle(){
-        setHorizontalXQLayoutStyle(true);
+        setHorizontalXQLayoutStyle(false);
         return this;
     }
 
@@ -44,7 +44,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     }
 
     public ProgressDialog setHorizontalMeterailLayoutStyle(){
-        setHorizontalMeterailLayoutStyle(true);
+        setHorizontalMeterailLayoutStyle(false);
         return this;
     }
 

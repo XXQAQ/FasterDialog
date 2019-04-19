@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/spacing_max"
-        android:paddingBottom="@dimen/spacing_more"
+        android:paddingTop="@dimen/spacing_more"
+        android:paddingBottom="@dimen/spacing_medium"
         android:paddingLeft="@dimen/spacing_more"
         android:paddingRight="@dimen/spacing_more"
         android:orientation="horizontal"

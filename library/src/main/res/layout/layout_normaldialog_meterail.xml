@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:divider="@drawable/spacing_medium"
+        android:divider="@drawable/spacing_less"
         android:showDividers="middle"
-        android:paddingTop="@dimen/spacing_max"
-        android:paddingBottom="@dimen/spacing_more"
+        android:paddingTop="@dimen/spacing_more"
+        android:paddingBottom="@dimen/spacing_medium"
         >
 
         <LinearLayout
@@ -62,7 +62,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_medium"
+        android:layout_marginBottom="@dimen/spacing_less"
         android:paddingLeft="@dimen/spacing_more"
         android:paddingRight="@dimen/spacing_more"
         android:divider="@drawable/spacing_medium"
