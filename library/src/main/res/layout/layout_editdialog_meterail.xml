@@ -108,7 +108,7 @@
         android:layout_marginBottom="@dimen/spacing_medium"
         android:paddingLeft="@dimen/spacing_more"
         android:paddingRight="@dimen/spacing_more"
-        android:divider="@drawable/spacing_more"
+        android:divider="@drawable/spacing_medium"
         android:showDividers="middle"
         android:layout_gravity="right">
 
