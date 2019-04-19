@@ -9,45 +9,55 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_more"
-        android:layout_marginBottom="@dimen/spacing_min"
-        android:paddingLeft="@dimen/spacing_more"
-        android:paddingRight="@dimen/spacing_more"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:divider="@drawable/spacing_medium"
+        android:showDividers="middle"
+        android:paddingTop="@dimen/spacing_max"
+        android:paddingBottom="@dimen/spacing_more"
         >
 
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/iconView"
-            android:layout_width="@dimen/icon_medium"
-            android:layout_height="@dimen/icon_medium"
-            android:layout_marginRight="@dimen/spacing_medium"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/spacing_more"
+            android:paddingRight="@dimen/spacing_more"
+            android:orientation="horizontal"
+            >
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/iconView"
+                android:layout_width="@dimen/icon_medium"
+                android:layout_height="@dimen/icon_medium"
+                android:layout_marginRight="@dimen/spacing_medium"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/titleView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="立即充值"
+                android:lineSpacingExtra="@dimen/textSpacing_max"
+                android:textColor="@color/text_strong"
+                android:textSize="@dimen/text_max"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/titleView"
-            android:layout_width="wrap_content"
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="立即充值"
-            android:lineSpacingExtra="@dimen/textSpacing_max"
-            android:textColor="@color/text_strong"
-            android:textSize="@dimen/text_max"
-            android:textStyle="bold" />
+            android:paddingLeft="@dimen/spacing_more"
+            android:paddingRight="@dimen/spacing_more"
+            android:gravity="left"
+            android:lineSpacingExtra="@dimen/textSpacing_medium"
+            android:text="是的只有充钱才能变得更强"
+            android:textColor="@color/text_normal"
+            android:textSize="@dimen/text_medium" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/contentView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_min"
-        android:paddingLeft="@dimen/spacing_more"
-        android:paddingRight="@dimen/spacing_more"
-        android:gravity="left"
-        android:lineSpacingExtra="@dimen/textSpacing_medium"
-        android:text="是的只有充钱才能变得更强"
-        android:textColor="@color/text_normal"
-        android:textSize="@dimen/text_medium" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -62,7 +72,7 @@
         android:layout_marginBottom="@dimen/spacing_medium"
         android:paddingLeft="@dimen/spacing_more"
         android:paddingRight="@dimen/spacing_more"
-        android:divider="@drawable/spacing_more"
+        android:divider="@drawable/spacing_medium"
         android:showDividers="middle"
         android:layout_gravity="right">
 
