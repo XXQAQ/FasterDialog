@@ -1,8 +1,11 @@
 package com.xq.fasterdialog.base;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,6 +24,8 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
     public static final int CHOOSEMODE_MULTI = 2;
 
     protected RecyclerView recyclerView;
+    protected RecyclerView.LayoutManager layoutManager;
+    protected Drawable dividerDrawable;
 
     protected int chooseMode = CHOOSEMODE_SINGLE;
 
@@ -47,7 +52,26 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         super.onCreate(savedInstanceState);
 
         recyclerView = findViewById(getContext().getResources().getIdentifier("recyclerView", "id", getContext().getPackageName()));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (layoutManager == null) layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        if (dividerDrawable != null)
+        {
+            int orientation = DividerItemDecoration.VERTICAL;
+            if (layoutManager instanceof LinearLayoutManager)
+            {
+                if (((LinearLayoutManager) layoutManager).getOrientation() == LinearLayoutManager.VERTICAL)
+                    orientation = DividerItemDecoration.VERTICAL;
+                else    if (((LinearLayoutManager) layoutManager).getOrientation() == LinearLayoutManager.HORIZONTAL)
+                    orientation = DividerItemDecoration.HORIZONTAL;
+            }
+            else    if (layoutManager instanceof GridLayoutManager)
+            {
+                orientation = DividerItemDecoration.HORIZONTAL | DividerItemDecoration.VERTICAL;
+            }
+            DividerItemDecoration decoration = new DividerItemDecoration(getContext(), orientation);
+            decoration.setDrawable(dividerDrawable);
+            recyclerView.addItemDecoration(decoration);
+        }
         recyclerView.setAdapter(new RecyclerView.Adapter() {
             @NonNull
             @Override
@@ -160,6 +184,16 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
     public T setPositiveListener(OnDialogClickListener positiveListener) {
         this.positiveListener = positiveListener;
         bindDialogClickListenerWithView(positiveView, positiveListener,false);
+        return (T) this;
+    }
+
+    public T setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
+        return (T) this;
+    }
+
+    public T setDividerDrawable(Drawable dividerDrawable) {
+        this.dividerDrawable = dividerDrawable;
         return (T) this;
     }
 

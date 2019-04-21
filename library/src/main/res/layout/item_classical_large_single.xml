@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     >
 
-    <CheckBox
+    <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,11 +16,10 @@
         android:paddingRight="@dimen/spacing_max"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@drawable/select_layer_rect_bottomdivider_solidwidely"
-        android:button="@null"
+        android:background="@drawable/press_rect_solidwidely"
         android:text="随手写写"
-        android:textSize="@dimen/text_medium"
-        android:textColor="@color/select_text_normal_tostrong"
+        android:textSize="@dimen/text_more"
+        android:textColor="@color/press_text_normal_tostrong"
         />
 
 </LinearLayout>

@@ -13,14 +13,14 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     public static int LAYOUT_XQ = R.layout.layout_listdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_listdialog_meterail;
     public static int LAYOUT_BOTTOM = R.layout.layout_listdialog_bottom;
-    public static int LAYOUT_QQ = R.layout.layout_listdialog_qq;
+    public static int LAYOUT_QQMENU = R.layout.layout_listdialog_qqmenu;
 
     public static int ITEMLAYOUT_CLASSICAL_SINGLE = R.layout.item_classical_single;
     public static int ITEMLAYOUT_CLASSICAL_MULTI = R.layout.item_classical_multi;
     public static int ITEMLAYOUT_METERAIL_SINGLE = R.layout.item_meterail_single;
     public static int ITEMLAYOUT_METERAIL_MULTI = R.layout.item_meterail_multi;
-    public static int ITEMLAYOUT_CLASSICAL_DIVIDER_SINGLE = R.layout.item_classical_divider_single;
-    public static int ITEMLAYOUT_CLASSICAL_DIVIDER_MULTI = R.layout.item_classical_divider_multi;
+    public static int ITEMLAYOUT_CLASSICAL_LARGE_SINGLE = R.layout.item_classical_large_single;
+    public static int ITEMLAYOUT_CLASSICAL_LARGE_MULTI = R.layout.item_classical_large_multi;
 
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
     protected static int ITEMLAYOUT_DEFAULT = ITEMLAYOUT_CLASSICAL_SINGLE;
@@ -88,20 +88,21 @@ public class ListDialog extends BaseListDialog<ListDialog> {
         return this;
     }
 
-    public ListDialog setQQLayoutStyle(){
-        setQQLayoutStyle(CHOOSEMODE_SINGLE);
+    public ListDialog setQQMenuLayoutStyle(){
+        setQQMenuLayoutStyle(CHOOSEMODE_SINGLE);
         return this;
     }
 
-    public ListDialog setQQLayoutStyle(int chooseMode){
+    public ListDialog setQQMenuLayoutStyle(int chooseMode){
         setStyle(STYLE_TRANSLUCENTDIALOG);
         if (chooseMode == CHOOSEMODE_SINGLE)
-            setChooseMode(chooseMode,LAYOUT_QQ,ITEMLAYOUT_CLASSICAL_DIVIDER_SINGLE);
+            setChooseMode(chooseMode, LAYOUT_QQMENU, ITEMLAYOUT_CLASSICAL_LARGE_SINGLE);
         else    if (chooseMode == CHOOSEMODE_MULTI)
-            setChooseMode(chooseMode,LAYOUT_QQ,ITEMLAYOUT_CLASSICAL_DIVIDER_MULTI);
+            setChooseMode(chooseMode, LAYOUT_QQMENU, ITEMLAYOUT_CLASSICAL_LARGE_MULTI);
         setWidthMatch();
         setHeightWrap();
         setPopupFromBottom();
+        setDividerDrawable(getContext().getResources().getDrawable(R.drawable.line_divider));
         return this;
     }
 
