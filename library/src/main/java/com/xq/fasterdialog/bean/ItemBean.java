@@ -1,7 +1,5 @@
 package com.xq.fasterdialog.bean;
 
-import com.xq.fasterdialog.base.BaseListDialog;
-
 public class ItemBean {
 
     private CharSequence title;
@@ -52,6 +50,8 @@ public class ItemBean {
     public void setTitle(CharSequence title) {
         this.title = title;
     }
+
+
 
     public Object getTag() {
         return tag;

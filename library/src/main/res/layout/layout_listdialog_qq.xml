@@ -28,7 +28,7 @@
             android:textColor="@color/text_strong"
             android:textSize="@dimen/text_medium"
             android:textStyle="bold"
-            android:lineSpacingExtra="@dimen/textSpacing_medium"
+            android:lineSpacingMultiplier="1.2"
             />
 
         <TextView
@@ -41,7 +41,7 @@
             android:text="立即充值,只有充值才能变得更强"
             android:textColor="@color/text_normal"
             android:textSize="@dimen/text_less"
-            android:lineSpacingExtra="@dimen/textSpacing_less"
+            android:lineSpacingMultiplier="1.2"
             />
 
     </LinearLayout>

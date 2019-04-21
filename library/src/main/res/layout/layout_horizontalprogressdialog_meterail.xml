@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="立即充值"
-                android:lineSpacingExtra="@dimen/textSpacing_max"
+                android:lineSpacingMultiplier="1.2"
                 android:textColor="@color/text_strong"
                 android:textSize="@dimen/text_max"
                 android:textStyle="bold" />
@@ -52,7 +52,7 @@
             android:paddingLeft="@dimen/spacing_more"
             android:paddingRight="@dimen/spacing_more"
             android:gravity="left"
-            android:lineSpacingExtra="@dimen/textSpacing_medium"
+            android:lineSpacingMultiplier="1.2"
             android:text="是的只有充钱才能变得更强"
             android:textColor="@color/text_normal"
             android:textSize="@dimen/text_medium" />

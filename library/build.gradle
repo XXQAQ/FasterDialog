@@ -23,13 +23,13 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    implementation 'com.github.XXQAQ:AndroidResource:2.1.4'
     implementation 'com.android.support:appcompat-v7:27.+'
     implementation 'com.android.support:design:27.+'
-    implementation 'com.github.XXQAQ:AndroidResource:2.0.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
 }
