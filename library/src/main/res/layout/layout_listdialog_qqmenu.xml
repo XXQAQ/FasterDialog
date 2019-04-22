@@ -13,7 +13,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:divider="@drawable/spacing_less"
-        android:showDividers="beginning|middle|end"
+        android:showDividers="middle"
+       android:paddingLeft="@dimen/spacing_less"
+       android:paddingRight="@dimen/spacing_less"
         android:background="@drawable/layer_rect_bottomdivider_solidwidely"
         >
 
@@ -57,7 +59,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:divider="@drawable/spacing_less"
-        android:showDividers="beginning|middle"
+        android:showDividers="middle"
+        android:layout_marginTop="@dimen/spacing_less"
         >
 
         <TextView
