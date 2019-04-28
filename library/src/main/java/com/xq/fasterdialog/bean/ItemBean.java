@@ -27,14 +27,6 @@ public class ItemBean implements Serializable {
         setIconRes(iconRes);
     }
 
-    public ItemBean(String iconUrl) {
-        setIconUrl(iconUrl);
-    }
-
-    public ItemBean(int iconRes) {
-        setIconRes(iconRes);
-    }
-
     public ItemBean(CharSequence title, String iconUrl, Object tag) {
         this.title = title;
         setIconUrl(iconUrl);
