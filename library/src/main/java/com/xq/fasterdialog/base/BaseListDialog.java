@@ -122,9 +122,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ((CompoundButton)holder.text).setOnCheckedChangeListener(null);
                                     ((CompoundButton)holder.text).toggle();
-                                    ((CompoundButton)holder.text).setOnCheckedChangeListener(listener);
                                 }
                             });
                             ((CompoundButton) holder.text).setOnCheckedChangeListener(null);
@@ -149,9 +147,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                holder.state.setOnCheckedChangeListener(null);
                                 holder.state.toggle();
-                                holder.state.setOnCheckedChangeListener(listener);
                             }
                         });
                         (holder.state).setOnCheckedChangeListener(null);
@@ -178,9 +174,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ((CompoundButton) holder.text).setOnCheckedChangeListener(null);
                                 ((CompoundButton) holder.text).toggle();
-                                ((CompoundButton) holder.text).setOnCheckedChangeListener(listener);
                             }
                         });
                         ((CompoundButton)holder.text).setOnCheckedChangeListener(null);
@@ -195,9 +189,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                holder.state.setOnCheckedChangeListener(null);
                                 holder.state.toggle();
-                                holder.state.setOnCheckedChangeListener(listener);
                             }
                         });
                         holder.state.setOnCheckedChangeListener(null);
