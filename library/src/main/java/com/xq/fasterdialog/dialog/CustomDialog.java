@@ -29,7 +29,7 @@ public class CustomDialog extends BaseDialog<CustomDialog> {
     @Override
     public void onStop() {
         super.onStop();
-        if (disconView) getDialog().getWindow().getWindowManager().removeViewImmediate(rootView);
+        if (disconView) getDialog().getWindow().setContentView(new View(getContext()));
     }
 
     private void init(){
