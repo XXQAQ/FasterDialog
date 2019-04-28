@@ -19,27 +19,31 @@ public class ItemBean implements Serializable {
 
     public ItemBean(CharSequence title, String iconUrl) {
         this.title = title;
-        this.iconUrl = iconUrl;
-        this.iconRes = 0;
+        setIconUrl(iconUrl);
     }
 
     public ItemBean(CharSequence title, int iconRes) {
         this.title = title;
-        this.iconRes = iconRes;
-        this.iconUrl = null;
+        setIconRes(iconRes);
+    }
+
+    public ItemBean(String iconUrl) {
+        setIconUrl(iconUrl);
+    }
+
+    public ItemBean(int iconRes) {
+        setIconRes(iconRes);
     }
 
     public ItemBean(CharSequence title, String iconUrl, Object tag) {
         this.title = title;
-        this.iconUrl = iconUrl;
-        this.iconRes = 0;
+        setIconUrl(iconUrl);
         this.tag = tag;
     }
 
     public ItemBean(CharSequence title, int iconRes, Object tag) {
         this.title = title;
-        this.iconRes = iconRes;
-        this.iconUrl = null;
+        setIconRes(iconRes);
         this.tag = tag;
     }
 
@@ -92,6 +96,7 @@ public class ItemBean implements Serializable {
     }
 
     public void setIconUrl(String iconUrl) {
+        this.iconRes = 0;
         this.iconUrl = iconUrl;
     }
 
@@ -100,6 +105,7 @@ public class ItemBean implements Serializable {
     }
 
     public void setIconRes(int iconRes) {
+        this.iconUrl = null;
         this.iconRes = iconRes;
     }
 
