@@ -80,8 +80,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
         isCreated = true;
 
-        dialog = new Dialog(getContext(),style);
-
         if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
         getDialog().getWindow().setContentView(rootView);
 
@@ -224,29 +222,41 @@ public abstract class BaseDialog<T extends BaseDialog>{
     }
 
     public void show() {
-        if (((Activity)getContext()).isFinishing())
-            return;
+        if (((Activity)getContext()).isFinishing()) return;
 
-        if (!isCreated) onCreate(null);
+        if (!isCreated)
+            dialog = new Dialog(getContext(),style){
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    BaseDialog.this.onCreate(savedInstanceState);
+                }
 
-        onStart();
+                @Override
+                protected void onStart() {
+                    super.onStart();
+                    BaseDialog.this.onStart();
+                }
+
+                @Override
+                protected void onStop() {
+                    super.onStop();
+                    BaseDialog.this.onStop();
+                }
+            };
 
         getDialog().show();
 
-        if (autoDismissTime > 0)
-            autoDismiss();
+        if (autoDismissTime > 0) autoDismiss();
     }
 
     public void dismiss() {
-        if (((Activity)getContext()).isFinishing())
-            return;
+        if (((Activity)getContext()).isFinishing()) return;
 
-        if (autoDismissTime > 0 && task != null)
-            task.cancel(true);
+        if (autoDismissTime > 0 && task != null) task.cancel(true);
 
         getDialog().dismiss();
 
-        onStop();
     }
 
     public <T_VIEW extends View> T_VIEW findViewById(int id) {

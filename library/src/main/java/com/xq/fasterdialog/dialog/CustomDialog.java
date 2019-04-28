@@ -8,6 +8,8 @@ import com.xq.fasterdialog.base.BaseDialog;
 
 public class CustomDialog extends BaseDialog<CustomDialog> {
 
+    protected boolean disconView = true;
+
     public CustomDialog(@NonNull Context context) {
         super(context);
         init();
@@ -24,8 +26,18 @@ public class CustomDialog extends BaseDialog<CustomDialog> {
         return this;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (disconView) getDialog().getWindow().getWindowManager().removeViewImmediate(rootView);
+    }
+
     private void init(){
 
     }
 
+    public CustomDialog setDisconViewOnDismiss(boolean disconView) {
+        this.disconView = disconView;
+        return this;
+    }
 }
