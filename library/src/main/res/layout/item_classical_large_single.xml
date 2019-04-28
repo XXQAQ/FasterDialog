@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/press_rect_solidwidely"
     >
 
     <TextView
@@ -16,7 +17,6 @@
         android:paddingRight="@dimen/spacing_max"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@drawable/press_rect_solidwidely"
         android:text="随手写写"
         android:textSize="@dimen/text_more"
         android:textColor="@color/press_text_normal_tostrong"

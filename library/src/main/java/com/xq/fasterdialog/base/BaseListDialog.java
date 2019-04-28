@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.xq.fasterdialog.bean.ItemBean;
 import java.util.LinkedList;
@@ -82,49 +83,130 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             }
 
             @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, final int position) {
-                ViewHolder holder = (ViewHolder)h;
-                final ItemBean bean = list_item.get(position);
-                holder.text.setText(bean.getTitle());
+            public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder h, final int position) {
+                final ViewHolder holder = (ViewHolder)h;
+                final ItemBean bean = list_item.get(position);bean.setPosition(position);
+                if (holder.text != null)
+                {
+                    if (!TextUtils.isEmpty(bean.getTitle()))
+                        holder.text.setText(bean.getTitle());
+                    else
+                        holder.text.setText("");
+                }
+                if (holder.icon != null)
+                {
+                    if (!TextUtils.isEmpty(bean.getIconUrl()))
+                        dialogImageLoder.loadImage(getContext(),holder.icon,bean.getIconUrl());
+                    else    if (bean.getIconRes() != 0)
+                        holder.icon.setImageResource(bean.getIconRes());
+                    else
+                        dialogImageLoder.loadImage(getContext(),holder.icon,null);
+                }
                 if (chooseMode == CHOOSEMODE_SINGLE)
                 {
-                    holder.text.setOnClickListener(new View.OnClickListener() {
+                    final CompoundButton.OnCheckedChangeListener listener =  new CompoundButton.OnCheckedChangeListener() {
                         @Override
-                        public void onClick(View v) {
-                            if (v.isPressed())
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked)
                             {
-                                if (onItemSelectedListener != null)
-                                    onItemSelectedListener.onItemSelected(BaseListDialog.this,bean);
+                                selection = bean;
+                                if (onItemSelectedListener != null) onItemSelectedListener.onItemSelected(BaseListDialog.this,selection);
                                 dismiss();
                             }
                         }
-                    });
-                    if (holder.text instanceof CompoundButton)
+                    };
+                    if (holder.state == null)
                     {
-                        if (selection != null && selection.equals(bean))
-                            ((CompoundButton) holder.text).setChecked(true);
+                        if (holder.text instanceof CompoundButton)
+                        {
+                            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ((CompoundButton)holder.text).setOnCheckedChangeListener(null);
+                                    ((CompoundButton)holder.text).toggle();
+                                    ((CompoundButton)holder.text).setOnCheckedChangeListener(listener);
+                                }
+                            });
+                            ((CompoundButton) holder.text).setOnCheckedChangeListener(null);
+                            if (selection != null && selection.equals(bean))
+                                ((CompoundButton) holder.text).setChecked(true);
+                            else
+                                ((CompoundButton) holder.text).setChecked(false);
+                            ((CompoundButton) holder.text).setOnCheckedChangeListener(listener);
+                        }
                         else
-                            ((CompoundButton) holder.text).setChecked(false);
+                        {
+                            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    listener.onCheckedChanged(null,true);
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                holder.state.setOnCheckedChangeListener(null);
+                                holder.state.toggle();
+                                holder.state.setOnCheckedChangeListener(listener);
+                            }
+                        });
+                        (holder.state).setOnCheckedChangeListener(null);
+                        if (selection != null && selection.equals(bean))
+                            (holder.state).setChecked(true);
+                        else
+                            (holder.state).setChecked(false);
+                        holder.state.setOnCheckedChangeListener(listener);
                     }
                 }
                 else    if (chooseMode == CHOOSEMODE_MULTI)
                 {
-                    ((CompoundButton)holder.text).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    final CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
                         @Override
-                        public void onCheckedChanged(CompoundButton v, boolean b) {
-                            if (v.isPressed())
-                            {
-                                if (v.isChecked())
-                                    list_selection.add(bean);
-                                else
-                                    list_selection.remove(bean);
-                            }
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked)
+                                list_selection.add(bean);
+                            else
+                                list_selection.remove(bean);
                         }
-                    });
-                    if (list_selection.contains(bean))
-                        ((CompoundButton)holder.text).setChecked(true);
+                    };
+                    if (holder.state == null)
+                    {
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ((CompoundButton) holder.text).setOnCheckedChangeListener(null);
+                                ((CompoundButton) holder.text).toggle();
+                                ((CompoundButton) holder.text).setOnCheckedChangeListener(listener);
+                            }
+                        });
+                        ((CompoundButton)holder.text).setOnCheckedChangeListener(null);
+                        if (list_selection.contains(bean))
+                            ((CompoundButton)holder.text).setChecked(true);
+                        else
+                            ((CompoundButton)holder.text).setChecked(false);
+                        ((CompoundButton)holder.text).setOnCheckedChangeListener(listener);
+                    }
                     else
-                        ((CompoundButton)holder.text).setChecked(false);
+                    {
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                holder.state.setOnCheckedChangeListener(null);
+                                holder.state.toggle();
+                                holder.state.setOnCheckedChangeListener(listener);
+                            }
+                        });
+                        holder.state.setOnCheckedChangeListener(null);
+                        if (list_selection.contains(bean))
+                            (holder.state).setChecked(true);
+                        else
+                            (holder.state).setChecked(false);
+                        holder.state.setOnCheckedChangeListener(listener);
+                    }
                 }
             }
 
@@ -135,9 +217,13 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
             class ViewHolder extends RecyclerView.ViewHolder{
                 TextView text;
+                ImageView icon;
+                CompoundButton state;
                 public ViewHolder(View itemView) {
                     super(itemView);
                     text = itemView.findViewById(getContext().getResources().getIdentifier("text", "id", getContext().getPackageName()));
+                    icon = itemView.findViewById(getContext().getResources().getIdentifier("icon", "id", getContext().getPackageName()));
+                    state = itemView.findViewById(getContext().getResources().getIdentifier("state", "id", getContext().getPackageName()));
                 }
             }
         });
