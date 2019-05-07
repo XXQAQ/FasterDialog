@@ -86,21 +86,21 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder h, final int position) {
                 final ViewHolder holder = (ViewHolder)h;
                 final ItemBean bean = list_item.get(position);bean.setPosition(position);
-                if (holder.text != null)
+                if (holder.titleView != null)
                 {
                     if (!TextUtils.isEmpty(bean.getTitle()))
-                        holder.text.setText(bean.getTitle());
+                        holder.titleView.setText(bean.getTitle());
                     else
-                        holder.text.setText("");
+                        holder.titleView.setText("");
                 }
-                if (holder.icon != null)
+                if (holder.imageView != null)
                 {
                     if (!TextUtils.isEmpty(bean.getIconUrl()))
-                        dialogImageLoder.loadImage(getContext(),holder.icon,bean.getIconUrl());
+                        dialogImageLoder.loadImage(getContext(),holder.imageView,bean.getIconUrl());
                     else    if (bean.getIconRes() != 0)
-                        holder.icon.setImageResource(bean.getIconRes());
+                        holder.imageView.setImageResource(bean.getIconRes());
                     else
-                        dialogImageLoder.loadImage(getContext(),holder.icon,null);
+                        dialogImageLoder.loadImage(getContext(),holder.imageView,null);
                 }
                 if (chooseMode == CHOOSEMODE_SINGLE)
                 {
@@ -115,22 +115,22 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                             }
                         }
                     };
-                    if (holder.state == null)
+                    if (holder.stateView == null)
                     {
-                        if (holder.text instanceof CompoundButton)
+                        if (holder.titleView instanceof CompoundButton)
                         {
                             holder.itemView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ((CompoundButton)holder.text).toggle();
+                                    ((CompoundButton)holder.titleView).toggle();
                                 }
                             });
-                            ((CompoundButton) holder.text).setOnCheckedChangeListener(null);
+                            ((CompoundButton) holder.titleView).setOnCheckedChangeListener(null);
                             if (selection != null && selection.equals(bean))
-                                ((CompoundButton) holder.text).setChecked(true);
+                                ((CompoundButton) holder.titleView).setChecked(true);
                             else
-                                ((CompoundButton) holder.text).setChecked(false);
-                            ((CompoundButton) holder.text).setOnCheckedChangeListener(listener);
+                                ((CompoundButton) holder.titleView).setChecked(false);
+                            ((CompoundButton) holder.titleView).setOnCheckedChangeListener(listener);
                         }
                         else
                         {
@@ -147,15 +147,15 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                holder.state.toggle();
+                                holder.stateView.toggle();
                             }
                         });
-                        (holder.state).setOnCheckedChangeListener(null);
+                        (holder.stateView).setOnCheckedChangeListener(null);
                         if (selection != null && selection.equals(bean))
-                            (holder.state).setChecked(true);
+                            (holder.stateView).setChecked(true);
                         else
-                            (holder.state).setChecked(false);
-                        holder.state.setOnCheckedChangeListener(listener);
+                            (holder.stateView).setChecked(false);
+                        holder.stateView.setOnCheckedChangeListener(listener);
                     }
                 }
                 else    if (chooseMode == CHOOSEMODE_MULTI)
@@ -169,35 +169,35 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                                 list_selection.remove(bean);
                         }
                     };
-                    if (holder.state == null)
+                    if (holder.stateView == null)
                     {
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ((CompoundButton) holder.text).toggle();
+                                ((CompoundButton) holder.titleView).toggle();
                             }
                         });
-                        ((CompoundButton)holder.text).setOnCheckedChangeListener(null);
+                        ((CompoundButton)holder.titleView).setOnCheckedChangeListener(null);
                         if (list_selection.contains(bean))
-                            ((CompoundButton)holder.text).setChecked(true);
+                            ((CompoundButton)holder.titleView).setChecked(true);
                         else
-                            ((CompoundButton)holder.text).setChecked(false);
-                        ((CompoundButton)holder.text).setOnCheckedChangeListener(listener);
+                            ((CompoundButton)holder.titleView).setChecked(false);
+                        ((CompoundButton)holder.titleView).setOnCheckedChangeListener(listener);
                     }
                     else
                     {
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                holder.state.toggle();
+                                holder.stateView.toggle();
                             }
                         });
-                        holder.state.setOnCheckedChangeListener(null);
+                        holder.stateView.setOnCheckedChangeListener(null);
                         if (list_selection.contains(bean))
-                            (holder.state).setChecked(true);
+                            (holder.stateView).setChecked(true);
                         else
-                            (holder.state).setChecked(false);
-                        holder.state.setOnCheckedChangeListener(listener);
+                            (holder.stateView).setChecked(false);
+                        holder.stateView.setOnCheckedChangeListener(listener);
                     }
                 }
             }
@@ -208,14 +208,14 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             }
 
             class ViewHolder extends RecyclerView.ViewHolder{
-                TextView text;
-                ImageView icon;
-                CompoundButton state;
+                TextView titleView;
+                ImageView imageView;
+                CompoundButton stateView;
                 public ViewHolder(View itemView) {
                     super(itemView);
-                    text = itemView.findViewById(getContext().getResources().getIdentifier("text", "id", getContext().getPackageName()));
-                    icon = itemView.findViewById(getContext().getResources().getIdentifier("icon", "id", getContext().getPackageName()));
-                    state = itemView.findViewById(getContext().getResources().getIdentifier("state", "id", getContext().getPackageName()));
+                    titleView = itemView.findViewById(getContext().getResources().getIdentifier("titleView", "id", getContext().getPackageName()));
+                    imageView = itemView.findViewById(getContext().getResources().getIdentifier("imageView", "id", getContext().getPackageName()));
+                    stateView = itemView.findViewById(getContext().getResources().getIdentifier("stateView", "id", getContext().getPackageName()));
                 }
             }
         });

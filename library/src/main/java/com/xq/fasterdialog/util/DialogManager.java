@@ -30,7 +30,7 @@ public class DialogManager {
     }
 
     public static void dismissDialog(){
-        ((BaseDialog)DialogManager.map_dialog.entrySet().toArray()[DialogManager.map_dialog.size() -1]).dismiss();
+        ((BaseDialog)DialogManager.map_dialog.keySet().toArray()[DialogManager.map_dialog.size() -1]).dismiss();
     }
 
     public static class DialogDelegateActivity extends AppCompatActivity {

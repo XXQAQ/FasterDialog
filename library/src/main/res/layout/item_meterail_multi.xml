@@ -7,7 +7,7 @@
     >
 
     <CheckBox
-        android:id="@+id/text"
+        android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/spacing_less"
