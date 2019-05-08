@@ -7,7 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.base.BaseDialog;
+
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DialogManager {
 
@@ -30,7 +35,20 @@ public class DialogManager {
     }
 
     public static void dismissDialog(){
-        ((BaseDialog)DialogManager.map_dialog.entrySet().toArray()[DialogManager.map_dialog.size() -1]).dismiss();
+
+        Map.Entry<Integer,BaseDialog> entry = getTail(map_dialog);
+
+        entry.getValue().dismiss();
+
+    }
+
+    private  static  <K, V> Map.Entry<K, V> getTail(LinkedHashMap<K, V> map) {
+        Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
+        Map.Entry<K, V> tail = null;
+        while (iterator.hasNext()) {
+            tail = iterator.next();
+        }
+        return tail;
     }
 
     public static class DialogDelegateActivity extends AppCompatActivity {
