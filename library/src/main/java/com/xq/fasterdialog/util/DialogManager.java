@@ -7,11 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.base.BaseDialog;
-
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DialogManager {
