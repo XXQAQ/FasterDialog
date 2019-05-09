@@ -1,4 +1,4 @@
-package com.xq.fasterdialog.base;
+package com.xq.fasterdialog.dialog.base;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.xq.fasterdialog.bean.ItemBean;
+import com.xq.fasterdialog.bean.entity.ItemBean;
 import java.util.LinkedList;
 import java.util.List;
 

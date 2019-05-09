@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.base.BaseListDialog;
+import com.xq.fasterdialog.dialog.base.BaseListDialog;
 
 public class ListDialog extends BaseListDialog<ListDialog> {
 

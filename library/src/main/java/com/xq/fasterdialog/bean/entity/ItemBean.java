@@ -1,4 +1,4 @@
-package com.xq.fasterdialog.bean;
+package com.xq.fasterdialog.bean.entity;
 
 import java.io.Serializable;
 

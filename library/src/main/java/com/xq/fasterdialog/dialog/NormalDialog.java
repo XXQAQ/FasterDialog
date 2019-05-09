@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.base.BaseNormalDialog;
+import com.xq.fasterdialog.dialog.base.BaseNormalDialog;
 
 public class NormalDialog extends BaseNormalDialog<NormalDialog> {
 

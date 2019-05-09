@@ -2,12 +2,11 @@ package com.xq.fasterdialog.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.base.BaseDialog;
+import com.xq.fasterdialog.dialog.base.BaseDialog;
 
 public class LoadingDialog extends BaseDialog<LoadingDialog> {
 

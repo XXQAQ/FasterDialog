@@ -1,4 +1,4 @@
-package com.xq.fasterdialog.base;
+package com.xq.fasterdialog.dialog.base;
 
 import android.content.Context;
 import android.os.Bundle;

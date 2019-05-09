@@ -1,4 +1,4 @@
-package com.xq.fasterdialog.base;
+package com.xq.fasterdialog.dialog.base;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.xq.fasterdialog.bean.InputBean;
+import com.xq.fasterdialog.bean.entity.InputBean;
 
 import java.util.List;
 

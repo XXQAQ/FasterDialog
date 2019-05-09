@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.base.BaseEditDialog;
+import com.xq.fasterdialog.dialog.base.BaseEditDialog;
 
 public class EditDialog extends BaseEditDialog<EditDialog> {
 

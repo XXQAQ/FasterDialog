@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.base.BaseImageDialog;
+import com.xq.fasterdialog.dialog.base.BaseImageDialog;
 
 
 public class ImageDialog extends BaseImageDialog<ImageDialog> {

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import com.xq.fasterdialog.FasterDialog;
-import com.xq.fasterdialog.base.BaseDialog;
+import com.xq.fasterdialog.dialog.base.BaseDialog;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
