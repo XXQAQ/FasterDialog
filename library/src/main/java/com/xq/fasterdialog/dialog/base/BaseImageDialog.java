@@ -24,10 +24,15 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
 
         imageView = findViewById(getContext().getResources().getIdentifier("imageView", "id", getContext().getPackageName()));
 
-        if (!TextUtils.isEmpty(imageUrl))
-            setImageUrl(imageUrl);
-        else
+        if (imageRes == 0 && TextUtils.isEmpty(imageUrl))
+        {
             setImageRes(imageRes);
+        }
+        else
+        {
+            if (imageRes != 0)  setImageRes(imageRes);
+            if (!TextUtils.isEmpty(imageUrl))   setImageUrl(imageUrl);
+        }
     }
 
     public T setData(int resId,CharSequence title,CharSequence content,String imageUrl){
@@ -44,14 +49,12 @@ public abstract class BaseImageDialog<T extends BaseImageDialog> extends BaseNor
 
     public T setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        this.imageRes = 0;
         setImageUrlToView(imageView,imageUrl,View.GONE);
         return (T) this;
     }
 
     public T setImageRes(int imageRes) {
         this.imageRes = imageRes;
-        this.imageUrl = null;
         setImageResourceToView(imageView, this.imageRes, View.GONE);
         return (T) this;
     }
