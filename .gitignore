@@ -10,7 +10,6 @@ bin/
 gen/
 # Gradle files
 .gradle/
-.idea/
 build/
 /*/build/
 # Local configuration file (sdk path, etc)
@@ -19,3 +18,4 @@ local.properties
 proguard/
 # Log Files
 *.log
+/.idea/
