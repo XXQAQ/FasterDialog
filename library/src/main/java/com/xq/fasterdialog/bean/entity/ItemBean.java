@@ -6,8 +6,8 @@ public class ItemBean implements Serializable {
 
     private int position;
     private CharSequence title;
-    protected String iconUrl;
-    protected int iconRes;
+    protected String imageUrl;
+    protected int imageRes;
     private Object tag;
 
     public ItemBean() {
@@ -17,25 +17,25 @@ public class ItemBean implements Serializable {
         this.title = title;
     }
 
-    public ItemBean(CharSequence title, String iconUrl) {
+    public ItemBean(CharSequence title, String imageUrl) {
         this.title = title;
-        setIconUrl(iconUrl);
+        this.imageUrl = imageUrl;
     }
 
-    public ItemBean(CharSequence title, int iconRes) {
+    public ItemBean(CharSequence title, int imageRes) {
         this.title = title;
-        setIconRes(iconRes);
+        this.imageRes = imageRes;
     }
 
-    public ItemBean(CharSequence title, String iconUrl, Object tag) {
+    public ItemBean(CharSequence title, String imageUrl, Object tag) {
         this.title = title;
-        setIconUrl(iconUrl);
+        this.imageUrl = imageUrl;
         this.tag = tag;
     }
 
-    public ItemBean(CharSequence title, int iconRes, Object tag) {
+    public ItemBean(CharSequence title, int imageRes, Object tag) {
         this.title = title;
-        setIconRes(iconRes);
+        this.imageRes = imageRes;
         this.tag = tag;
     }
 
@@ -44,8 +44,8 @@ public class ItemBean implements Serializable {
         return "ItemBean{" +
                 "position=" + position +
                 ", title=" + title +
-                ", iconUrl='" + iconUrl + '\'' +
-                ", iconRes=" + iconRes +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", imageRes=" + imageRes +
                 ", tag=" + tag +
                 '}';
     }
@@ -58,9 +58,9 @@ public class ItemBean implements Serializable {
         ItemBean itemBean = (ItemBean) o;
 
         if (position != itemBean.position) return false;
-        if (iconRes != itemBean.iconRes) return false;
+        if (imageRes != itemBean.imageRes) return false;
         if (title != null ? !title.equals(itemBean.title) : itemBean.title != null) return false;
-        if (iconUrl != null ? !iconUrl.equals(itemBean.iconUrl) : itemBean.iconUrl != null)
+        if (imageUrl != null ? !imageUrl.equals(itemBean.imageUrl) : itemBean.imageUrl != null)
             return false;
         return tag != null ? tag.equals(itemBean.tag) : itemBean.tag == null;
     }
@@ -69,8 +69,8 @@ public class ItemBean implements Serializable {
     public int hashCode() {
         int result = position;
         result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (iconUrl != null ? iconUrl.hashCode() : 0);
-        result = 31 * result + iconRes;
+        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        result = 31 * result + imageRes;
         result = 31 * result + (tag != null ? tag.hashCode() : 0);
         return result;
     }
@@ -83,22 +83,20 @@ public class ItemBean implements Serializable {
         this.position = position;
     }
 
-    public String getIconUrl() {
-        return iconUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setIconUrl(String iconUrl) {
-        this.iconRes = 0;
-        this.iconUrl = iconUrl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public int getIconRes() {
-        return iconRes;
+    public int getImageRes() {
+        return imageRes;
     }
 
-    public void setIconRes(int iconRes) {
-        this.iconUrl = null;
-        this.iconRes = iconRes;
+    public void setImageRes(int imageRes) {
+        this.imageRes = imageRes;
     }
 
     public CharSequence getTitle() {

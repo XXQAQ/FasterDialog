@@ -95,8 +95,8 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                 }
                 if (holder.imageView != null)
                 {
-                    if (bean.getIconRes() != 0)  holder.imageView.setImageResource(bean.getIconRes());
-                    if (!TextUtils.isEmpty(bean.getIconUrl()))  dialogImageLoder.loadImage(getContext(),holder.imageView,bean.getIconUrl());
+                    if (bean.getImageRes() != 0)  holder.imageView.setImageResource(bean.getImageRes());
+                    if (!TextUtils.isEmpty(bean.getImageUrl()))  dialogImageLoder.loadImage(getContext(),holder.imageView,bean.getImageUrl());
                 }
                 if (chooseMode == CHOOSEMODE_SINGLE)
                 {
