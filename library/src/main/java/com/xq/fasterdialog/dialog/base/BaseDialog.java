@@ -5,8 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -34,6 +34,8 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public static int ATTCHGRAVITY_DEFAULT = 1; //默认为右下角弹出，参考windows的右键菜单
     public static int ATTCHGRAVITY_BOTTOM = 2;  //底部弹出，并且总会与依附的View保持左右对称
+
+    public static int PROGRESS_ACCURACY = 1000;  //最大进度值，也表明了当前进度值的精度(值越大精度越细)
 
     //Dialog
     private Dialog dialog;
@@ -253,7 +255,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     public void dismiss() {
         if (((Activity)getContext()).isFinishing()) return;
 
-        if (autoDismissTime > 0 && task != null) task.cancel(true);
+        if (autoDismissTime > 0 && timer != null) timer.cancel();
 
         getDialog().dismiss();
 
@@ -263,45 +265,23 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return rootView.findViewById(id);
     }
 
-    protected AsyncTask task;
+    protected CountDownTimer timer;
     protected void autoDismiss() {
-        task = new AsyncTask<Object,Float,Void>(){
 
+        new CountDownTimer(autoDismissTime, autoDismissTime/PROGRESS_ACCURACY) {
             @Override
-            protected Void doInBackground(Object... objects) {
-                int a = autoDismissTime/100;
-                for (int i=a;i<autoDismissTime;i=i+a)
-                {
-                    publishProgress(i/(float)autoDismissTime);
-                    try {
-                        Thread.sleep(a);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                if(isCancelled())
-                    return;
+            public void onFinish() {
                 dismiss();
             }
-
             @Override
-            protected void onProgressUpdate(Float... values) {
-                if(isCancelled())
-                    return;
-                if (values[0]<=1)
-                    onAutoDismissProgressChanged((int) (values[0]*100));
+            public void onTick(long millisUntilFinished) {
+                onAutoDismissProgressChanged((autoDismissTime-millisUntilFinished)/(float)autoDismissTime);
             }
-        };
-        task.execute();
+        }.start();
     }
 
     //AutoDismiss进度改变时的回调
-    protected void onAutoDismissProgressChanged(int progress){
+    protected void onAutoDismissProgressChanged(float progress){
 
     }
 

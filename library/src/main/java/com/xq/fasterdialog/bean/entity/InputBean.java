@@ -30,6 +30,41 @@ public class InputBean{
         this.inputType = inputType;
     }
 
+    @Override
+    public String toString() {
+        return "InputBean{" +
+                "hint=" + hint +
+                ", text=" + text +
+                ", fixedText=" + fixedText +
+                ", maxLength=" + maxLength +
+                ", inputType=" + inputType +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        InputBean inputBean = (InputBean) o;
+
+        if (maxLength != inputBean.maxLength) return false;
+        if (inputType != inputBean.inputType) return false;
+        if (hint != null ? !hint.equals(inputBean.hint) : inputBean.hint != null) return false;
+        if (text != null ? !text.equals(inputBean.text) : inputBean.text != null) return false;
+        return fixedText != null ? fixedText.equals(inputBean.fixedText) : inputBean.fixedText == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = hint != null ? hint.hashCode() : 0;
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (fixedText != null ? fixedText.hashCode() : 0);
+        result = 31 * result + maxLength;
+        result = 31 * result + inputType;
+        return result;
+    }
+
     public CharSequence getHint() {
         return hint;
     }

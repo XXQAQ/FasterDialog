@@ -98,8 +98,8 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         return (T) this;
     }
 
-    public T setInputBean(int no,InputBean bean) {
-        array_input.put(no,bean);
+    public T setInputBean(InputBean bean) {
+        setInputBean0(bean);
         return (T) this;
     }
 
@@ -113,7 +113,10 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         return (T) this;
     }
 
-
+    public T setInputBean(int no,InputBean bean) {
+        array_input.put(no,bean);
+        return (T) this;
+    }
 
     protected void setViewVisible(EditText editText){
         if (editText.getParent().getParent() instanceof TextInputLayout)

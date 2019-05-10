@@ -9,7 +9,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
     protected ProgressBar progressBar;
 
-    protected int progress;
+    protected float progress;
 
     private boolean indeterminate = true;
 
@@ -23,21 +23,24 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
         progressBar = findViewById(getContext().getResources().getIdentifier("progressBar", "id", getContext().getPackageName()));
 
+        //设置ProgressBar最大进度值
+        if (progressBar != null)    progressBar.setMax(PROGRESS_ACCURACY);
+
         setIndeterminate(indeterminate);
 
         setProgress(progress);
     }
 
     @Override
-    protected void onAutoDismissProgressChanged(int progress) {
+    protected void onAutoDismissProgressChanged(float progress) {
         super.onAutoDismissProgressChanged(progress);
 
         setProgress(progress);
     }
 
-    public T setProgress(int progress) {
+    public T setProgress(float progress) {
         this.progress = progress;
-        if (progressBar != null && progress >= 0) progressBar.setProgress(progress);
+        if (progressBar != null && progress >= 0) progressBar.setProgress((int) (progress*PROGRESS_ACCURACY));
         return (T) this;
     }
 
@@ -53,7 +56,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
         return (T) this;
     }
 
-    public int getProgress() {
+    public float getProgress() {
         return progress;
     }
 }
