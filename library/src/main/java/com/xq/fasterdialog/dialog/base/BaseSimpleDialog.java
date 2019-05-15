@@ -8,18 +8,20 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.text.TextUtils;
 
 public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseDialog<T> {
 
     protected TextView titleView;
     protected TextView contentView;
-    protected ImageView iconView;
+    protected ImageView imageView;
     protected View closeView;
     protected CompoundButton checkedView;
 
     protected CharSequence title;
     protected CharSequence content;
-    protected int icon;
+    protected int imageRes;
+    protected String imageUrl;
 
     public BaseSimpleDialog(@NonNull Context context) {
         super(context);
@@ -31,7 +33,8 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
 
         titleView = findViewById(getContext().getResources().getIdentifier("titleView", "id", getContext().getPackageName()));
         contentView = findViewById(getContext().getResources().getIdentifier("contentView", "id", getContext().getPackageName()));
-        iconView = findViewById(getContext().getResources().getIdentifier("iconView", "id", getContext().getPackageName()));
+        imageView = findViewById(getContext().getResources().getIdentifier("imageView", "id", getContext().getPackageName()));
+        if (imageView == null) imageView = findViewById(getContext().getResources().getIdentifier("iconView", "id", getContext().getPackageName()));//对旧版本的id:iconView作兼容
         closeView = findViewById(getContext().getResources().getIdentifier("closeView", "id", getContext().getPackageName()));
         checkedView = findViewById(getContext().getResources().getIdentifier("checkedView", "id", getContext().getPackageName()));
 
@@ -41,20 +44,15 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
 
         setTitle(title);
         setContent(content);
-        setIcon(icon);
+        setImageRes(imageRes);
+        if (!TextUtils.isEmpty(imageUrl))   setImageUrl(imageUrl);
+
         bindDialogClickListenerWithView(closeView, new OnDialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog) {
 
             }
         },true);
-    }
-
-    public T setData(int resId,CharSequence title,CharSequence content){
-        setTitle(title);
-        setContent(content);
-        setIcon(resId);
-        return (T) this;
     }
 
     public T setTitle(CharSequence title) {
@@ -69,9 +67,15 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         return (T) this;
     }
 
-    public T setIcon(int resId) {
-        this.icon = resId;
-        setImageResourceToView(iconView,resId,View.GONE);
+    public T setImageRes(int imageRes){
+        this.imageRes = imageRes;
+        setImageResourceToView(imageView,imageRes, View.GONE);
+        return (T) this;
+    }
+
+    public T setImageUrl(String imageUrl){
+        this.imageUrl = imageUrl;
+        setImageUrlToView(imageView,imageUrl,View.GONE);
         return (T) this;
     }
 
@@ -83,13 +87,28 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         return content;
     }
 
-    public int getIcon() {
-        return icon;
+    public int getImageRes() {
+        return imageRes;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public boolean isChecked(){
         if (checkedView == null) return false;
         return checkedView.isChecked();
+    }
+
+    @Deprecated
+    public T setIcon(int resId) {
+        setImageRes(resId);
+        return (T) this;
+    }
+
+    @Deprecated
+    public int getIcon() {
+        return imageRes;
     }
 
 }

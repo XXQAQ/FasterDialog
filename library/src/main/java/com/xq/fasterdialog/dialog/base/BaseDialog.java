@@ -35,7 +35,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     public static int ATTCHGRAVITY_DEFAULT = 1; //默认为右下角弹出，参考windows的右键菜单
     public static int ATTCHGRAVITY_BOTTOM = 2;  //底部弹出，并且总会与依附的View保持左右对称
 
-    public static int PROGRESS_ACCURACY = 1000;  //最大进度值，也表明了当前进度值的精度(值越大精度越细)
+    public static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
 
     //Dialog
     private Dialog dialog;
@@ -121,51 +121,6 @@ public abstract class BaseDialog<T extends BaseDialog>{
 
     public void onStop(){
 
-    }
-
-    //如果指定的ViewGroup下所有子控件均未不可见，则直接隐藏该ViewGroup
-    protected void invisibleEmptyLayout(ViewGroup viewGroup,int visibilityIfNot){
-        if (viewGroup.getParent() == null)  return;
-
-        boolean isGone =true;
-        for (int i = 0; i < viewGroup.getChildCount(); i++)
-        {
-            if (viewGroup.getChildAt(i).getVisibility() == View.VISIBLE)
-                break;
-            if (i == viewGroup.getChildCount()-1 && isGone)
-            {
-                viewGroup.setVisibility(View.GONE);
-                invisibleEmptyLayout((ViewGroup) viewGroup.getParent(),visibilityIfNot);
-            }
-        }
-    }
-
-    protected void visibleLayout(ViewGroup viewGroup){
-        if (viewGroup.getParent() == null)  return;
-
-        if (viewGroup.getVisibility() != View.VISIBLE)
-        {
-            viewGroup.setVisibility(View.VISIBLE);
-            visibleLayout((ViewGroup) viewGroup.getParent());
-        }
-    }
-
-    //指定控件具体类型，获取Container容器下所有该类型的控件
-    protected List getAllSomeView(View container,Class someView) {
-        List list = new ArrayList<>();
-        if (container instanceof ViewGroup)
-        {
-            ViewGroup viewGroup = (ViewGroup) container;
-            for (int i = 0; i < viewGroup.getChildCount(); i++)
-            {
-                View view = viewGroup.getChildAt(i);
-                if (someView.isAssignableFrom(view.getClass()))
-                    list.add(view);
-                //再次 调用本身（递归）
-                list.addAll(getAllSomeView(view,someView));
-            }
-        }
-        return list;
     }
 
     //当Dialog需要动态调整宽高的时候，请调用此方法
@@ -567,6 +522,52 @@ public abstract class BaseDialog<T extends BaseDialog>{
             });
     }
 
+
+    //如果指定的ViewGroup下的所有子控件均未不可见，则直接隐藏该ViewGroup
+    protected void invisibleEmptyLayout(ViewGroup viewGroup,int visibilityIfNot){
+        if (viewGroup.getParent() == null)  return;
+
+        boolean isGone =true;
+        for (int i = 0; i < viewGroup.getChildCount(); i++)
+        {
+            if (viewGroup.getChildAt(i).getVisibility() == View.VISIBLE)
+                break;
+            if (i == viewGroup.getChildCount()-1 && isGone)
+            {
+                viewGroup.setVisibility(View.GONE);
+                invisibleEmptyLayout((ViewGroup) viewGroup.getParent(),visibilityIfNot);
+            }
+        }
+    }
+
+    //将指定的ViewGroup以及以上所有parent全部设置为可见
+    protected void visibleLayout(ViewGroup viewGroup){
+        if (viewGroup.getParent() == null)  return;
+
+        if (viewGroup.getVisibility() != View.VISIBLE)
+        {
+            viewGroup.setVisibility(View.VISIBLE);
+            visibleLayout((ViewGroup) viewGroup.getParent());
+        }
+    }
+
+    //指定控件具体类型，获取Container容器下所有该类型的控件
+    protected List getAllSomeView(View container,Class someView) {
+        List list = new ArrayList<>();
+        if (container instanceof ViewGroup)
+        {
+            ViewGroup viewGroup = (ViewGroup) container;
+            for (int i = 0; i < viewGroup.getChildCount(); i++)
+            {
+                View view = viewGroup.getChildAt(i);
+                if (someView.isAssignableFrom(view.getClass()))
+                    list.add(view);
+                //再次调用
+                list.addAll(getAllSomeView(view,someView));
+            }
+        }
+        return list;
+    }
 
 
     //内部工具类或者监听

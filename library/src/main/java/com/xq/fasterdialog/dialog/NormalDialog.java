@@ -13,6 +13,7 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
 
     public static int LAYOUT_XQ = R.layout.layout_normaldialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_normaldialog_meterail;
+    public static int LAYOUT_BIGIMAGE = R.layout.layout_normaldialog_bigimage;
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
 
     public NormalDialog(@NonNull Context context) {
@@ -26,6 +27,14 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
 
     public static void setDefaultLayout(int layoutId){
         LAYOUT_DEFAULT = layoutId;
+    }
+
+    public NormalDialog setBigImageLayoutStyle(){
+        setStyle(STYLE_ALERTDIALOG);
+        setCustomView(LAYOUT_BIGIMAGE);
+        setWidthMatch();
+        setHeightWrap();
+        return this;
     }
 
     public NormalDialog setXQLayoutStyle(){
