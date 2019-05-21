@@ -21,31 +21,35 @@ public class DialogManager {
 
     public static void showDialog(BaseDialog dialog){
 
-        DialogManager.map_dialog.put(dialog.hashCode()&0x0000ffff,dialog);
+        getDialogMap().put(dialog.hashCode()&0x0000ffff,dialog);
 
         dialog.addOnDismissListener(new BaseDialog.OnDialogDismissListener() {
             @Override
             public void onDismiss(BaseDialog dialog) {
-                DialogManager.map_dialog.remove(dialog.hashCode()&0x0000ffff);
+                getDialogMap().remove(dialog.hashCode()&0x0000ffff);
             }
         }).show();
     }
 
     public static void dismissDialog(){
 
-        Map.Entry<Integer,BaseDialog> entry = getTail(map_dialog);
+        Map.Entry<Integer,BaseDialog> entry = getTail(getDialogMap());
 
-        entry.getValue().dismiss();
+        if (entry != null && entry.getValue() != null) entry.getValue().dismiss();
 
     }
 
-    private  static  <K, V> Map.Entry<K, V> getTail(LinkedHashMap<K, V> map) {
+    private  static  <K, V> Map.Entry<K, V> getTail(Map<K, V> map) {
         Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
         Map.Entry<K, V> tail = null;
         while (iterator.hasNext()) {
             tail = iterator.next();
         }
         return tail;
+    }
+
+    private synchronized static Map<Integer,BaseDialog> getDialogMap(){
+        return map_dialog;
     }
 
     public static class DialogDelegateActivity extends AppCompatActivity {
