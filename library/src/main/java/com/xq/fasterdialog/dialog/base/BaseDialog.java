@@ -413,7 +413,31 @@ public abstract class BaseDialog<T extends BaseDialog>{
         return (T) this;
     }
 
+    //可以通过自定义布局的控件Id快速设置一些常用的控件属性
+    public T setText(int id,CharSequence text){
+        setTextToView((TextView) findViewById(id),text,View.VISIBLE);
+        return (T) this;
+    }
 
+    public T setImage(int id,int imageRes){
+        setImageResourceToView((ImageView) findViewById(id),imageRes,View.VISIBLE);
+        return (T) this;
+    }
+
+    public T setImage(int id,String imageUrl){
+        setImageUrlToView((ImageView) findViewById(id),imageUrl,View.VISIBLE);
+        return (T) this;
+    }
+
+    public T setDialogClickListener(int id,OnDialogClickListener listener){
+        bindDialogClickListenerWithView(findViewById(id),listener,true);
+        return (T) this;
+    }
+
+    public T setDialogClickListener(int id,OnDialogClickListener listener,boolean isAutoDismiss){
+        bindDialogClickListenerWithView(findViewById(id),listener,isAutoDismiss);
+        return (T) this;
+    }
 
     //所有get
     public Dialog getDialog() {
