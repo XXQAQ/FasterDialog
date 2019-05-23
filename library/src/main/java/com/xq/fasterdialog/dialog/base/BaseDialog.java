@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -38,7 +39,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     public static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
 
     //Dialog
-    private Dialog dialog;
+    private AppCompatDialog dialog;
 
     //上下文
     private Context context;
@@ -182,7 +183,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         if (((Activity)getContext()).isFinishing()) return;
 
         if (!isCreated)
-            dialog = new Dialog(getContext(),style){
+            dialog = new AppCompatDialog(getContext(),style){
                 @Override
                 protected void onCreate(Bundle savedInstanceState) {
                     super.onCreate(savedInstanceState);
