@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class BaseDialog<T extends BaseDialog>{
+public abstract class BaseDialog<T extends BaseDialog> implements DialogInterface{
 
     public static int STYLE_BASEDIALOG = R.style.BaseDialog;    //无任何特性,Dialog基础样式
     public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;  //在上基础上，弹出时附带阴影效果
@@ -39,7 +38,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
     public static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
 
     //Dialog
-    private AppCompatDialog dialog;
+    private Dialog dialog;
 
     //上下文
     private Context context;
@@ -183,7 +182,7 @@ public abstract class BaseDialog<T extends BaseDialog>{
         if (((Activity)getContext()).isFinishing()) return;
 
         if (!isCreated)
-            dialog = new AppCompatDialog(getContext(),style){
+            dialog = new Dialog(getContext(),style){
                 @Override
                 protected void onCreate(Bundle savedInstanceState) {
                     super.onCreate(savedInstanceState);
