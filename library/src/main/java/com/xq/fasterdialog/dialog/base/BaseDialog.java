@@ -207,6 +207,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         if (autoDismissTime > 0) autoDismiss();
     }
 
+    @Override
     public void dismiss() {
         if (((Activity)getContext()).isFinishing()) return;
 
@@ -214,6 +215,15 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
         getDialog().dismiss();
 
+    }
+
+    @Override
+    public void cancel() {
+        if (((Activity)getContext()).isFinishing()) return;
+
+        if (autoDismissTime > 0 && timer != null) timer.cancel();
+
+        getDialog().cancel();
     }
 
     public <T_VIEW extends View> T_VIEW findViewById(int id) {
