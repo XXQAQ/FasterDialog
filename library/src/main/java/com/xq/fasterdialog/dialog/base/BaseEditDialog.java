@@ -9,6 +9,7 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -51,6 +52,12 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             {
                 TextView fixedView = findViewById(getContext().getResources().getIdentifier("fixed_" + key, "id", getContext().getPackageName()));
                 if (fixedView != null) fixedView.setText(bean.getFixedText());
+            }
+            //自动在第一个EditText弹出输入法
+            if (index == 0)
+            {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editText, 0);
             }
         }
 

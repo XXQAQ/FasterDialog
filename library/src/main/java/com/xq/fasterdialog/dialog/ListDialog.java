@@ -2,7 +2,7 @@ package com.xq.fasterdialog.dialog;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.View;
+import android.view.Gravity;
 import com.xq.fasterdialog.R;
 import com.xq.fasterdialog.dialog.base.BaseListDialog;
 
@@ -84,7 +84,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
             setChooseMode(chooseMode,LAYOUT_BOTTOM,ITEMLAYOUT_CLASSICAL_MULTI);
         setWidthMatch();
         setHeightWrap();
-        setPopupFromBottom();
+        setPopupFromScreen(Gravity.BOTTOM);
         return this;
     }
 
@@ -101,7 +101,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
             setChooseMode(chooseMode, LAYOUT_QQMENU, ITEMLAYOUT_CLASSICAL_LARGE_MULTI);
         setWidthMatch();
         setHeightWrap();
-        setPopupFromBottom();
+        setPopupFromScreen(Gravity.BOTTOM);
         setDividerDrawable(getContext().getResources().getDrawable(R.drawable.line_divider));
         return this;
     }

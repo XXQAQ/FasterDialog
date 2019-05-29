@@ -34,10 +34,11 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public static int STYLE_ALERTDIALOG = R.style.AlertDialog;  //参照AlertDialog效果，Dialog宽度固定且附带阴影效果
 
     //弹出动画（包含进入与进出）
-    public static int ANIMATE_BOTTOM = R.style.Animate_Bottom;
-    public static int ANIMATE_TOP = R.style.Animate_Top;
-    public static int ANIMATE_LEFT = R.style.Animate_Left;
-    public static int ANIMATE_RIGHT = R.style.Animate_Right;
+    public static int ANIMAT_ALPHA = R.style.Animat_Alpha;
+    public static int ANIMAT_BOTTOM = R.style.Animat_Bottom;
+    public static int ANIMAT_TOP = R.style.Animat_Top;
+    public static int ANIMAT_LEFT = R.style.Animat_Left;
+    public static int ANIMAT_RIGHT = R.style.Animat_Right;
 
     protected static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
 
@@ -65,8 +66,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     protected View attchView;
     //需要在初始化的时候传值给Dialog设置的属性
     protected int style = STYLE_BASEDIALOG;
+    protected int animatStyle = ANIMAT_ALPHA;
     protected int layoutId;
-    protected int animatStyle;
     protected boolean cancelable = true;
     protected boolean cancelableOutside = true;
     protected List<OnDialogCancelListener> list_cancelListener = new LinkedList<>();
@@ -87,7 +88,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
         getDialog().getWindow().setContentView(rootView);
 
-        if (animatStyle != 0) getDialog().getWindow().setWindowAnimations(animatStyle);
+        getDialog().getWindow().setWindowAnimations(animatStyle);
         getDialog().setCancelable(cancelable);
         getDialog().setCanceledOnTouchOutside(cancelableOutside);
         getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
@@ -266,7 +267,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
-    public T setAnimatStyle(int animatStyle) {
+    public T setAnimat(int animatStyle) {
         this.animatStyle = animatStyle;
         return (T) this;
     }
@@ -336,27 +337,15 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
-    public T setPopupFromBottom(){
-        setAnimatStyle(ANIMATE_BOTTOM);
-        setGravity(Gravity.BOTTOM);
-        return (T) this;
-    }
-
-    public T setPopupFromTop(){
-        setAnimatStyle(ANIMATE_TOP);
-        setGravity(Gravity.TOP);
-        return (T) this;
-    }
-
-    public T setPopupFromLeft(){
-        setAnimatStyle(ANIMATE_LEFT);
-        setGravity(Gravity.LEFT);
-        return (T) this;
-    }
-
-    public T setPopupFromRight(){
-        setAnimatStyle(ANIMATE_RIGHT);
-        setGravity(Gravity.RIGHT);
+    public T setPopupFromScreen(int gravity){
+        if (gravity == Gravity.BOTTOM)
+            setAnimat(ANIMAT_BOTTOM);
+        else    if (gravity == Gravity.TOP)
+            setAnimat(ANIMAT_TOP);
+        else    if (gravity == Gravity.LEFT)
+            setAnimat(ANIMAT_LEFT);
+        else    if (gravity == Gravity.RIGHT)
+            setAnimat(ANIMAT_RIGHT);
         return (T) this;
     }
 
@@ -371,13 +360,13 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
             ;
         else    if (gravity == Gravity.BOTTOM)
-            setAnimatStyle(ANIMATE_BOTTOM);
+            setAnimat(ANIMAT_TOP);
         else    if (gravity == Gravity.TOP)
-            setAnimatStyle(ANIMATE_TOP);
+            setAnimat(ANIMAT_BOTTOM);
         else    if (gravity == Gravity.LEFT)
-            setAnimatStyle(ANIMATE_LEFT);
+            setAnimat(ANIMAT_RIGHT);
         else    if (gravity == Gravity.RIGHT)
-            setAnimatStyle(ANIMATE_RIGHT);
+            setAnimat(ANIMAT_LEFT);
         return (T) this;
     }
 

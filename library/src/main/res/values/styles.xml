@@ -28,22 +28,27 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="Animate_Bottom">
+    <style name="Animat_Alpha">
+        <item name="android:windowEnterAnimation">@anim/alpha_enter</item>
+        <item name="android:windowExitAnimation">@anim/alpha_exit</item>
+    </style>
+
+    <style name="Animat_Bottom">
         <item name="android:windowEnterAnimation">@anim/bottom_enter</item>
         <item name="android:windowExitAnimation">@anim/bottom_exit</item>
     </style>
 
-    <style name="Animate_Top">
+    <style name="Animat_Top">
         <item name="android:windowEnterAnimation">@anim/top_enter</item>
         <item name="android:windowExitAnimation">@anim/top_exit</item>
     </style>
 
-    <style name="Animate_Left">
+    <style name="Animat_Left">
         <item name="android:windowEnterAnimation">@anim/left_enter</item>
         <item name="android:windowExitAnimation">@anim/left_exit</item>
     </style>
 
-    <style name="Animate_Right">
+    <style name="Animat_Right">
         <item name="android:windowEnterAnimation">@anim/right_enter</item>
         <item name="android:windowExitAnimation">@anim/right_exit</item>
     </style>
