@@ -106,26 +106,16 @@ public class ListDialog extends BaseListDialog<ListDialog> {
         return this;
     }
 
-    public ListDialog setPopupMenuLayoutStyle(View view){
-        setPopupMenuLayoutStyle(view,ATTCHGRAVITY_DEFAULT);
+    public ListDialog setPopupMenuLayoutStyle(){
+        setPopupMenuLayoutStyle(CHOOSEMODE_SINGLE);
         return this;
     }
 
-    public ListDialog setPopupMenuLayoutStyle(View view,int attchGravity){
+    public ListDialog setPopupMenuLayoutStyle(int chooseMode){
         setStyle(STYLE_TRANSLUCENTDIALOG);
-        setChooseMode(CHOOSEMODE_SINGLE,LAYOUT_XQ,ITEMLAYOUT_CLASSICAL_SINGLE);
+        setChooseMode(chooseMode,LAYOUT_XQ,ITEMLAYOUT_CLASSICAL_SINGLE);
         setWidthWrap();
         setHeightWrap();
-        setPopupFromView(view,attchGravity);
-        return this;
-    }
-
-    public ListDialog setPopupMenuLayoutStyleOnTouchLocation(View view){
-        setStyle(STYLE_TRANSLUCENTDIALOG);
-        setChooseMode(CHOOSEMODE_SINGLE,LAYOUT_XQ,ITEMLAYOUT_CLASSICAL_SINGLE);
-        setWidthWrap();
-        setHeightWrap();
-        setPopupFromViewTouchLocation(view);
         return this;
     }
 

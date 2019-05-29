@@ -28,14 +28,18 @@ import java.util.List;
 
 public abstract class BaseDialog<T extends BaseDialog> implements DialogInterface{
 
+    //Dialog样式
     public static int STYLE_BASEDIALOG = R.style.BaseDialog;    //无任何特性,Dialog基础样式
     public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;  //在上基础上，弹出时附带阴影效果
     public static int STYLE_ALERTDIALOG = R.style.AlertDialog;  //参照AlertDialog效果，Dialog宽度固定且附带阴影效果
 
-    public static int ATTCHGRAVITY_DEFAULT = 1; //默认为右下角弹出，参考windows的右键菜单
-    public static int ATTCHGRAVITY_BOTTOM = 2;  //底部弹出，并且总会与依附的View保持左右对称
+    //弹出动画（包含进入与进出）
+    public static int ANIMATE_BOTTOM = R.style.Animate_Bottom;
+    public static int ANIMATE_TOP = R.style.Animate_Top;
+    public static int ANIMATE_LEFT = R.style.Animate_Left;
+    public static int ANIMATE_RIGHT = R.style.Animate_Right;
 
-    public static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
+    protected static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
 
     //Dialog
     private Dialog dialog;
@@ -57,9 +61,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     protected int autoDismissTime;
     protected Object tag;
     protected DialogImageLoder dialogImageLoder;
-    //AttchView的相关属性
+    //AttchView
     protected View attchView;
-    protected int attchGravity = ATTCHGRAVITY_DEFAULT;
     //需要在初始化的时候传值给Dialog设置的属性
     protected int style = STYLE_BASEDIALOG;
     protected int layoutId;
@@ -70,14 +73,13 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     protected List<OnDialogDismissListener> list_dismissListener = new LinkedList<>();
     protected List<OnDialogShowListener> list_showListener = new LinkedList<>();
 
-    private boolean isCreated = false;
-    private boolean isSetLocation = false;
-    private boolean isSetGravity = false;
 
     public BaseDialog(@NonNull Context context) {
         this.context = context;
     }
 
+
+    private boolean isCreated = false;
     public void onCreate(Bundle savedInstanceState) {
 
         isCreated = true;
@@ -147,16 +149,31 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
             int[] location = new int[2] ;attchView.getLocationOnScreen(location);
             //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
             location[1] = location[1] - ScreenUtils.getStatusBarHeight();
-            if (attchGravity == ATTCHGRAVITY_DEFAULT)
+            rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
             {
                 location[0] = location[0] + attchView.getMeasuredWidth();
                 location[1] = location[1] + attchView.getMeasuredHeight();
             }
-            else    if (attchGravity == ATTCHGRAVITY_BOTTOM)
+            else    if (gravity == Gravity.BOTTOM)
             {
-                rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                 location[0] = location[0]+((attchView.getMeasuredWidth()-rootView.getMeasuredWidth())/2);
                 location[1] = location[1] + attchView.getMeasuredHeight();
+            }
+            else    if (gravity == Gravity.TOP)
+            {
+                location[0] = location[0]+((attchView.getMeasuredWidth()-rootView.getMeasuredWidth())/2);
+                location[1] = location[1] - attchView.getMeasuredHeight();
+            }
+            else    if (gravity == Gravity.LEFT)
+            {
+                location[0] = location[0] - attchView.getMeasuredWidth();
+                location[1] = location[1] +((attchView.getMeasuredHeight()-rootView.getMeasuredHeight())/2);
+            }
+            else    if (gravity == Gravity.RIGHT)
+            {
+                location[0] = location[0] + attchView.getMeasuredWidth();
+                location[1] = location[1] +((attchView.getMeasuredHeight()-rootView.getMeasuredHeight())/2);
             }
             window.setGravity(Gravity.TOP|Gravity.START);
             WindowManager.LayoutParams lp = window.getAttributes();
@@ -166,12 +183,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         else
         {
             int[] location = new int[]{x,y};
-            //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
-            location[1] = location[1] - ScreenUtils.getStatusBarHeight();
-            if (isSetGravity)
-                window.setGravity(gravity);
-            else    if (isSetLocation)
-                window.setGravity(Gravity.TOP|Gravity.START);
+            window.setGravity(gravity);
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.x = location[0];
             lp.y = location[1];
@@ -208,6 +220,11 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     @Override
+    public void cancel() {
+        getDialog().cancel();
+    }
+
+    @Override
     public void dismiss() {
         if (((Activity)getContext()).isFinishing()) return;
 
@@ -215,15 +232,6 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
         getDialog().dismiss();
 
-    }
-
-    @Override
-    public void cancel() {
-        if (((Activity)getContext()).isFinishing()) return;
-
-        if (autoDismissTime > 0 && timer != null) timer.cancel();
-
-        getDialog().cancel();
     }
 
     public <T_VIEW extends View> T_VIEW findViewById(int id) {
@@ -255,6 +263,11 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     //所有set
     public T setStyle(int style) {
         this.style = style;
+        return (T) this;
+    }
+
+    public T setAnimatStyle(int animatStyle) {
+        this.animatStyle = animatStyle;
         return (T) this;
     }
 
@@ -323,44 +336,48 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
-    public T setX(int x) {
-        this.x = x;
-        isSetLocation = true;
-        return (T) this;
-    }
-
-    public T setY(int y) {
-        this.y = y;
-        isSetLocation = true;
-        return (T) this;
-    }
-
-    public T setGravity(int gravity) {
-        this.gravity = gravity;
-        isSetGravity = true;
-        return (T) this;
-    }
-
     public T setPopupFromBottom(){
-        setAnimatStyle(R.style.Animation_Bottom);
+        setAnimatStyle(ANIMATE_BOTTOM);
         setGravity(Gravity.BOTTOM);
         return (T) this;
     }
 
     public T setPopupFromTop(){
-        setAnimatStyle(R.style.Animation_Top);
+        setAnimatStyle(ANIMATE_TOP);
         setGravity(Gravity.TOP);
         return (T) this;
     }
 
-    public T setPopupFromView(View view){
-        setPopupFromView(view,ATTCHGRAVITY_DEFAULT);
+    public T setPopupFromLeft(){
+        setAnimatStyle(ANIMATE_LEFT);
+        setGravity(Gravity.LEFT);
         return (T) this;
     }
 
-    public T setPopupFromView(View view,int attchGravity){
+    public T setPopupFromRight(){
+        setAnimatStyle(ANIMATE_RIGHT);
+        setGravity(Gravity.RIGHT);
+        return (T) this;
+    }
+
+    public T setPopupFromView(View view){
+        setPopupFromView(view,Gravity.BOTTOM|Gravity.RIGHT);
+        return (T) this;
+    }
+
+    public T setPopupFromView(View view,int gravity){
         this.attchView = view;
-        this.attchGravity = attchGravity;
+        setGravity(gravity);
+        if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
+            ;
+        else    if (gravity == Gravity.BOTTOM)
+            setAnimatStyle(ANIMATE_BOTTOM);
+        else    if (gravity == Gravity.TOP)
+            setAnimatStyle(ANIMATE_TOP);
+        else    if (gravity == Gravity.LEFT)
+            setAnimatStyle(ANIMATE_LEFT);
+        else    if (gravity == Gravity.RIGHT)
+            setAnimatStyle(ANIMATE_RIGHT);
         return (T) this;
     }
 
@@ -368,26 +385,14 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                setX((int) event.getRawX());
-                setY((int) event.getRawY());
+                //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
+                //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
+                setX((int) (event.getRawX()-ScreenUtils.getStatusBarHeight()));
+                setY((int) (event.getRawY()-ScreenUtils.getStatusBarHeight()));
+                setGravity(Gravity.TOP|Gravity.START);
                 return false;
             }
         });
-        return (T) this;
-    }
-
-    public T setDialogImageLoder(DialogImageLoder dialogImageLoder) {
-        this.dialogImageLoder = dialogImageLoder;
-        return (T) this;
-    }
-
-    public T setAnimatStyle(int animatStyle) {
-        this.animatStyle = animatStyle;
-        return (T) this;
-    }
-
-    public T setAutoDismissTime(int autoDismissTime) {
-        this.autoDismissTime = autoDismissTime;
         return (T) this;
     }
 
@@ -399,11 +404,6 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     public T setCanceledOnTouchOutside(boolean cancelableOutside) {
         this.cancelableOutside = cancelableOutside;
-        return (T) this;
-    }
-
-    public T setTag(Object tag) {
-        this.tag = tag;
         return (T) this;
     }
 
@@ -419,6 +419,21 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     public T addOnShowListener(@Nullable OnDialogShowListener listener) {
         list_showListener.add(listener);
+        return (T) this;
+    }
+
+    public T setDialogImageLoder(DialogImageLoder dialogImageLoder) {
+        this.dialogImageLoder = dialogImageLoder;
+        return (T) this;
+    }
+
+    public T setAutoDismissTime(int autoDismissTime) {
+        this.autoDismissTime = autoDismissTime;
+        return (T) this;
+    }
+
+    public T setTag(Object tag) {
+        this.tag = tag;
         return (T) this;
     }
 
@@ -448,33 +463,23 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
+    protected void setX(int x) {
+        this.x = x;
+    }
+
+    protected void setY(int y) {
+        this.y = y;
+    }
+
+    protected void setGravity(int gravity) {
+        this.gravity = gravity;
+    }
+
+
+
     //所有get
-    public Dialog getDialog() {
-        return dialog;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
     public View getCustomView() {
         return rootView;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public int getAutoDismissTime() {
@@ -483,6 +488,14 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     public Object getTag() {
         return tag;
+    }
+
+    protected Dialog getDialog() {
+        return dialog;
+    }
+
+    protected Context getContext() {
+        return context;
     }
 
 
@@ -602,6 +615,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         }
         return list;
     }
+
 
 
     //内部工具类或者监听
