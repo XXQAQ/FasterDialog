@@ -338,6 +338,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public T setPopupFromScreen(int gravity){
+        setGravity(gravity);
         if (gravity == Gravity.BOTTOM)
             setAnimat(ANIMAT_BOTTOM);
         else    if (gravity == Gravity.TOP)
