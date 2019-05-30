@@ -444,12 +444,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public T setDialogClickListener(int id,OnDialogClickListener listener){
-        bindDialogClickListenerWithView(findViewById(id),listener,true);
+        bindClickListenerWithView(findViewById(id),listener,true);
         return (T) this;
     }
 
     public T setDialogClickListener(int id,OnDialogClickListener listener,boolean isAutoDismiss){
-        bindDialogClickListenerWithView(findViewById(id),listener,isAutoDismiss);
+        bindClickListenerWithView(findViewById(id),listener,isAutoDismiss);
         return (T) this;
     }
 
@@ -545,7 +545,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         }
     }
 
-    protected void bindDialogClickListenerWithView(View view, final OnDialogClickListener listener, final boolean isAutoDismiss){
+    protected void bindClickListenerWithView(View view, final OnDialogClickListener listener, final boolean isAutoDismiss){
         if (view == null)
             return;
 

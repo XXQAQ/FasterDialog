@@ -81,19 +81,19 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
 
     public T setNegativeListener(OnDialogClickListener negativeListener) {
         this.negativeListener = negativeListener;
-        bindDialogClickListenerWithView(negativeView, negativeListener,true);
+        bindClickListenerWithView(negativeView, negativeListener,true);
         return (T) this;
     }
 
     public T setPositiveListener(OnDialogClickListener positiveListener) {
         this.positiveListener = positiveListener;
-        bindDialogClickListenerWithView(positiveView, positiveListener,true);
+        bindClickListenerWithView(positiveView, positiveListener,true);
         return (T) this;
     }
 
     public T setNeutralListener(OnDialogClickListener neutralListener) {
         this.neutralListener = neutralListener;
-        bindDialogClickListenerWithView(neutralView, neutralListener,true);
+        bindClickListenerWithView(neutralView, neutralListener,true);
         return (T) this;
     }
 
