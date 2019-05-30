@@ -47,7 +47,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         setImageRes(imageRes);
         if (!TextUtils.isEmpty(imageUrl))   setImageUrl(imageUrl);
 
-        bindClickListenerWithView(closeView, new OnDialogClickListener() {
+        setClickListenerToView(closeView, new OnDialogClickListener() {
             @Override
             public void onClick(BaseDialog dialog) {
 

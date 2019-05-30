@@ -85,7 +85,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
     @Override
     public T setPositiveListener(OnDialogClickListener positiveListener) {
         this.positiveListener = positiveListener;
-        bindClickListenerWithView(positiveView, positiveListener,false);
+        setClickListenerToView(positiveView, positiveListener,false);
         return (T) this;
     }
 

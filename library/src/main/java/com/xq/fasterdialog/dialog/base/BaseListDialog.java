@@ -96,7 +96,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                 if (holder.imageView != null)
                 {
                     if (bean.getImageRes() != 0)  holder.imageView.setImageResource(bean.getImageRes());
-                    if (!TextUtils.isEmpty(bean.getImageUrl()))  dialogImageLoder.loadImage(getContext(),holder.imageView,bean.getImageUrl());
+                    if (!TextUtils.isEmpty(bean.getImageUrl()))  imageLoader.loadImage(getContext(),holder.imageView,bean.getImageUrl());
                 }
                 if (chooseMode == CHOOSEMODE_SINGLE)
                 {
@@ -257,7 +257,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
     @Override
     public T setPositiveListener(OnDialogClickListener positiveListener) {
         this.positiveListener = positiveListener;
-        bindClickListenerWithView(positiveView, positiveListener,false);
+        setClickListenerToView(positiveView, positiveListener,false);
         return (T) this;
     }
 

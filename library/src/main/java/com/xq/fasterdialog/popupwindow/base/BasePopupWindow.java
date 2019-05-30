@@ -1,10 +1,10 @@
-package com.xq.fasterdialog.dialog.base;
+package com.xq.fasterdialog.popupwindow.base;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -13,12 +13,13 @@ import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.R;
@@ -27,12 +28,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class BaseDialog<T extends BaseDialog> implements DialogInterface{
-
-    //Dialog样式
-    public static int STYLE_BASEDIALOG = R.style.BaseDialog;    //无任何特性,Dialog基础样式
-    public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;  //在上基础上，弹出时附带阴影效果
-    public static int STYLE_ALERTDIALOG = R.style.AlertDialog;  //参照AlertDialog效果，Dialog宽度固定且附带阴影效果
+public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     //弹出动画（包含进入与进出）
     public static int ANIMAT_ALPHA = R.style.Animat_Alpha;
@@ -43,8 +39,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     protected static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
 
-    //Dialog
-    private Dialog dialog;
+    //PopupWindow
+    private PopupWindow popupWindow;
 
     //上下文
     private Context context;
@@ -67,18 +63,15 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     protected ImageLoader imageLoader;
     //AttchView
     protected View attchView;
-    //需要在初始化的时候传值给Dialog设置的属性
-    protected int style = STYLE_BASEDIALOG;
+    //需要在初始化的时候传值给PopupWindow设置的属性
     protected int animatStyle = ANIMAT_ALPHA;
     protected int layoutId;
-    protected boolean cancelable = true;
-    protected boolean cancelableOutside = true;
-    protected List<OnDialogCancelListener> list_cancelListener = new LinkedList<>();
-    protected List<OnDialogDismissListener> list_dismissListener = new LinkedList<>();
-    protected List<OnDialogShowListener> list_showListener = new LinkedList<>();
+    protected boolean cancelable = false;
+    protected List<OnPopupWindowDismissListener> list_dismissListener = new LinkedList<>();
+    protected List<OnPopupWindowShowListener> list_showListener = new LinkedList<>();
 
 
-    public BaseDialog(@NonNull Context context) {
+    public BasePopupWindow(@NonNull Context context) {
         this.context = context;
     }
 
@@ -88,45 +81,35 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
         isCreated = true;
 
-        if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
+        if (rootView == null) rootView = LayoutInflater.from(getContext()).inflate(layoutId,null);
         CardView cardView = new CardView(getContext());
         cardView.setCardElevation(elevation);
         cardView.setUseCompatPadding(true);
         cardView.addView(rootView);
-        getDialog().getWindow().setContentView(cardView);
+        getPopupWindow().setContentView(cardView);
 
-        getDialog().getWindow().setWindowAnimations(animatStyle);
-        getDialog().getWindow().getAttributes().alpha = alpha;
-        getDialog().setCancelable(cancelable);
-        getDialog().setCanceledOnTouchOutside(cancelableOutside);
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+        cardView.setAlpha(alpha);
+
+        getPopupWindow().setAnimationStyle(animatStyle);
+        getPopupWindow().setTouchable(true);
+        getPopupWindow().setOutsideTouchable(cancelable);
+        getPopupWindow().setFocusable(cancelable);
+        getPopupWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public void onShow(DialogInterface dialog) {
-                for(OnDialogShowListener l : list_showListener)
-                    l.onShow(BaseDialog.this);
+            public void onDismiss() {
+                for (OnPopupWindowDismissListener l : list_dismissListener)
+                    l.onDismiss(BasePopupWindow.this);
             }
         });
-        getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                for (OnDialogDismissListener l : list_dismissListener)
-                    l.onDismiss(BaseDialog.this);
-            }
-        });
-        getDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                for (OnDialogCancelListener l : list_cancelListener)
-                    l.onCancel(BaseDialog.this);
-            }
-        });
+//        getPopupWindow().setInputMethodMode(INPUT_METHOD_NEEDED);
+//        getPopupWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        getPopupWindow().setFocusable(true);
     }
 
     public void onStart() {
 
         measure();
-
-        location();
 
     }
 
@@ -134,30 +117,25 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     }
 
-    //当Dialog需要动态调整宽高的时候，请调用此方法
+    //当PopupWindow需要动态调整宽高的时候，请调用此方法
     protected void measure() {
-        Window window = getDialog().getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
         if (maxHeight > 0 && rootView.getMeasuredHeight() > maxHeight)
-            lp.height = maxHeight;
+            getPopupWindow().setHeight(maxHeight);
         else
-            lp.height = height;
+            getPopupWindow().setHeight(height);
         if (maxWidth > 0 && rootView.getMeasuredWidth() > maxWidth)
-            lp.width = maxWidth;
+            getPopupWindow().setWidth(maxWidth);
         else
-            lp.width = width;
+            getPopupWindow().setWidth(width);
     }
 
-    //当Dialog需要调整弹出位置的时候，请调用此方法
-    protected void location(){
-        Window window = getDialog().getWindow();
+    //当PopupWindow需要调整弹出位置的时候，请调用此方法
+    protected void showAtLocation(){
+        View activityView = ((Activity)getContext()).getWindow().getDecorView().findViewById(android.R.id.content);
         if (attchView != null)
         {
-            //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
             int[] location = new int[2] ;attchView.getLocationOnScreen(location);
-            //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
-            location[1] = location[1] - ScreenUtils.getStatusBarHeight();
             rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
             if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
             {
@@ -184,63 +162,39 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
                 location[0] = location[0] + attchView.getMeasuredWidth();
                 location[1] = location[1] +((attchView.getMeasuredHeight()-rootView.getMeasuredHeight())/2);
             }
-            window.setGravity(Gravity.TOP|Gravity.START);
-            WindowManager.LayoutParams lp = window.getAttributes();
-            lp.x = location[0];
-            lp.y = location[1];
+            getPopupWindow().showAtLocation(activityView,Gravity.TOP|Gravity.START,location[0],location[1]);
         }
         else
         {
             int[] location = new int[]{x,y};
-            window.setGravity(gravity);
-            WindowManager.LayoutParams lp = window.getAttributes();
-            lp.x = location[0];
-            lp.y = location[1];
+            getPopupWindow().showAtLocation(activityView,gravity,location[0],location[1]);
         }
     }
 
     public void show() {
         if (((Activity)getContext()).isFinishing()) return;
 
-        if (!isCreated)
-            dialog = new Dialog(getContext(),style){
-                @Override
-                protected void onCreate(Bundle savedInstanceState) {
-                    super.onCreate(savedInstanceState);
-                    BaseDialog.this.onCreate(savedInstanceState);
-                }
+        if (!isCreated) popupWindow = new PopupWindow(getContext());
 
-                @Override
-                protected void onStart() {
-                    super.onStart();
-                    BaseDialog.this.onStart();
-                }
+        onCreate(null);
 
-                @Override
-                protected void onStop() {
-                    super.onStop();
-                    BaseDialog.this.onStop();
-                }
-            };
+        onStart();
 
-        getDialog().show();
+        showAtLocation();
+
+        for(OnPopupWindowShowListener l : list_showListener) l.onShow(BasePopupWindow.this);
 
         if (autoDismissTime > 0) autoDismiss();
     }
 
-    @Override
-    public void cancel() {
-        getDialog().cancel();
-    }
-
-    @Override
     public void dismiss() {
         if (((Activity)getContext()).isFinishing()) return;
 
         if (autoDismissTime > 0 && timer != null) timer.cancel();
 
-        getDialog().dismiss();
+        getPopupWindow().dismiss();
 
+        onStop();
     }
 
     public <T_VIEW extends View> T_VIEW findViewById(int id) {
@@ -270,11 +224,6 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
 
     //所有set
-    public T setStyle(int style) {
-        this.style = style;
-        return (T) this;
-    }
-
     public T setAnimat(int animatStyle) {
         this.animatStyle = animatStyle;
         return (T) this;
@@ -393,10 +342,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
-                //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
-                setX((int) (event.getRawX()-ScreenUtils.getStatusBarHeight()));
-                setY((int) (event.getRawY()-ScreenUtils.getStatusBarHeight()));
+                setX((int) (event.getRawX()));
+                setY((int) (event.getRawY()));
                 setGravity(Gravity.TOP|Gravity.START);
                 return false;
             }
@@ -406,26 +353,15 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     public T setCancelable(boolean cancelable) {
         this.cancelable = cancelable;
-        if (!cancelable)    setCanceledOnTouchOutside(false);
         return (T) this;
     }
 
-    public T setCanceledOnTouchOutside(boolean cancelableOutside) {
-        this.cancelableOutside = cancelableOutside;
-        return (T) this;
-    }
-
-    public T addOnCancelListener(@Nullable final OnDialogCancelListener listener) {
-        list_cancelListener.add(listener);
-        return (T) this;
-    }
-
-    public T addOnDismissListener(@Nullable OnDialogDismissListener listener) {
+    public T addOnDismissListener(@Nullable OnPopupWindowDismissListener listener) {
         list_dismissListener.add(listener);
         return (T) this;
     }
 
-    public T addOnShowListener(@Nullable OnDialogShowListener listener) {
+    public T addOnShowListener(@Nullable OnPopupWindowShowListener listener) {
         list_showListener.add(listener);
         return (T) this;
     }
@@ -461,12 +397,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
-    public T setClickListener(int id, OnDialogClickListener listener){
+    public T setClickListener(int id, OnPopupWindowClickListener listener){
         setClickListenerToView(findViewById(id),listener,true);
         return (T) this;
     }
 
-    public T setClickListener(int id, OnDialogClickListener listener, boolean isAutoDismiss){
+    public T setClickListener(int id, OnPopupWindowClickListener listener, boolean isAutoDismiss){
         setClickListenerToView(findViewById(id),listener,isAutoDismiss);
         return (T) this;
     }
@@ -495,11 +431,11 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public boolean isShowing(){
-        return getDialog().isShowing();
+        return getPopupWindow().isShowing();
     }
 
-    protected Dialog getDialog() {
-        return dialog;
+    protected PopupWindow getPopupWindow() {
+        return popupWindow;
     }
 
     protected Context getContext() {
@@ -563,7 +499,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         }
     }
 
-    protected void setClickListenerToView(View view, final OnDialogClickListener listener, final boolean isAutoDismiss){
+    protected void setClickListenerToView(View view, final OnPopupWindowClickListener listener, final boolean isAutoDismiss){
         if (view == null)
             return;
 
@@ -571,7 +507,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(BaseDialog.this);
+                    listener.onClick(BasePopupWindow.this);
                     if (isAutoDismiss) dismiss();
                 }
             });
@@ -627,20 +563,16 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
 
     //内部工具类或者监听
-    public static interface OnDialogClickListener {
-        public void onClick(BaseDialog dialog);
+    public static interface OnPopupWindowClickListener {
+        public void onClick(BasePopupWindow popupWindow);
     }
 
-    public static interface OnDialogShowListener {
-        public void onShow(BaseDialog dialog);
+    public static interface OnPopupWindowShowListener {
+        public void onShow(BasePopupWindow popupWindow);
     }
 
-    public static interface OnDialogDismissListener {
-        public void onDismiss(BaseDialog dialog);
-    }
-
-    public static interface OnDialogCancelListener {
-        public void onCancel(BaseDialog dialog);
+    public static interface OnPopupWindowDismissListener {
+        public void onDismiss(BasePopupWindow popupWindow);
     }
 
     protected static class ScreenUtils {

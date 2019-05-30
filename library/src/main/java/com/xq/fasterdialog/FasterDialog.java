@@ -6,7 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
-import com.xq.fasterdialog.util.DialogImageLoder;
+import com.xq.fasterdialog.util.ImageLoader;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,25 +14,25 @@ import java.net.URL;
 public class FasterDialog {
 
     private static Application app;
-    private static DialogImageLoder imageLoaderd;
+    private static ImageLoader imageLoader;
 
     public static void init(Application app){
         init(app,null);
     }
 
-    public static void init(Application app, DialogImageLoder imageLoaderd){
+    public static void init(Application app, ImageLoader imageLoader){
         FasterDialog.app = app;
-        FasterDialog.imageLoaderd = imageLoaderd;
+        FasterDialog.imageLoader = imageLoader;
     }
 
     public static Application getApp() {
         return app;
     }
 
-    public static DialogImageLoder getImageLoaderd() {
-        if (imageLoaderd == null)
+    public static ImageLoader getImageLoader() {
+        if (imageLoader == null)
         {
-            imageLoaderd = new DialogImageLoder() {
+            imageLoader = new ImageLoader() {
                 @Override
                 public void loadImage(final Context context, final ImageView view, final String url, Object... object) {
                     new Thread(new Runnable() {
@@ -57,7 +57,7 @@ public class FasterDialog {
                 }
             };
         }
-        return imageLoaderd;
+        return imageLoader;
     }
 
 }
