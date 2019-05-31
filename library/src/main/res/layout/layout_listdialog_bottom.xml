@@ -54,17 +54,6 @@
             android:textStyle="bold"
             />
 
-        <TextView
-            android:id="@+id/contentView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="@dimen/spacing_less"
-            android:text="选择充值项目"
-            android:textSize="@dimen/text_medium"
-            android:textColor="@color/text_normal"
-            />
-
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
