@@ -3,6 +3,7 @@ package com.xq.fasterdialog.dialog.base;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -79,9 +80,21 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
 
     public BaseDialog(@NonNull Context context) {
-        this.context = context;
+        this.context = getReallyActivityContext(context);
     }
 
+    protected Activity getReallyActivityContext(Context context) {
+        //兼容安卓5.0以下在View中获取Context并非真实Activity Context的问题
+        while (context instanceof ContextWrapper)
+        {
+            if (context instanceof Activity)
+            {
+                return (Activity)context;
+            }
+            context = ((ContextWrapper)context).getBaseContext();
+        }
+        throw new IllegalStateException("The Context is not an Activity.");
+    }
 
     private boolean isCreated = false;
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +112,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 //        XmlResourceParser parser = getContext().getResources().getLayout(layoutId);
 //        final AttributeSet attrs = Xml.asAttributeSet(parser);
 //        ViewGroup.LayoutParams params = root.generateLayoutParams(attrs);
-        getDialog().getWindow().setContentView(rootView,rootView.getLayoutParams());
+        getDialog().getWindow().setContentView(rootView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         getDialog().getWindow().setWindowAnimations(animatStyle);
         getDialog().getWindow().getAttributes().alpha = alpha;

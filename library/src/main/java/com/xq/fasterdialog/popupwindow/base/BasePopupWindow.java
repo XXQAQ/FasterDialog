@@ -2,6 +2,7 @@ package com.xq.fasterdialog.popupwindow.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -72,7 +73,20 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
 
     public BasePopupWindow(@NonNull Context context) {
-        this.context = context;
+        this.context = getReallyActivityContext(context);
+    }
+
+    protected Activity getReallyActivityContext(Context context) {
+        //兼容安卓5.0以下在View中获取Context并非真实Activity Context的问题
+        while (context instanceof ContextWrapper)
+        {
+            if (context instanceof Activity)
+            {
+                return (Activity)context;
+            }
+            context = ((ContextWrapper)context).getBaseContext();
+        }
+        throw new IllegalStateException("The Context is not an Activity.");
     }
 
 
