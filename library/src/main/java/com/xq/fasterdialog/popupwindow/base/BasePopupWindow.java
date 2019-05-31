@@ -132,7 +132,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     //当PopupWindow需要调整弹出位置的时候，请调用此方法
     protected void showAtLocation(){
-        View activityView = ((Activity)getContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+        View decorView = ((Activity)getContext()).getWindow().getDecorView().findViewById(android.R.id.content);
         if (attchView != null)
         {
             int[] location = new int[2] ;attchView.getLocationOnScreen(location);
@@ -162,12 +162,12 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
                 location[0] = location[0] + attchView.getMeasuredWidth();
                 location[1] = location[1] +((attchView.getMeasuredHeight()-rootView.getMeasuredHeight())/2);
             }
-            getPopupWindow().showAtLocation(activityView,Gravity.TOP|Gravity.START,location[0],location[1]);
+            getPopupWindow().showAtLocation(decorView,Gravity.TOP|Gravity.START,location[0],location[1]);
         }
         else
         {
             int[] location = new int[]{x,y};
-            getPopupWindow().showAtLocation(activityView,gravity,location[0],location[1]);
+            getPopupWindow().showAtLocation(decorView,gravity,location[0],location[1]);
         }
     }
 

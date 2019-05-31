@@ -88,15 +88,15 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
         isCreated = true;
 
-//        if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
-//        CardView cardView = new CardView(getContext());
-//        cardView.setCardElevation(elevation);
-//        cardView.setUseCompatPadding(true);
-//        cardView.addView(rootView);
-//        getDialog().getWindow().setContentView(cardView);
-
         if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
-        getDialog().getWindow().setContentView(rootView);
+        CardView cardView = new CardView(getContext());
+        cardView.setCardElevation(elevation);
+        cardView.setUseCompatPadding(true);
+        cardView.addView(rootView);
+        getDialog().getWindow().setContentView(cardView);
+
+//        if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
+//        getDialog().getWindow().setContentView(rootView);
 
         getDialog().getWindow().setWindowAnimations(animatStyle);
         getDialog().getWindow().getAttributes().alpha = alpha;
