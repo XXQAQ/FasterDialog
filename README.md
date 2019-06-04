@@ -41,7 +41,7 @@ https://www.jitpack.io/#XXQAQ/FasterDialog
 
 
         //ListDialog用于列表类性的数据选择，注意这里的列表不仅是纯文字，也可以是图标，如常见的分享界面和附近推荐
-        //ListDialog继承与NormalDialog，可以使用NormalDialog所有API
+s        //ListDialog继承与NormalDialog，可以使用NormalDialog所有API
         new ListDialog(context)
                 .setCustomView(R.layout.layout_listdialog_xq,R.layout.item_nearbydialog)//设置Dialog布局与Item布局，以下四种为高定制化布局方案
                 .setBottomLayoutStyle()  //Android标准底部弹窗
@@ -104,3 +104,5 @@ https://www.jitpack.io/#XXQAQ/FasterDialog
                 return new ProgressDialog(context).setTitle("手机正在被黑客攻击\n10秒后即将重启").setAutoDismissTime(10*1000);
             }
         });
+
+PS:本框架还对PopupWindow进行了优化处理，目前测试版中可以使用以上API方式弹出PopupWindow，还有更多实际上已经写好但是没有文档的API调用，有问题的基友请在Issues中留言，我会在第一时间回复
