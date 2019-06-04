@@ -41,7 +41,7 @@ https://www.jitpack.io/#XXQAQ/FasterDialog
 
 
         //ListDialog用于列表类性的数据选择，注意这里的列表不仅是纯文字，也可以是图标，如常见的分享界面和附近推荐
-s        //ListDialog继承与NormalDialog，可以使用NormalDialog所有API
+        //ListDialog继承与NormalDialog，可以使用NormalDialog所有API
         new ListDialog(context)
                 .setCustomView(R.layout.layout_listdialog_xq,R.layout.item_nearbydialog)//设置Dialog布局与Item布局，以下四种为高定制化布局方案
                 .setBottomLayoutStyle()  //Android标准底部弹窗
