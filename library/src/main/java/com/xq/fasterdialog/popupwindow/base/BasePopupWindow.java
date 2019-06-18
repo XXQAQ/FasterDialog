@@ -32,11 +32,11 @@ import java.util.List;
 public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     //弹出动画（包含进入与进出）
-    public static int ANIMAT_ALPHA = R.style.Animat_Alpha;
-    public static int ANIMAT_BOTTOM = R.style.Animat_Bottom;
-    public static int ANIMAT_TOP = R.style.Animat_Top;
-    public static int ANIMAT_LEFT = R.style.Animat_Left;
-    public static int ANIMAT_RIGHT = R.style.Animat_Right;
+    public static int ANIMAT_ALPHA = R.style.Animate_Alpha;
+    public static int ANIMAT_BOTTOM = R.style.Animate_Bottom;
+    public static int ANIMAT_TOP = R.style.Animate_Top;
+    public static int ANIMAT_LEFT = R.style.Animate_Left;
+    public static int ANIMAT_RIGHT = R.style.Animate_Right;
 
     protected static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
 
