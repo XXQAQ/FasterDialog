@@ -9,7 +9,7 @@ import com.xq.fasterdialog.dialog.base.BaseNormalDialog;
 
 public class NormalDialog extends BaseNormalDialog<NormalDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERT;
 
     public static int LAYOUT_XQ = R.layout.layout_normaldialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_normaldialog_meterail;
@@ -30,7 +30,7 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
     }
 
     public NormalDialog setBigImageLayoutStyle(){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setCustomView(LAYOUT_BIGIMAGE);
         setWidthMatch();
         setHeightWrap();
@@ -38,7 +38,7 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
     }
 
     public NormalDialog setXQLayoutStyle(){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setCustomView(LAYOUT_XQ);
         setWidthMatch();
         setHeightWrap();
@@ -46,7 +46,7 @@ public class NormalDialog extends BaseNormalDialog<NormalDialog> {
     }
 
     public NormalDialog setMeterailLayoutStyle(){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setCustomView(LAYOUT_METERAIL);
         setWidthMatch();
         setHeightWrap();

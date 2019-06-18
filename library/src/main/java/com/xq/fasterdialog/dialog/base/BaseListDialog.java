@@ -15,20 +15,21 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.bean.entity.ItemBean;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T> {
 
-    public static final int CHOOSEMODE_SINGLE = 1;
-    public static final int CHOOSEMODE_MULTI = 2;
+    public static final int CHOOSE_MODE_SINGLE = 1;
+    public static final int CHOOSE_MODE_MULTI = 2;
 
     protected RecyclerView recyclerView;
     protected RecyclerView.LayoutManager layoutManager;
     protected Drawable dividerDrawable;
 
-    protected int chooseMode = CHOOSEMODE_SINGLE;
+    protected int chooseMode = CHOOSE_MODE_SINGLE;
 
     protected int itemLayoutId;
 
@@ -36,23 +37,22 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     //单选模式的监听
     protected OnItemSelectedListener onItemSelectedListener;
-    //多选模式的 监听
-    protected OnItemsSelectedListener onItemsSelectedListener;
-
-    //单选模式的选择项
-    protected ItemBean selection;
-    //多选模式的选择项
+    //多选模式的监听
+    protected OnItemListSelectedListener onItemListSelectedListener;
+    //选择项
     protected List<ItemBean> list_selection = new LinkedList<>();
+
 
     public BaseListDialog(@NonNull Context context) {
         super(context);
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        recyclerView = findViewById(getContext().getResources().getIdentifier("recyclerView", "id", getContext().getPackageName()));
+        recyclerView = getView(getContext().getResources().getIdentifier("recyclerView", "id", getContext().getPackageName()));
         if (layoutManager == null) layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         if (dividerDrawable != null)
@@ -95,106 +95,86 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                 }
                 if (holder.imageView != null)
                 {
-                    if (bean.getImageRes() != 0)  holder.imageView.setImageResource(bean.getImageRes());
-                    if (!TextUtils.isEmpty(bean.getImageUrl()))  imageLoader.loadImage(getContext(),holder.imageView,bean.getImageUrl());
+                    if (bean.getImageRes() != 0)
+                        holder.imageView.setImageResource(bean.getImageRes());
+                    if (!TextUtils.isEmpty(bean.getImageUrl()))
+                        FasterDialog.getImageLoader().loadImage(getContext(),holder.imageView,bean.getImageUrl());
                 }
-                if (chooseMode == CHOOSEMODE_SINGLE)
-                {
-                    final CompoundButton.OnCheckedChangeListener listener =  new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (isChecked)
-                            {
-                                selection = bean;
-                                if (onItemSelectedListener != null) onItemSelectedListener.onItemSelected(BaseListDialog.this,selection);
-                                dismiss();
-                            }
-                        }
-                    };
-                    if (holder.stateView == null)
-                    {
-                        if (holder.titleView instanceof CompoundButton)
-                        {
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    ((CompoundButton)holder.titleView).toggle();
-                                }
-                            });
-                            ((CompoundButton) holder.titleView).setOnCheckedChangeListener(null);
-                            if (selection != null && selection.equals(bean))
-                                ((CompoundButton) holder.titleView).setChecked(true);
-                            else
-                                ((CompoundButton) holder.titleView).setChecked(false);
-                            ((CompoundButton) holder.titleView).setOnCheckedChangeListener(listener);
-                        }
-                        else
-                        {
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    listener.onCheckedChanged(null,true);
-                                }
-                            });
-                        }
-                    }
-                    else
-                    {
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                holder.stateView.toggle();
-                            }
-                        });
-                        (holder.stateView).setOnCheckedChangeListener(null);
-                        if (selection != null && selection.equals(bean))
-                            (holder.stateView).setChecked(true);
-                        else
-                            (holder.stateView).setChecked(false);
-                        holder.stateView.setOnCheckedChangeListener(listener);
-                    }
-                }
-                else    if (chooseMode == CHOOSEMODE_MULTI)
+                if (holder.stateView != null)
                 {
                     final CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (isChecked)
-                                list_selection.add(bean);
-                            else
-                                list_selection.remove(bean);
+                            if (chooseMode == CHOOSE_MODE_SINGLE)
+                            {
+                                if (isChecked)
+                                {
+                                    list_selection.clear();
+                                    list_selection.add(bean);
+                                }
+                                else
+                                {
+                                    list_selection.remove(bean);
+                                }
+
+                                recyclerView.getAdapter().notifyDataSetChanged();
+
+                                onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
+                                if (onItemSelectedListener.isDismiss()) dismiss();
+                            }
+                            else    if (chooseMode == CHOOSE_MODE_MULTI)
+                            {
+                                if (isChecked)
+                                    list_selection.add(bean);
+                                else
+                                    list_selection.remove(bean);
+                            }
                         }
                     };
-                    if (holder.stateView == null)
-                    {
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ((CompoundButton) holder.titleView).toggle();
-                            }
-                        });
-                        ((CompoundButton)holder.titleView).setOnCheckedChangeListener(null);
-                        if (list_selection.contains(bean))
-                            ((CompoundButton)holder.titleView).setChecked(true);
-                        else
-                            ((CompoundButton)holder.titleView).setChecked(false);
-                        ((CompoundButton)holder.titleView).setOnCheckedChangeListener(listener);
-                    }
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            holder.stateView.toggle();
+                        }
+                    });
+                    holder.stateView.setOnCheckedChangeListener(null);
+                    if (list_selection.contains(bean))
+                        (holder.stateView).setChecked(true);
                     else
-                    {
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                holder.stateView.toggle();
+                        (holder.stateView).setChecked(false);
+                    holder.stateView.setOnCheckedChangeListener(listener);
+                }
+                else
+                {
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (chooseMode == CHOOSE_MODE_SINGLE)
+                            {
+                                if (!list_selection.contains(bean))
+                                {
+                                    list_selection.clear();
+                                    list_selection.add(bean);
+                                }
+                                else
+                                {
+                                    list_selection.remove(bean);
+                                }
+
+                                recyclerView.getAdapter().notifyDataSetChanged();
+
+                                onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
+                                if (onItemSelectedListener.isDismiss()) dismiss();
                             }
-                        });
-                        holder.stateView.setOnCheckedChangeListener(null);
-                        if (list_selection.contains(bean))
-                            (holder.stateView).setChecked(true);
-                        else
-                            (holder.stateView).setChecked(false);
-                        holder.stateView.setOnCheckedChangeListener(listener);
-                    }
+                            else    if (chooseMode == CHOOSE_MODE_MULTI)
+                            {
+                                if (!list_selection.contains(bean))
+                                    list_selection.add(bean);
+                                else
+                                    list_selection.remove(bean);
+                            }
+                        }
+                    });
                 }
             }
 
@@ -212,53 +192,39 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                     titleView = itemView.findViewById(getContext().getResources().getIdentifier("titleView", "id", getContext().getPackageName()));
                     imageView = itemView.findViewById(getContext().getResources().getIdentifier("imageView", "id", getContext().getPackageName()));
                     stateView = itemView.findViewById(getContext().getResources().getIdentifier("stateView", "id", getContext().getPackageName()));
+                    if (stateView == null && titleView instanceof CompoundButton)   stateView = (CompoundButton) titleView;
                 }
             }
         });
-        recyclerView.getAdapter().notifyDataSetChanged();
 
-        if (chooseMode == CHOOSEMODE_SINGLE)
-        {
-            setPositiveListener(new OnDialogClickListener() {
-                @Override
-                public void onClick(BaseDialog dialog) {
-                    if (onItemsSelectedListener != null)
-                    {
-                        if (selection != null)
-                        {
-                            onItemSelectedListener.onItemSelected(BaseListDialog.this, selection);
-                            dismiss();
-                        }
-                    }
-                }
-            });
-        }
-        else    if (chooseMode == CHOOSEMODE_MULTI)
-        {
-            if (TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
-            setPositiveListener(new OnDialogClickListener() {
-                @Override
-                public void onClick(BaseDialog dialog) {
-                    if (onItemsSelectedListener != null)
-                    {
-                        if (list_selection.size() >0)
-                        {
-                            onItemsSelectedListener.onItemsSelected(BaseListDialog.this, list_selection);
-                            dismiss();
-                        }
-                    }
-                }
-            });
-        }
+        if (chooseMode == CHOOSE_MODE_MULTI && TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
     }
 
     //确认键监听已被默认占用，不建议再自行设置
     @Deprecated
     @Override
     public T setPositiveListener(OnDialogClickListener positiveListener) {
-        this.positiveListener = positiveListener;
-        setClickListenerToView(positiveView, positiveListener,false);
-        return (T) this;
+        return super.setPositiveListener(new OnDialogClickListener(false) {
+            @Override
+            public void onClick(BaseDialog dialog) {
+                if (chooseMode == CHOOSE_MODE_SINGLE)
+                {
+                    if (onItemSelectedListener != null)
+                    {
+                        onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
+                        if (onItemSelectedListener.isDismiss()) dismiss();
+                    }
+                }
+                else    if (chooseMode == CHOOSE_MODE_MULTI)
+                {
+                    if (onItemListSelectedListener != null)
+                    {
+                        onItemListSelectedListener.onItemListSelected(BaseListDialog.this, list_selection);
+                        if (onItemListSelectedListener.isDismiss())  dismiss();
+                    }
+                }
+            }
+        });
     }
 
     public T setLayoutManager(RecyclerView.LayoutManager layoutManager) {
@@ -295,38 +261,32 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
     }
 
     public T setItemList(List<ItemBean> list){
+        //删除多余的选择项
+        for (ItemBean bean : list_selection)
+            if (!list.contains(bean))
+                list_selection.remove(bean);
+
+        list_item.clear();
+        list_item.addAll(list);
         if (recyclerView != null)
         {
-            //删除多余的选择项
-            if (chooseMode == CHOOSEMODE_SINGLE)
-            {
-                if(!list.contains(selection))
-                    selection = null;
-            }
-            else    if (chooseMode == CHOOSEMODE_MULTI)
-            {
-                for (ItemBean bean : list_selection)
-                    if (!list.contains(bean))
-                        list_selection.remove(bean);
-            }
-            list_item.clear();
-            list_item.addAll(list);
             recyclerView.getAdapter().notifyDataSetChanged();
             measure();
         }
-        else
-            list_item.addAll(list);
         return (T) this;
     }
 
     public T setSelection(ItemBean selection){
-        this.selection = selection;
+        list_selection.clear();
+        list_selection.add(selection);
+        if(recyclerView != null)    recyclerView.getAdapter().notifyDataSetChanged();
         return (T) this;
     }
 
     public T setSelectionList(List<ItemBean> list){
         list_selection.clear();
         list_selection.addAll(list);
+        if(recyclerView != null)    recyclerView.getAdapter().notifyDataSetChanged();
         return (T) this;
     }
 
@@ -335,21 +295,33 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public T setOnItemsSelectedListener(OnItemsSelectedListener onItemsSelectedListener) {
-        this.onItemsSelectedListener = onItemsSelectedListener;
+    public T setOnItemListSelectedListener(OnItemListSelectedListener listener) {
+        this.onItemListSelectedListener = listener;
         return (T) this;
     }
 
-    public static interface OnItemSelectedListener {
+    public static abstract class OnItemSelectedListener extends DialogBehaviorListener{
 
-        public void onItemSelected(BaseListDialog dialog, ItemBean bean);
+        public OnItemSelectedListener() {
+        }
 
+        public OnItemSelectedListener(boolean isDismiss) {
+            super(isDismiss);
+        }
+
+        public abstract void onItemSelected(BaseListDialog dialog, ItemBean bean);
     }
 
-    public static interface OnItemsSelectedListener {
+    public static abstract class OnItemListSelectedListener extends DialogBehaviorListener{
 
-        public void onItemsSelected(BaseListDialog dialog, List<ItemBean> list);
+        public OnItemListSelectedListener() {
+        }
 
+        public OnItemListSelectedListener(boolean isDismiss) {
+            super(isDismiss);
+        }
+
+        public abstract void onItemListSelected(BaseListDialog dialog, List<ItemBean> list);
     }
 
 }

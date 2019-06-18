@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -23,17 +25,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.util.ImageLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public abstract class BaseDialog<T extends BaseDialog> implements DialogInterface{
 
     //Dialog样式
-    public static int STYLE_BASEDIALOG = R.style.BaseDialog;    //无任何特性,Dialog基础样式
-    public static int STYLE_TRANSLUCENTDIALOG = R.style.TranslucentDialog;  //在上基础上，弹出时附带阴影效果
-    public static int STYLE_ALERTDIALOG = R.style.AlertDialog;  //参照AlertDialog效果，Dialog宽度固定且附带阴影效果
+    public static int STYLE_BASE = R.style.BaseDialog;    //无任何特性,Dialog基础样式
+    public static int STYLE_TRANSLUCENT = R.style.TranslucentDialog;  //在上基础上，弹出时附带黑色背景效果
+    public static int STYLE_ALERT = R.style.AlertDialog;  //参照AlertDialog效果，Dialog宽度固定且附带阴影效果
 
     //弹出动画（包含进入与进出）
     public static int ANIMAT_ALPHA = R.style.Animat_Alpha;
@@ -42,7 +44,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public static int ANIMAT_LEFT = R.style.Animat_Left;
     public static int ANIMAT_RIGHT = R.style.Animat_Right;
 
-    protected static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
+    //进度精度(值越大精度越细，但是也不可以过大)
+    protected static int PROGRESS_ACCURACY = 3600;
 
     //Dialog
     private Dialog dialog;
@@ -50,10 +53,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     //上下文
     private Context context;
 
-    //根布局
-    protected View rootView;
+    //对用户自定义布局包裹后的顶层布局（某些情况下等于customView）
+    private View rootView;
+    //用户的自定义布局
+    private View customView;
 
-    //自定义属性
+    //自定义相关属性
     protected int gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
     protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -65,11 +70,9 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     protected float elevation;
     protected int autoDismissTime;
     protected Object tag;
-    protected ImageLoader imageLoader;
-    //AttchView
     protected View attchView;
-    //需要在初始化的时候传值给Dialog设置的属性
-    protected int style = STYLE_BASEDIALOG;
+    //Dialog初始化相关属性
+    protected int style = STYLE_BASE;
     protected int animatStyle = ANIMAT_ALPHA;
     protected int layoutId;
     protected boolean cancelable = true;
@@ -96,23 +99,165 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         throw new IllegalStateException("The Context is not an Activity.");
     }
 
-    private boolean isCreated = false;
     public void onCreate(Bundle savedInstanceState) {
+
+    }
+
+    public void onStart() {
+
+        measure();
+
+        location();
+
+    }
+
+    public void onStop(){
+
+    }
+
+    //当Dialog需要动态调整宽高的时候，请调用此方法
+    protected void measure() {
+
+        Window window = getDialog().getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+
+        rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
+
+        int mWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth(getContext()):rootView.getMeasuredWidth();
+        int mHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight(getContext()):rootView.getMeasuredHeight();
+
+        if (maxWidth > 0 && mWidth > maxWidth)
+            lp.width = maxWidth;
+        else
+            lp.width = mWidth;
+
+        if (maxHeight > 0 && mHeight > maxHeight)
+            lp.height = maxHeight;
+        else
+            lp.height = mHeight;
+    }
+
+    //当Dialog需要调整弹出位置的时候，请调用此方法
+    protected void location(){
+
+        Window window = getDialog().getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+
+        if (attchView != null)
+        {
+            //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
+            int[] location = new int[2] ;attchView.getLocationOnScreen(location);
+            //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
+            location[1] = location[1] - ScreenUtils.getStatusBarHeight();
+
+            rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
+
+            int mWidth = lp.width > 0?lp.width:lp.width == MATCH_PARENT?ScreenUtils.getScreenWidth(getContext()):rootView.getMeasuredWidth();
+            int mHeight = lp.height > 0?lp.height:lp.height == MATCH_PARENT?ScreenUtils.getScreenHeight(getContext()):rootView.getMeasuredHeight();
+            int aWidth = attchView.getMeasuredWidth();
+            int aHeight = attchView.getMeasuredHeight();
+
+            if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
+            {
+                location[0] = location[0] + aWidth;
+                location[1] = location[1] + aHeight;
+            }
+            else    if (gravity == Gravity.BOTTOM)
+            {
+                location[0] = location[0] + ((aWidth-mWidth)/2);
+                location[1] = location[1] + aHeight;
+            }
+            else    if (gravity == Gravity.TOP)
+            {
+                location[0] = location[0] + ((aWidth-mWidth)/2);
+                location[1] = location[1] - mHeight;
+            }
+            else    if (gravity == Gravity.LEFT)
+            {
+                location[0] = location[0] - mWidth;
+                location[1] = location[1] + ((aHeight-mHeight)/2);
+            }
+            else    if (gravity == Gravity.RIGHT)
+            {
+                location[0] = location[0] + aWidth;
+                location[1] = location[1] + ((aHeight-mHeight)/2);
+            }
+            window.setGravity(Gravity.TOP|Gravity.START);
+            lp.x = location[0];
+            lp.y = location[1];
+        }
+        else
+        {
+            int[] location = new int[]{x,y};
+            window.setGravity(gravity);
+            lp.x = location[0];
+            lp.y = location[1];
+        }
+    }
+
+    public void show() {
+        if (((Activity)getContext()).isFinishing()) return;
+
+        if (!isCreated) create();
+
+        getDialog().show();
+
+        if (autoDismissTime > 0) autoDismiss();
+    }
+
+    private boolean isCreated = false;
+    public final void create(){
+        if (isCreated) return;
 
         isCreated = true;
 
-//        if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
-//        CardView cardView = new CardView(getContext());
-//        cardView.setCardElevation(elevation);
-//        cardView.setUseCompatPadding(true);
-//        cardView.addView(rootView);
-//        getDialog().getWindow().setContentView(cardView);
+        //生命周期同步
+        dialog = new Dialog(getContext(),style){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                BaseDialog.this.onCreate(savedInstanceState);
+            }
 
-        if (rootView == null) rootView = getDialog().getLayoutInflater().inflate(layoutId,null);
-//        XmlResourceParser parser = getContext().getResources().getLayout(layoutId);
-//        final AttributeSet attrs = Xml.asAttributeSet(parser);
-//        ViewGroup.LayoutParams params = root.generateLayoutParams(attrs);
-        getDialog().getWindow().setContentView(rootView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            @Override
+            protected void onStart() {
+                super.onStart();
+                BaseDialog.this.onStart();
+            }
+
+            @Override
+            protected void onStop() {
+                super.onStop();
+                BaseDialog.this.onStop();
+            }
+        };
+
+        if (customView == null) customView = getDialog().getLayoutInflater().inflate(layoutId,null);
+
+        CardView cardView = new CardView(getContext());
+        cardView.setCardBackgroundColor(Color.TRANSPARENT);
+        cardView.setCardElevation(elevation);
+        cardView.setUseCompatPadding(elevation != 0);
+
+        ViewGroup target = customView.findViewById(getContext().getResources().getIdentifier("cardLayout", "id", getContext().getPackageName()));
+        if (target == null || target.getParent() == null)
+        {
+            customView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+            cardView.addView(customView);
+            rootView = cardView;
+        }
+        else
+        {
+            ViewGroup targetParent=((ViewGroup)target.getParent());
+            int index = targetParent.indexOfChild(target);
+            targetParent.removeView(target);
+            cardView.setLayoutParams(target.getLayoutParams());
+            target.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+            cardView.addView(target);
+            targetParent.addView(cardView,index,cardView.getLayoutParams());
+            rootView = customView;
+        }
+        getDialog().getWindow().setContentView(rootView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
 
         getDialog().getWindow().setWindowAnimations(animatStyle);
         getDialog().getWindow().getAttributes().alpha = alpha;
@@ -141,112 +286,6 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         });
     }
 
-    public void onStart() {
-
-        measure();
-
-        location();
-
-    }
-
-    public void onStop(){
-
-    }
-
-    //当Dialog需要动态调整宽高的时候，请调用此方法
-    protected void measure() {
-        Window window = getDialog().getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
-        if (maxHeight > 0 && rootView.getMeasuredHeight() > maxHeight)
-            lp.height = maxHeight;
-        else
-            lp.height = height;
-        if (maxWidth > 0 && rootView.getMeasuredWidth() > maxWidth)
-            lp.width = maxWidth;
-        else
-            lp.width = width;
-    }
-
-    //当Dialog需要调整弹出位置的时候，请调用此方法
-    protected void location(){
-        Window window = getDialog().getWindow();
-        if (attchView != null)
-        {
-            //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
-            int[] location = new int[2] ;attchView.getLocationOnScreen(location);
-            //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
-            location[1] = location[1] - ScreenUtils.getStatusBarHeight();
-            rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-            if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
-            {
-                location[0] = location[0] + attchView.getMeasuredWidth();
-                location[1] = location[1] + attchView.getMeasuredHeight();
-            }
-            else    if (gravity == Gravity.BOTTOM)
-            {
-                location[0] = location[0]+((attchView.getMeasuredWidth()-rootView.getMeasuredWidth())/2);
-                location[1] = location[1] + attchView.getMeasuredHeight();
-            }
-            else    if (gravity == Gravity.TOP)
-            {
-                location[0] = location[0]+((attchView.getMeasuredWidth()-rootView.getMeasuredWidth())/2);
-                location[1] = location[1] - attchView.getMeasuredHeight();
-            }
-            else    if (gravity == Gravity.LEFT)
-            {
-                location[0] = location[0] - attchView.getMeasuredWidth();
-                location[1] = location[1] +((attchView.getMeasuredHeight()-rootView.getMeasuredHeight())/2);
-            }
-            else    if (gravity == Gravity.RIGHT)
-            {
-                location[0] = location[0] + attchView.getMeasuredWidth();
-                location[1] = location[1] +((attchView.getMeasuredHeight()-rootView.getMeasuredHeight())/2);
-            }
-            window.setGravity(Gravity.TOP|Gravity.START);
-            WindowManager.LayoutParams lp = window.getAttributes();
-            lp.x = location[0];
-            lp.y = location[1];
-        }
-        else
-        {
-            int[] location = new int[]{x,y};
-            window.setGravity(gravity);
-            WindowManager.LayoutParams lp = window.getAttributes();
-            lp.x = location[0];
-            lp.y = location[1];
-        }
-    }
-
-    public void show() {
-        if (((Activity)getContext()).isFinishing()) return;
-
-        if (!isCreated)
-            dialog = new Dialog(getContext(),style){
-                @Override
-                protected void onCreate(Bundle savedInstanceState) {
-                    super.onCreate(savedInstanceState);
-                    BaseDialog.this.onCreate(savedInstanceState);
-                }
-
-                @Override
-                protected void onStart() {
-                    super.onStart();
-                    BaseDialog.this.onStart();
-                }
-
-                @Override
-                protected void onStop() {
-                    super.onStop();
-                    BaseDialog.this.onStop();
-                }
-            };
-
-        getDialog().show();
-
-        if (autoDismissTime > 0) autoDismiss();
-    }
-
     @Override
     public void cancel() {
         getDialog().cancel();
@@ -262,7 +301,18 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     }
 
-    public <T_VIEW extends View> T_VIEW findViewById(int id) {
+    protected SparseArray<View> array_view = new SparseArray<>();
+    protected  <T_VIEW extends View> T_VIEW getView(int id) {
+        View view = array_view.get(id);
+        if (view == null)
+        {
+            view = findViewById(id);
+            array_view.put(id,view);
+        }
+        return (T_VIEW) view;
+    }
+
+    protected  <T_VIEW extends View> T_VIEW findViewById(int id) {
         return rootView.findViewById(id);
     }
 
@@ -304,6 +354,11 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
+    public T setCustomView(View view){
+        this.customView = view;
+        return (T) this;
+    }
+
     public T setWidth(int width) {
         this.width = width;
         return (T) this;
@@ -335,12 +390,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public T setWidthMatch() {
-        this.width = WindowManager.LayoutParams.MATCH_PARENT;
+        this.width = MATCH_PARENT;
         return (T) this;
     }
 
     public T setHeightMatch() {
-        this.height = WindowManager.LayoutParams.MATCH_PARENT;
+        this.height = MATCH_PARENT;
         return (T) this;
     }
 
@@ -412,9 +467,9 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                setX((int) (event.getRawX()));
                 //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
                 //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
-                setX((int) (event.getRawX()-ScreenUtils.getStatusBarHeight()));
                 setY((int) (event.getRawY()-ScreenUtils.getStatusBarHeight()));
                 setGravity(Gravity.TOP|Gravity.START);
                 return false;
@@ -449,11 +504,6 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
-    public T setImageLoader(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
-        return (T) this;
-    }
-
     public T setAutoDismissTime(int autoDismissTime) {
         this.autoDismissTime = autoDismissTime;
         return (T) this;
@@ -464,32 +514,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
-    //可以通过自定义布局的控件Id快速设置一些常用的控件属性
-    public T setText(int id,CharSequence text){
-        setTextToView((TextView) findViewById(id),text,View.VISIBLE);
-        return (T) this;
-    }
-
-    public T setImage(int id,int imageRes){
-        setImageResourceToView((ImageView) findViewById(id),imageRes,View.VISIBLE);
-        return (T) this;
-    }
-
-    public T setImage(int id,String imageUrl){
-        setImageUrlToView((ImageView) findViewById(id),imageUrl,View.VISIBLE);
-        return (T) this;
-    }
-
-    public T setClickListener(int id, OnDialogClickListener listener){
-        setClickListenerToView(findViewById(id),listener,true);
-        return (T) this;
-    }
-
-    public T setClickListener(int id, OnDialogClickListener listener, boolean isAutoDismiss){
-        setClickListenerToView(findViewById(id),listener,isAutoDismiss);
-        return (T) this;
-    }
-
+    //对Dialog内部可调用set方法
     protected void setX(int x) {
         this.x = x;
     }
@@ -502,114 +527,87 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         this.gravity = gravity;
     }
 
-
-
-    //所有get
-    public View getCustomView() {
-        return rootView;
-    }
-
-    public Object getTag() {
-        return tag;
-    }
-
-    public boolean isShowing(){
-        return getDialog().isShowing();
-    }
-
-    protected Dialog getDialog() {
-        return dialog;
-    }
-
-    protected Context getContext() {
-        return context;
-    }
-
-
-
-    //便捷控件设置方法(包含了对父控件的处理)
-    protected void setTextToView(TextView view, CharSequence text,int visibilityIfNot){
-        if (view == null)
-            return;
+    //以下通过自定义布局的控件Id快速设置一些常用的控件属性
+    protected void setText(TextView view, CharSequence text,int visibilityIfNot){
+        if (view == null) return;
 
         if (TextUtils.isEmpty(text))
         {
-            view.setVisibility(visibilityIfNot);
-            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
+            invisibleView(view,visibilityIfNot);
         }
         else
         {
             view.setText(text);
-            view.setVisibility(View.VISIBLE);
-            visibleLayout((ViewGroup) view.getParent());
+            visibleView(view);
         }
     }
 
-    protected void setImageResourceToView(ImageView view, int id,int visibilityIfNot){
-        if (view == null)
-            return;
+    protected void setImageRes(ImageView view, int id,int visibilityIfNot){
+        if (view == null) return;
 
         if (id == 0)
         {
-            view.setVisibility(visibilityIfNot);
-            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
+            invisibleView(view,visibilityIfNot);
         }
         else
         {
             view.setImageResource(id);
-            view.setVisibility(View.VISIBLE);
-            visibleLayout((ViewGroup) view.getParent());
+            visibleView(view);
         }
     }
 
-    protected void setImageUrlToView(final ImageView view, final String url,int visibilityIfNot){
-        if (view == null)
-            return;
+    protected void setImageUrl(final ImageView view, final String url,int visibilityIfNot){
+        if (view == null) return;
 
         if (TextUtils.isEmpty(url))
         {
-            view.setVisibility(visibilityIfNot);
-            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
+            invisibleView(view,visibilityIfNot);
         }
         else
         {
-            if (imageLoader == null)
-                FasterDialog.getImageLoader().loadImage(getContext(),view,url);
-            else
-                imageLoader.loadImage(getContext(),view,url);
-            view.setVisibility(View.VISIBLE);
-            visibleLayout((ViewGroup) view.getParent());
+            FasterDialog.getImageLoader().loadImage(getContext(),view,url);
+            visibleView(view);
         }
     }
 
-    protected void setClickListenerToView(View view, final OnDialogClickListener listener, final boolean isAutoDismiss){
-        if (view == null)
-            return;
+    protected void setClickListener(View view, final OnDialogClickListener listener){
+        if (view == null) return;
 
-        if (listener != null)
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null)
+                {
                     listener.onClick(BaseDialog.this);
-                    if (isAutoDismiss) dismiss();
+                    if (listener.isDismiss()) dismiss();
                 }
-            });
+            }
+        });
     }
 
+    protected void invisibleView(View view,int visibilityIfNot){
+        view.setVisibility(visibilityIfNot);
+        invisibleLayout((ViewGroup) view.getParent(),visibilityIfNot);
+    }
+
+    protected void visibleView(View view){
+        view.setVisibility(View.VISIBLE);
+        visibleLayout((ViewGroup) view.getParent());
+    }
 
     //如果指定的ViewGroup下的所有子控件均未不可见，则直接隐藏该ViewGroup
-    protected void invisibleEmptyLayout(ViewGroup viewGroup,int visibilityIfNot){
+    protected void invisibleLayout(ViewGroup viewGroup, int visibilityIfNot){
         if (viewGroup.getParent() == null)  return;
 
-        boolean isGone =true;
+        boolean isInvisible =true;
         for (int i = 0; i < viewGroup.getChildCount(); i++)
         {
             if (viewGroup.getChildAt(i).getVisibility() == View.VISIBLE)
                 break;
-            if (i == viewGroup.getChildCount()-1 && isGone)
+            if (i == viewGroup.getChildCount()-1 && isInvisible)
             {
-                viewGroup.setVisibility(View.GONE);
-                invisibleEmptyLayout((ViewGroup) viewGroup.getParent(),visibilityIfNot);
+                viewGroup.setVisibility(visibilityIfNot);
+                invisibleLayout((ViewGroup) viewGroup.getParent(),visibilityIfNot);
             }
         }
     }
@@ -645,11 +643,30 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
 
 
-    //内部工具类或者监听
-    public static interface OnDialogClickListener {
-        public void onClick(BaseDialog dialog);
+    //所有get
+    public View getRootView() {
+        return rootView;
     }
 
+    public Object getTag() {
+        return tag;
+    }
+
+    public boolean isShowing(){
+        return getDialog().isShowing();
+    }
+
+    protected Dialog getDialog() {
+        return dialog;
+    }
+
+    protected Context getContext() {
+        return context;
+    }
+
+
+
+    //内部工具类或者监听
     public static interface OnDialogShowListener {
         public void onShow(BaseDialog dialog);
     }
@@ -660,6 +677,39 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     public static interface OnDialogCancelListener {
         public void onCancel(BaseDialog dialog);
+    }
+
+    public static abstract class DialogBehaviorListener{
+
+        private boolean isDismiss;
+
+        public DialogBehaviorListener() {
+            this(true);
+        }
+
+        public DialogBehaviorListener(boolean isDismiss) {
+            this.isDismiss = isDismiss;
+        }
+
+        public boolean isDismiss() {
+            return isDismiss;
+        }
+
+        public void setDismiss(boolean dismiss) {
+            isDismiss = dismiss;
+        }
+    }
+
+    public static abstract class OnDialogClickListener extends DialogBehaviorListener {
+
+        public OnDialogClickListener() {
+        }
+
+        public OnDialogClickListener(boolean isDismiss) {
+            super(isDismiss);
+        }
+
+        public abstract void onClick(BaseDialog dialog);
     }
 
     protected static class ScreenUtils {

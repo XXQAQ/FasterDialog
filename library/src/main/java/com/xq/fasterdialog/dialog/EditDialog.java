@@ -8,7 +8,7 @@ import com.xq.fasterdialog.dialog.base.BaseEditDialog;
 
 public class EditDialog extends BaseEditDialog<EditDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERT;
 
     public static int LAYOUT_XQ = R.layout.layout_editdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_editdialog_meterail;
@@ -28,7 +28,7 @@ public class EditDialog extends BaseEditDialog<EditDialog> {
     }
 
     public EditDialog setXQLayoutStyle(){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setCustomView(LAYOUT_XQ);
         setWidthMatch();
         setHeightWrap();
@@ -36,7 +36,7 @@ public class EditDialog extends BaseEditDialog<EditDialog> {
     }
 
     public EditDialog setMeterailLayoutStyle(){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setCustomView(LAYOUT_METERAIL);
         setWidthMatch();
         setHeightWrap();

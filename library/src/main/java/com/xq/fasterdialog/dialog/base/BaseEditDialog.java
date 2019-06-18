@@ -33,36 +33,47 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         super.onCreate(savedInstanceState);
 
         //隐藏所有EditText
-        goneAllEditText();
+        goneAllEdit();
 
         for (int index=0;index < array_input.size();index++)
         {
             int key = array_input.keyAt(index);
             InputBean bean = array_input.get(key);
-            EditText editText = findViewById(getContext().getResources().getIdentifier("edit_" + key, "id", getContext().getPackageName()));
+            EditText editText = getView(getContext().getResources().getIdentifier("edit_" + key, "id", getContext().getPackageName()));
             array_edit.put(key,editText);
             //设置EditText
-            setViewVisible(editText);
-            setHintToView(editText,bean.getHint());
+            visibleEdit(editText);
+            setEditHint(editText,bean.getHint());
+            setEditMaxLength(editText,bean.getMaxLength());
             editText.setText(bean.getText());
-            setMaxLengthToView(editText,bean.getMaxLength());
             editText.setInputType(bean.getInputType());
             //设置固定文字
             if (!TextUtils.isEmpty(bean.getFixedText()))
             {
-                TextView fixedView = findViewById(getContext().getResources().getIdentifier("fixed_" + key, "id", getContext().getPackageName()));
+                TextView fixedView = getView(getContext().getResources().getIdentifier("fixed_" + key, "id", getContext().getPackageName()));
                 if (fixedView != null) fixedView.setText(bean.getFixedText());
-            }
-            //自动在第一个EditText弹出输入法
-            if (index == 0)
-            {
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(editText, 0);
             }
         }
 
         if (TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
-        setPositiveListener(new OnDialogClickListener() {
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //自动在第一个EditText弹出输入法
+        if (array_edit.size() > 0)
+        {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(array_edit.get(0), 0);
+        }
+    }
+
+    //确认键监听已被默认占用，不再建议自行设置
+    @Deprecated
+    @Override
+    public T setPositiveListener(OnDialogClickListener positiveListener) {
+        return super.setPositiveListener(new OnDialogClickListener(false) {
             @Override
             public void onClick(BaseDialog dialog) {
                 if (editListener != null)
@@ -74,22 +85,15 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
                         EditText editText = array_edit.get(key);
                         array.put(key,editText.getText().toString());
                     }
+
                     editListener.onEditCompleted(BaseEditDialog.this,array);
+                    if (editListener.isDismiss())  dismiss();
                 }
             }
         });
     }
 
-    //确认键监听已被默认占用，不建议再自行设置
-    @Deprecated
-    @Override
-    public T setPositiveListener(OnDialogClickListener positiveListener) {
-        this.positiveListener = positiveListener;
-        setClickListenerToView(positiveView, positiveListener,false);
-        return (T) this;
-    }
-
-    public T setOnEditCompletedListener(OnEditCompletedListener listener) {
+    public T setOnEditCompletedListener(OnEditCompletedListener listener){
         this.editListener = listener;
         return (T) this;
     }
@@ -101,12 +105,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
 
     public T setErro(int no, CharSequence text, Drawable drawable){
         EditText editText = array_edit.get(no);
-        setErroToView(editText,text,drawable);
-        return (T) this;
-    }
-
-    public T setInputBean(InputBean bean) {
-        setInputBean0(bean);
+        setEditErro(editText,text,drawable);
         return (T) this;
     }
 
@@ -125,14 +124,21 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         return (T) this;
     }
 
-    protected void setViewVisible(EditText editText){
+    protected void invisibleEdit(EditText editText,int visibilityIfNot){
+        if (editText.getParent().getParent() instanceof TextInputLayout)
+            ((TextInputLayout) editText.getParent().getParent()).setVisibility(visibilityIfNot);
+        else
+            editText.setVisibility(visibilityIfNot);
+    }
+
+    protected void visibleEdit(EditText editText){
         if (editText.getParent().getParent() instanceof TextInputLayout)
             ((TextInputLayout) editText.getParent().getParent()).setVisibility(View.VISIBLE);
         else
             editText.setVisibility(View.VISIBLE);
     }
 
-    protected void setErroToView(EditText editText,CharSequence text,Drawable drawable){
+    protected void setEditErro(EditText editText, CharSequence text, Drawable drawable){
         if (TextUtils.isEmpty(text))
             return;
         if (editText.getParent().getParent() instanceof TextInputLayout && ((TextInputLayout) editText.getParent().getParent()).isErrorEnabled())
@@ -144,7 +150,7 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
                 editText.setError(text,drawable);
     }
 
-    protected void setMaxLengthToView(EditText editText,int maxLength){
+    protected void setEditMaxLength(EditText editText, int maxLength){
         if (maxLength <= 0)
             return;
         if (editText.getParent().getParent() instanceof TextInputLayout && ((TextInputLayout) editText.getParent().getParent()).isCounterEnabled())
@@ -153,26 +159,31 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             editText.setFilters(new InputFilter.LengthFilter[]{new InputFilter.LengthFilter(maxLength)});
     }
 
-    protected void setHintToView(EditText editText, CharSequence text){
+    protected void setEditHint(EditText editText, CharSequence text){
         if (editText.getParent().getParent() instanceof TextInputLayout && ((TextInputLayout) editText.getParent().getParent()).isHintEnabled())
             ((TextInputLayout) editText.getParent().getParent()).setHint(text);
         else
             editText.setHint(text);
     }
 
-    private void goneAllEditText() {
-        List<EditText> list_view = getAllSomeView(rootView,EditText.class);
-        for (EditText et : list_view)
+    protected void goneAllEdit() {
+        List<EditText> list_view = getAllSomeView(getRootView(),EditText.class);
+        for (EditText editText : list_view)
         {
-            if (et.getParent().getParent() instanceof TextInputLayout)
-                ((TextInputLayout) et.getParent().getParent()).setVisibility(View.GONE);
-            else
-                et.setVisibility(View.GONE);
+            invisibleEdit(editText,View.GONE);
         }
     }
 
-    public static interface OnEditCompletedListener {
-        public void onEditCompleted(BaseEditDialog dialog, SparseArray<CharSequence> array);
+    public static abstract class OnEditCompletedListener extends DialogBehaviorListener{
+
+        public OnEditCompletedListener() {
+        }
+
+        public OnEditCompletedListener(boolean isDismiss) {
+            super(isDismiss);
+        }
+
+        public abstract void onEditCompleted(BaseEditDialog dialog, SparseArray<CharSequence> array);
     }
 }
 

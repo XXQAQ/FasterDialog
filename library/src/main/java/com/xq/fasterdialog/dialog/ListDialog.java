@@ -8,22 +8,19 @@ import com.xq.fasterdialog.dialog.base.BaseListDialog;
 
 public class ListDialog extends BaseListDialog<ListDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERT;
 
     public static int LAYOUT_XQ = R.layout.layout_listdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_listdialog_meterail;
     public static int LAYOUT_BOTTOM = R.layout.layout_listdialog_bottom;
     public static int LAYOUT_QQMENU = R.layout.layout_listdialog_qqmenu;
 
-    public static int ITEMLAYOUT_CLASSICAL_SINGLE = R.layout.item_classical_single;
     public static int ITEMLAYOUT_CLASSICAL_MULTI = R.layout.item_classical_multi;
-    public static int ITEMLAYOUT_METERAIL_SINGLE = R.layout.item_meterail_single;
     public static int ITEMLAYOUT_METERAIL_MULTI = R.layout.item_meterail_multi;
-    public static int ITEMLAYOUT_CLASSICAL_LARGE_SINGLE = R.layout.item_classical_large_single;
     public static int ITEMLAYOUT_CLASSICAL_LARGE_MULTI = R.layout.item_classical_large_multi;
 
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
-    protected static int ITEMLAYOUT_DEFAULT = ITEMLAYOUT_CLASSICAL_SINGLE;
+    protected static int ITEMLAYOUT_DEFAULT = ITEMLAYOUT_CLASSICAL_MULTI;
 
     public ListDialog(@NonNull Context context) {
         super(context);
@@ -40,48 +37,39 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     }
 
     public ListDialog setXQLayoutStyle(){
-        setXQLayoutStyle(CHOOSEMODE_SINGLE);
+        setXQLayoutStyle(CHOOSE_MODE_SINGLE);
         return this;
     }
 
     public ListDialog setXQLayoutStyle(int chooseMode){
-        setStyle(STYLE_ALERTDIALOG);
-        if (chooseMode == CHOOSEMODE_SINGLE)
-            setChooseMode(chooseMode,LAYOUT_XQ, ITEMLAYOUT_CLASSICAL_SINGLE);
-        else    if (chooseMode == CHOOSEMODE_MULTI)
-            setChooseMode(chooseMode,LAYOUT_XQ, ITEMLAYOUT_CLASSICAL_MULTI);
+        setStyle(STYLE_ALERT);
+        setChooseMode(chooseMode,LAYOUT_XQ, ITEMLAYOUT_CLASSICAL_MULTI);
         setWidthMatch();
         setHeightWrap();
         return this;
     }
 
     public ListDialog setMeterailLayoutStyle(){
-        setMeterailLayoutStyle(CHOOSEMODE_SINGLE);
+        setMeterailLayoutStyle(CHOOSE_MODE_SINGLE);
         return this;
     }
 
     public ListDialog setMeterailLayoutStyle(int chooseMode){
-        setStyle(STYLE_ALERTDIALOG);
-        if (chooseMode == CHOOSEMODE_SINGLE)
-            setChooseMode(chooseMode,LAYOUT_METERAIL, ITEMLAYOUT_METERAIL_SINGLE);
-        else    if (chooseMode == CHOOSEMODE_MULTI)
-            setChooseMode(chooseMode,LAYOUT_METERAIL, ITEMLAYOUT_METERAIL_MULTI);
+        setStyle(STYLE_ALERT);
+        setChooseMode(chooseMode,LAYOUT_METERAIL, ITEMLAYOUT_METERAIL_MULTI);
         setWidthMatch();
         setHeightWrap();
         return this;
     }
 
     public ListDialog setBottomLayoutStyle(){
-        setBottomLayoutStyle(CHOOSEMODE_SINGLE);
+        setBottomLayoutStyle(CHOOSE_MODE_SINGLE);
         return this;
     }
 
     public ListDialog setBottomLayoutStyle(int chooseMode){
-        setStyle(STYLE_TRANSLUCENTDIALOG);
-        if (chooseMode == CHOOSEMODE_SINGLE)
-            setChooseMode(chooseMode,LAYOUT_BOTTOM,ITEMLAYOUT_CLASSICAL_SINGLE);
-        else    if (chooseMode == CHOOSEMODE_MULTI)
-            setChooseMode(chooseMode,LAYOUT_BOTTOM,ITEMLAYOUT_CLASSICAL_MULTI);
+        setStyle(STYLE_TRANSLUCENT);
+        setChooseMode(chooseMode,LAYOUT_BOTTOM,ITEMLAYOUT_CLASSICAL_MULTI);
         setWidthMatch();
         setHeightWrap();
         setPopupFromScreen(Gravity.BOTTOM);
@@ -89,16 +77,13 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     }
 
     public ListDialog setQQMenuLayoutStyle(){
-        setQQMenuLayoutStyle(CHOOSEMODE_SINGLE);
+        setQQMenuLayoutStyle(CHOOSE_MODE_SINGLE);
         return this;
     }
 
     public ListDialog setQQMenuLayoutStyle(int chooseMode){
-        setStyle(STYLE_TRANSLUCENTDIALOG);
-        if (chooseMode == CHOOSEMODE_SINGLE)
-            setChooseMode(chooseMode, LAYOUT_QQMENU, ITEMLAYOUT_CLASSICAL_LARGE_SINGLE);
-        else    if (chooseMode == CHOOSEMODE_MULTI)
-            setChooseMode(chooseMode, LAYOUT_QQMENU, ITEMLAYOUT_CLASSICAL_LARGE_MULTI);
+        setStyle(STYLE_TRANSLUCENT);
+        setChooseMode(chooseMode, LAYOUT_QQMENU, ITEMLAYOUT_CLASSICAL_LARGE_MULTI);
         setWidthMatch();
         setHeightWrap();
         setPopupFromScreen(Gravity.BOTTOM);
@@ -107,13 +92,14 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     }
 
     public ListDialog setPopupMenuLayoutStyle(){
-        setPopupMenuLayoutStyle(CHOOSEMODE_SINGLE);
+        setPopupMenuLayoutStyle(CHOOSE_MODE_SINGLE);
         return this;
     }
 
     public ListDialog setPopupMenuLayoutStyle(int chooseMode){
-        setStyle(STYLE_TRANSLUCENTDIALOG);
-        setChooseMode(chooseMode,LAYOUT_XQ,ITEMLAYOUT_CLASSICAL_SINGLE);
+        setStyle(STYLE_BASE);
+        setElevation(8.0f);
+        setChooseMode(chooseMode,LAYOUT_XQ,ITEMLAYOUT_CLASSICAL_MULTI);
         setWidthWrap();
         setHeightWrap();
         return this;
@@ -121,7 +107,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     private void init() {
         setStyle(STYLE_DEFAULT);
-        setChooseMode(CHOOSEMODE_SINGLE,LAYOUT_DEFAULT, ITEMLAYOUT_DEFAULT);
+        setChooseMode(CHOOSE_MODE_SINGLE,LAYOUT_DEFAULT, ITEMLAYOUT_DEFAULT);
     }
 
 }

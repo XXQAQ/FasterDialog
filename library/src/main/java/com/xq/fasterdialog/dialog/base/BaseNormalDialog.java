@@ -7,12 +7,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import com.xq.fasterdialog.R;
-import static com.xq.fasterdialog.FasterDialog.getApp;
 
 public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
 
-    public static String CONFIRM = getApp() == null?"确定" : getApp().getResources().getString(R.string.confirm);
-    public static String CANCEL = getApp() == null?"取消" : getApp().getResources().getString(R.string.cancel);
+    public static String CONFIRM;
+    public static String CANCEL;
 
     protected TextView negativeView;
     protected TextView positiveView;
@@ -27,73 +26,64 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
 
     public BaseNormalDialog(@NonNull Context context) {
         super(context);
+        init();
+    }
+
+    private void init(){
+        CONFIRM = getContext().getResources().getString(R.string.confirm);
+        CANCEL = getContext().getResources().getString(R.string.cancel);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        positiveView = findViewById(getContext().getResources().getIdentifier("positiveView", "id", getContext().getPackageName()));
-        negativeView = findViewById(getContext().getResources().getIdentifier("negativeView", "id", getContext().getPackageName()));
-        neutralView = findViewById(getContext().getResources().getIdentifier("neutralView", "id", getContext().getPackageName()));
+        positiveView = getView(getContext().getResources().getIdentifier("positiveView", "id", getContext().getPackageName()));
+        negativeView = getView(getContext().getResources().getIdentifier("negativeView", "id", getContext().getPackageName()));
+        neutralView = getView(getContext().getResources().getIdentifier("neutralView", "id", getContext().getPackageName()));
 
         setPositiveText(positiveText);
         setNegativeText(negativeText);
         setNeutralText(neutralText);
 
-        OnDialogClickListener defaultListener = new OnDialogClickListener() {
-            @Override
-            public void onClick(BaseDialog dialog) {
-
-            }
-        };
-        if (!TextUtils.isEmpty(positiveText) && positiveListener == null)
-            setPositiveListener(defaultListener);
-        else
-            setPositiveListener(positiveListener);
-        if (!TextUtils.isEmpty(negativeText) && negativeListener == null)
-            setNegativeListener(defaultListener);
-        else
-            setNegativeListener(negativeListener);
-        if (!TextUtils.isEmpty(neutralText) && neutralListener == null)
-            setNeutralListener(defaultListener);
-        else
-            setNeutralListener(neutralListener);
+        setPositiveListener(positiveListener);
+        setNegativeListener(negativeListener);
+        setNeutralListener(neutralListener);
     }
 
     public T setNegativeText(CharSequence negativeText) {
         this.negativeText = negativeText;
-        setTextToView(negativeView, negativeText, View.GONE);
+        setText(negativeView, negativeText, View.GONE);
         return (T) this;
     }
 
     public T setPositiveText(CharSequence positiveText) {
         this.positiveText = positiveText;
-        setTextToView(positiveView, positiveText, View.GONE);
+        setText(positiveView, positiveText, View.GONE);
         return (T) this;
     }
 
     public T setNeutralText(CharSequence neutralText) {
         this.neutralText = neutralText;
-        setTextToView(neutralView, neutralText, View.GONE);
+        setText(neutralView, neutralText, View.GONE);
         return (T) this;
     }
 
     public T setNegativeListener(OnDialogClickListener negativeListener) {
         this.negativeListener = negativeListener;
-        setClickListenerToView(negativeView, negativeListener,true);
+        setClickListener(negativeView, negativeListener);
         return (T) this;
     }
 
     public T setPositiveListener(OnDialogClickListener positiveListener) {
         this.positiveListener = positiveListener;
-        setClickListenerToView(positiveView, positiveListener,true);
+        setClickListener(positiveView, positiveListener);
         return (T) this;
     }
 
     public T setNeutralListener(OnDialogClickListener neutralListener) {
         this.neutralListener = neutralListener;
-        setClickListenerToView(neutralView, neutralListener,true);
+        setClickListener(neutralView, neutralListener);
         return (T) this;
     }
 

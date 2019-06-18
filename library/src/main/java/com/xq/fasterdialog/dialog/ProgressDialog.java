@@ -9,7 +9,7 @@ import com.xq.fasterdialog.dialog.base.BaseProgressDialog;
 
 public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
-    private static int STYLE_DEFAULT = STYLE_ALERTDIALOG;
+    private static int STYLE_DEFAULT = STYLE_ALERT;
 
     public static int LAYOUT_HORIZONTAL_XQ = R.layout.layout_horizontalprogressdialog_xq;
     public static int LAYOUT_HORIZONTAL_METERAIL = R.layout.layout_horizontalprogressdialog_meterail;
@@ -36,7 +36,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     }
 
     public ProgressDialog setHorizontalXQLayoutStyle(boolean indeterminate){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setIndeterminate(indeterminate,LAYOUT_HORIZONTAL_XQ);
         setWidthMatch();
         setHeightWrap();
@@ -49,7 +49,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     }
 
     public ProgressDialog setHorizontalMeterailLayoutStyle(boolean indeterminate){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setIndeterminate(indeterminate,LAYOUT_HORIZONTAL_METERAIL);
         setWidthMatch();
         setHeightWrap();
@@ -57,7 +57,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     }
 
     public ProgressDialog setCircleXQLayoutStyle(){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setIndeterminate(true,LAYOUT_CIRCLE_XQ);
         setWidthMatch();
         setHeightWrap();
@@ -65,7 +65,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     }
 
     public ProgressDialog setCircleMeterailLayoutStyle(){
-        setStyle(STYLE_ALERTDIALOG);
+        setStyle(STYLE_ALERT);
         setIndeterminate(true,LAYOUT_CIRCLE_METERAIL);
         setWidthMatch();
         setHeightWrap();

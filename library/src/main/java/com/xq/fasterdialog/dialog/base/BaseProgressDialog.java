@@ -21,7 +21,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        progressBar = findViewById(getContext().getResources().getIdentifier("progressBar", "id", getContext().getPackageName()));
+        progressBar = getView(getContext().getResources().getIdentifier("progressBar", "id", getContext().getPackageName()));
 
         //设置ProgressBar最大进度值
         if (progressBar != null)    progressBar.setMax(PROGRESS_ACCURACY);

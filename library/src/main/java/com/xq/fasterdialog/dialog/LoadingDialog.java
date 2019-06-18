@@ -10,7 +10,7 @@ import com.xq.fasterdialog.dialog.base.BaseDialog;
 
 public class LoadingDialog extends BaseDialog<LoadingDialog> {
 
-    private static int STYLE_DEFAULT = BaseDialog.STYLE_BASEDIALOG;
+    private static int STYLE_DEFAULT = BaseDialog.STYLE_BASE;
 
     public static int LAYOUT_XQ = R.layout.layout_loadingdialog;
     protected static int LAYOUT_DEFAULT = LAYOUT_XQ;
@@ -33,7 +33,7 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
     }
 
     public LoadingDialog setXQLayoutStyle(){
-        setStyle(STYLE_BASEDIALOG);
+        setStyle(STYLE_BASE);
         setCustomView(LAYOUT_XQ);
         setWidthWrap();
         setHeightWrap();
@@ -54,14 +54,14 @@ public class LoadingDialog extends BaseDialog<LoadingDialog> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadingView = findViewById(getContext().getResources().getIdentifier("loadingView", "id", getContext().getPackageName()));
+        loadingView = getView(getContext().getResources().getIdentifier("loadingView", "id", getContext().getPackageName()));
 
         setLoadingText(loadingText);
     }
 
     public LoadingDialog setLoadingText(CharSequence loadingText) {
         this.loadingText = loadingText;
-        setTextToView(loadingView,loadingText, View.GONE);
+        setText(loadingView,loadingText, View.GONE);
         return this;
     }
 

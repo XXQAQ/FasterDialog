@@ -2,8 +2,7 @@ package com.xq.fasterdialog.dialog;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.View;
-
+import android.view.ViewGroup;
 import com.xq.fasterdialog.dialog.base.BaseDialog;
 
 public class CustomDialog extends BaseDialog<CustomDialog> {
@@ -15,21 +14,10 @@ public class CustomDialog extends BaseDialog<CustomDialog> {
         init();
     }
 
-    public CustomDialog setCustomView(View view){
-        this.rootView = view;
-        return this;
-    }
-
-    @Deprecated
-    @Override
-    public CustomDialog setCustomView(int layoutId) {
-        return this;
-    }
-
     @Override
     public void onStop() {
         super.onStop();
-        if (disconView) getDialog().getWindow().setContentView(new View(getContext()));
+        if (disconView) ((ViewGroup)getRootView().getParent()).removeView(getRootView());
     }
 
     private void init(){

@@ -31,13 +31,12 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        titleView = findViewById(getContext().getResources().getIdentifier("titleView", "id", getContext().getPackageName()));
-        contentView = findViewById(getContext().getResources().getIdentifier("contentView", "id", getContext().getPackageName()));
-        imageView = findViewById(getContext().getResources().getIdentifier("imageView", "id", getContext().getPackageName()));
-        if (imageView == null) imageView = findViewById(getContext().getResources().getIdentifier("iconView", "id", getContext().getPackageName()));//对旧版本的id:iconView作兼容
-        closeView = findViewById(getContext().getResources().getIdentifier("closeView", "id", getContext().getPackageName()));
-        checkedView = findViewById(getContext().getResources().getIdentifier("checkedView", "id", getContext().getPackageName()));
-
+        titleView = getView(getContext().getResources().getIdentifier("titleView", "id", getContext().getPackageName()));
+        contentView = getView(getContext().getResources().getIdentifier("contentView", "id", getContext().getPackageName()));
+        imageView = getView(getContext().getResources().getIdentifier("imageView", "id", getContext().getPackageName()));
+        if (imageView == null) imageView = getView(getContext().getResources().getIdentifier("iconView", "id", getContext().getPackageName()));//对旧版本的id:iconView作兼容
+        closeView = getView(getContext().getResources().getIdentifier("closeView", "id", getContext().getPackageName()));
+        checkedView = getView(getContext().getResources().getIdentifier("checkedView", "id", getContext().getPackageName()));
         //考虑到TextView中会含有超链接等局部监听，需要进行下处理
         if (titleView != null) titleView.setMovementMethod(LinkMovementMethod.getInstance());
         if (contentView != null) contentView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -47,35 +46,35 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         setImageRes(imageRes);
         if (!TextUtils.isEmpty(imageUrl))   setImageUrl(imageUrl);
 
-        setClickListenerToView(closeView, new OnDialogClickListener() {
+        setClickListener(closeView, new OnDialogClickListener(true) {
             @Override
             public void onClick(BaseDialog dialog) {
 
             }
-        },true);
+        });
     }
 
     public T setTitle(CharSequence title) {
         this.title = title;
-        setTextToView(titleView,title, View.GONE);
+        setText(titleView,title, View.GONE);
         return (T) this;
     }
 
     public T setContent(CharSequence content) {
         this.content = content;
-        setTextToView(contentView,content, View.GONE);
+        setText(contentView,content, View.GONE);
         return (T) this;
     }
 
     public T setImageRes(int imageRes){
         this.imageRes = imageRes;
-        setImageResourceToView(imageView,imageRes, View.GONE);
+        setImageRes(imageView,imageRes, View.GONE);
         return (T) this;
     }
 
     public T setImageUrl(String imageUrl){
         this.imageUrl = imageUrl;
-        setImageUrlToView(imageView,imageUrl,View.GONE);
+        setImageUrl(imageView,imageUrl,View.GONE);
         return (T) this;
     }
 
@@ -104,11 +103,6 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
     public T setIcon(int resId) {
         setImageRes(resId);
         return (T) this;
-    }
-
-    @Deprecated
-    public int getIcon() {
-        return imageRes;
     }
 
 }
