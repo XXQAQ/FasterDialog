@@ -1,14 +1,17 @@
 package com.xq.fasterdialog.bean.entity;
 
-import java.io.Serializable;
+import com.xq.fasterdialog.bean.behavior.ItemBehavior;
+import com.xq.fasterdialog.dialog.base.BaseListDialog;
 
-public class ItemBean implements Serializable {
+public class ItemBean implements ItemBehavior<ItemBean> {
 
     private int position;
     private CharSequence title;
-    protected String imageUrl;
-    protected int imageRes;
+    private String imageUrl;
+    private int imageRes;
+    private String id;
     private Object tag;
+    private BaseListDialog.OnItemSelectedListener selectedListener;
 
     public ItemBean() {
     }
@@ -46,6 +49,7 @@ public class ItemBean implements Serializable {
                 ", title=" + title +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", imageRes=" + imageRes +
+                ", id='" + id + '\'' +
                 ", tag=" + tag +
                 '}';
     }
@@ -55,14 +59,16 @@ public class ItemBean implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ItemBean itemBean = (ItemBean) o;
+        ItemBean that = (ItemBean) o;
 
-        if (position != itemBean.position) return false;
-        if (imageRes != itemBean.imageRes) return false;
-        if (title != null ? !title.equals(itemBean.title) : itemBean.title != null) return false;
-        if (imageUrl != null ? !imageUrl.equals(itemBean.imageUrl) : itemBean.imageUrl != null)
+        if (position != that.position) return false;
+        if (imageRes != that.imageRes) return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        if (imageUrl != null ? !imageUrl.equals(that.imageUrl) : that.imageUrl != null)
             return false;
-        return tag != null ? tag.equals(itemBean.tag) : itemBean.tag == null;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return tag != null ? tag.equals(that.tag) : that.tag == null;
+
     }
 
     @Override
@@ -71,48 +77,86 @@ public class ItemBean implements Serializable {
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
         result = 31 * result + imageRes;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (tag != null ? tag.hashCode() : 0);
         return result;
     }
 
+    @Override
     public int getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    @Override
+    public ItemBean setPosition(int position) {
         this.position = position;
+        return this;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public int getImageRes() {
-        return imageRes;
-    }
-
-    public void setImageRes(int imageRes) {
-        this.imageRes = imageRes;
-    }
-
+    @Override
     public CharSequence getTitle() {
         return title;
     }
 
-    public void setTitle(CharSequence title) {
+    @Override
+    public ItemBean setTitle(CharSequence title) {
         this.title = title;
+        return this;
     }
 
+    @Override
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    @Override
+    public ItemBean setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
+    @Override
+    public int getImageRes() {
+        return imageRes;
+    }
+
+    @Override
+    public ItemBean setImageRes(int imageRes) {
+        this.imageRes = imageRes;
+        return this;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public ItemBean setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    @Override
     public Object getTag() {
         return tag;
     }
 
-    public void setTag(Object tag) {
+    @Override
+    public ItemBean setTag(Object tag) {
         this.tag = tag;
+        return this;
+    }
+
+    @Override
+    public BaseListDialog.OnItemSelectedListener getSelectedListener() {
+        return selectedListener;
+    }
+
+    @Override
+    public ItemBean setSelectedListener(BaseListDialog.OnItemSelectedListener selectedListener) {
+        this.selectedListener = selectedListener;
+        return this;
     }
 }
 

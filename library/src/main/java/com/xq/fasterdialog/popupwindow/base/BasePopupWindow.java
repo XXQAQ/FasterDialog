@@ -22,9 +22,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.R;
-import com.xq.fasterdialog.util.ImageLoader;
+import com.xq.worldbean.util.ImageLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +60,6 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     protected float elevation;
     protected int autoDismissTime;
     protected Object tag;
-    protected ImageLoader imageLoader;
     //AttchView
     protected View attchView;
     //需要在初始化的时候传值给PopupWindow设置的属性
@@ -380,11 +378,6 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         return (T) this;
     }
 
-    public T setImageLoader(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
-        return (T) this;
-    }
-
     public T setAutoDismissTime(int autoDismissTime) {
         this.autoDismissTime = autoDismissTime;
         return (T) this;
@@ -504,10 +497,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         }
         else
         {
-            if (imageLoader == null)
-                FasterDialog.getImageLoader().loadImage(getContext(),view,url);
-            else
-                imageLoader.loadImage(getContext(),view,url);
+            ImageLoader.loadImage(getContext(),url,view);
             view.setVisibility(View.VISIBLE);
             visibleLayout((ViewGroup) view.getParent());
         }

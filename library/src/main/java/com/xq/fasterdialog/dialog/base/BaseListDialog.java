@@ -15,8 +15,9 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.xq.fasterdialog.FasterDialog;
-import com.xq.fasterdialog.bean.entity.ItemBean;
+import com.xq.fasterdialog.bean.behavior.ItemBehavior;
+import com.xq.worldbean.util.ImageLoader;
+import com.xq.worldbean.util.callback.UniverseCallback;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,14 +34,15 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     protected int itemLayoutId;
 
-    protected List<ItemBean> list_item = new LinkedList<>();
+    //数据源
+    protected List<ItemBehavior> list_item = new LinkedList<>();
+    //选择项
+    protected List<ItemBehavior> list_selection = new LinkedList<>();
 
     //单选模式的监听
     protected OnItemSelectedListener onItemSelectedListener;
     //多选模式的监听
     protected OnItemListSelectedListener onItemListSelectedListener;
-    //选择项
-    protected List<ItemBean> list_selection = new LinkedList<>();
 
 
     public BaseListDialog(@NonNull Context context) {
@@ -85,7 +87,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             @Override
             public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder h, final int position) {
                 final ViewHolder holder = (ViewHolder)h;
-                final ItemBean bean = list_item.get(position);bean.setPosition(position);
+                final ItemBehavior bean = list_item.get(position);
+                bean.setPosition(position);
+
+                //标题相关
                 if (holder.titleView != null)
                 {
                     if (!TextUtils.isEmpty(bean.getTitle()))
@@ -93,42 +98,58 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                     else
                         holder.titleView.setText("");
                 }
+                //图片相关
                 if (holder.imageView != null)
                 {
                     if (bean.getImageRes() != 0)
                         holder.imageView.setImageResource(bean.getImageRes());
                     if (!TextUtils.isEmpty(bean.getImageUrl()))
-                        FasterDialog.getImageLoader().loadImage(getContext(),holder.imageView,bean.getImageUrl());
+                        ImageLoader.loadImage(getContext(),bean.getImageUrl(),holder.imageView);
                 }
+                //状态相关
+                UniverseCallback callback = new UniverseCallback() {
+                    @Override
+                    public void onCallback(Object... objects) {
+                        if (chooseMode == CHOOSE_MODE_SINGLE)
+                        {
+                            if (!list_selection.contains(bean))
+                            {
+                                list_selection.clear();
+                                list_selection.add(bean);
+                            }
+                            else
+                            {
+                                list_selection.remove(bean);
+                            }
+
+                            recyclerView.getAdapter().notifyDataSetChanged();
+
+                            if (bean.getSelectedListener() != null)
+                            {
+                                bean.getSelectedListener().onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
+                                if (bean.getSelectedListener().isDismiss()) dismiss();
+                            }
+                            else
+                            {
+                                onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
+                                if (onItemSelectedListener.isDismiss()) dismiss();
+                            }
+                        }
+                        else    if (chooseMode == CHOOSE_MODE_MULTI)
+                        {
+                            if (!list_selection.contains(bean))
+                                list_selection.add(bean);
+                            else
+                                list_selection.remove(bean);
+                        }
+                    }
+                };
                 if (holder.stateView != null)
                 {
                     final CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if (chooseMode == CHOOSE_MODE_SINGLE)
-                            {
-                                if (isChecked)
-                                {
-                                    list_selection.clear();
-                                    list_selection.add(bean);
-                                }
-                                else
-                                {
-                                    list_selection.remove(bean);
-                                }
-
-                                recyclerView.getAdapter().notifyDataSetChanged();
-
-                                onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
-                                if (onItemSelectedListener.isDismiss()) dismiss();
-                            }
-                            else    if (chooseMode == CHOOSE_MODE_MULTI)
-                            {
-                                if (isChecked)
-                                    list_selection.add(bean);
-                                else
-                                    list_selection.remove(bean);
-                            }
+                            callback.onCallback();
                         }
                     };
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -149,30 +170,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (chooseMode == CHOOSE_MODE_SINGLE)
-                            {
-                                if (!list_selection.contains(bean))
-                                {
-                                    list_selection.clear();
-                                    list_selection.add(bean);
-                                }
-                                else
-                                {
-                                    list_selection.remove(bean);
-                                }
-
-                                recyclerView.getAdapter().notifyDataSetChanged();
-
-                                onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
-                                if (onItemSelectedListener.isDismiss()) dismiss();
-                            }
-                            else    if (chooseMode == CHOOSE_MODE_MULTI)
-                            {
-                                if (!list_selection.contains(bean))
-                                    list_selection.add(bean);
-                                else
-                                    list_selection.remove(bean);
-                            }
+                            callback.onCallback();
                         }
                     });
                 }
@@ -259,9 +257,9 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return super.setCustomView(layoutId);
     }
 
-    public T setItemList(List<ItemBean> list){
+    public T setItemList(List list){
         //删除多余的选择项
-        for (ItemBean bean : list_selection)
+        for (ItemBehavior bean : list_selection)
             if (!list.contains(bean))
                 list_selection.remove(bean);
 
@@ -275,14 +273,14 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public T setSelection(ItemBean selection){
+    public T setSelection(ItemBehavior selection){
         list_selection.clear();
         list_selection.add(selection);
         if(recyclerView != null)    recyclerView.getAdapter().notifyDataSetChanged();
         return (T) this;
     }
 
-    public T setSelectionList(List<ItemBean> list){
+    public T setSelectionList(List list){
         list_selection.clear();
         list_selection.addAll(list);
         if(recyclerView != null)    recyclerView.getAdapter().notifyDataSetChanged();
@@ -308,7 +306,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             super(isDismiss);
         }
 
-        public abstract void onItemSelected(BaseListDialog dialog, ItemBean bean);
+        public abstract void onItemSelected(BaseListDialog dialog, ItemBehavior bean);
     }
 
     public static abstract class OnItemListSelectedListener extends DialogBehaviorListener{
@@ -320,7 +318,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             super(isDismiss);
         }
 
-        public abstract void onItemListSelected(BaseListDialog dialog, List<ItemBean> list);
+        public abstract void onItemListSelected(BaseListDialog dialog, List<ItemBehavior> list);
     }
 
 }

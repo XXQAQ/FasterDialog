@@ -23,8 +23,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.R;
+import com.xq.worldbean.util.ImageLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -565,7 +565,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         }
         else
         {
-            FasterDialog.getImageLoader().loadImage(getContext(),view,url);
+            ImageLoader.loadImage(getContext(),url,view);
             visibleView(view);
         }
     }
