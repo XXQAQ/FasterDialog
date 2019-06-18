@@ -1,6 +1,5 @@
 package com.xq.fasterdialog.bean.behavior;
 
-import com.xq.fasterdialog.dialog.base.BaseListDialog;
 import com.xq.worldbean.bean.behavior.ImageBehavior;
 import com.xq.worldbean.bean.behavior.PositionBehavior;
 import com.xq.worldbean.bean.behavior.SwitchStateBehavior;
@@ -16,14 +15,6 @@ public interface ItemBehavior<T extends ItemBehavior> extends TitleBehavior<T>, 
     @Override
     default int getState() {
         return 0;
-    }
-
-    default BaseListDialog.OnItemSelectedListener getSelectedListener() {
-        return null;
-    }
-
-    default T setSelectedListener(BaseListDialog.OnItemSelectedListener listener) {
-        return (T) this;
     }
 
 }

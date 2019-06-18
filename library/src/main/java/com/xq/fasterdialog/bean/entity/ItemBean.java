@@ -1,17 +1,14 @@
 package com.xq.fasterdialog.bean.entity;
 
 import com.xq.fasterdialog.bean.behavior.ItemBehavior;
-import com.xq.fasterdialog.dialog.base.BaseListDialog;
+import com.xq.worldbean.bean.entity.base.BaseBean;
 
-public class ItemBean implements ItemBehavior<ItemBean> {
+public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBean> {
 
     private int position;
     private CharSequence title;
     private String imageUrl;
     private int imageRes;
-    private String id;
-    private Object tag;
-    private BaseListDialog.OnItemSelectedListener selectedListener;
 
     public ItemBean() {
     }
@@ -126,37 +123,5 @@ public class ItemBean implements ItemBehavior<ItemBean> {
         return this;
     }
 
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public ItemBean setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    @Override
-    public Object getTag() {
-        return tag;
-    }
-
-    @Override
-    public ItemBean setTag(Object tag) {
-        this.tag = tag;
-        return this;
-    }
-
-    @Override
-    public BaseListDialog.OnItemSelectedListener getSelectedListener() {
-        return selectedListener;
-    }
-
-    @Override
-    public ItemBean setSelectedListener(BaseListDialog.OnItemSelectedListener selectedListener) {
-        this.selectedListener = selectedListener;
-        return this;
-    }
 }
 

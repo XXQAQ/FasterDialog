@@ -206,8 +206,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     private boolean isCreated = false;
-    public final void create(){
-        if (isCreated) return;
+    public final T create(){
+        if (isCreated) return (T) this;
 
         isCreated = true;
 
@@ -284,6 +284,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
                     l.onCancel(BaseDialog.this);
             }
         });
+        return (T) this;
     }
 
     @Override

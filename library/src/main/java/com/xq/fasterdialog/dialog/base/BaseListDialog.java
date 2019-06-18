@@ -124,16 +124,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
                             recyclerView.getAdapter().notifyDataSetChanged();
 
-                            if (bean.getSelectedListener() != null)
-                            {
-                                bean.getSelectedListener().onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
-                                if (bean.getSelectedListener().isDismiss()) dismiss();
-                            }
-                            else
-                            {
-                                onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
-                                if (onItemSelectedListener.isDismiss()) dismiss();
-                            }
+                            if (bean.getCallback() != null)     bean.getCallback().onCallback(list_selection.isEmpty()?null:list_selection.get(0));
+
+                            onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
+                            if (onItemSelectedListener.isDismiss()) dismiss();
                         }
                         else    if (chooseMode == CHOOSE_MODE_MULTI)
                         {
