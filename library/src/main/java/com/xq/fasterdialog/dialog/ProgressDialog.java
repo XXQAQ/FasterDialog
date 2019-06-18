@@ -31,26 +31,16 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     }
 
     public ProgressDialog setHorizontalXQLayoutStyle(){
-        setHorizontalXQLayoutStyle(false);
-        return this;
-    }
-
-    public ProgressDialog setHorizontalXQLayoutStyle(boolean indeterminate){
         setStyle(STYLE_ALERT);
-        setIndeterminate(indeterminate,LAYOUT_HORIZONTAL_XQ);
+        setCustomView(LAYOUT_HORIZONTAL_XQ,false);
         setWidthMatch();
         setHeightWrap();
         return this;
     }
 
     public ProgressDialog setHorizontalMeterailLayoutStyle(){
-        setHorizontalMeterailLayoutStyle(false);
-        return this;
-    }
-
-    public ProgressDialog setHorizontalMeterailLayoutStyle(boolean indeterminate){
         setStyle(STYLE_ALERT);
-        setIndeterminate(indeterminate,LAYOUT_HORIZONTAL_METERAIL);
+        setCustomView(LAYOUT_HORIZONTAL_METERAIL,false);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -58,7 +48,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     public ProgressDialog setCircleXQLayoutStyle(){
         setStyle(STYLE_ALERT);
-        setIndeterminate(true,LAYOUT_CIRCLE_XQ);
+        setCustomView(LAYOUT_CIRCLE_XQ,true);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -66,7 +56,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     public ProgressDialog setCircleMeterailLayoutStyle(){
         setStyle(STYLE_ALERT);
-        setIndeterminate(true,LAYOUT_CIRCLE_METERAIL);
+        setCustomView(LAYOUT_CIRCLE_METERAIL,true);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -75,7 +65,7 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     private void init() {
 
         setStyle(STYLE_DEFAULT);
-        setIndeterminate(true,LAYOUT_DEFAULT);
+        setCustomView(LAYOUT_DEFAULT,true);
 
         setCancelable(false);
     }

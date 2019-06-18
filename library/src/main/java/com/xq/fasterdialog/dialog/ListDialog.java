@@ -44,7 +44,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setXQLayoutStyle(int chooseMode){
         setStyle(STYLE_ALERT);
-        setChooseMode(chooseMode,LAYOUT_XQ, ITEM_LAYOUT_CLASSICAL);
+        setCustomView(LAYOUT_XQ, ITEM_LAYOUT_CLASSICAL,chooseMode);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -57,7 +57,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setMeterailLayoutStyle(int chooseMode){
         setStyle(STYLE_ALERT);
-        setChooseMode(chooseMode,LAYOUT_METERAIL, chooseMode == CHOOSE_MODE_SINGLE?ITEM_LAYOUT_METERAIL_SINGLE:chooseMode == CHOOSE_MODE_MULTI?ITEM_LAYOUT_METERAIL_MULTI:0);
+        setCustomView(LAYOUT_METERAIL, chooseMode == CHOOSE_MODE_SINGLE?ITEM_LAYOUT_METERAIL_SINGLE:chooseMode == CHOOSE_MODE_MULTI?ITEM_LAYOUT_METERAIL_MULTI:0,chooseMode);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -70,7 +70,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setBottomLayoutStyle(int chooseMode){
         setStyle(STYLE_TRANSLUCENT);
-        setChooseMode(chooseMode,LAYOUT_BOTTOM, ITEM_LAYOUT_CLASSICAL);
+        setCustomView(LAYOUT_BOTTOM, ITEM_LAYOUT_CLASSICAL,chooseMode);
         setWidthMatch();
         setHeightWrap();
         setPopupFromScreen(Gravity.BOTTOM);
@@ -84,7 +84,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setQQMenuLayoutStyle(int chooseMode){
         setStyle(STYLE_TRANSLUCENT);
-        setChooseMode(chooseMode, LAYOUT_QQMENU, ITEM_LAYOUT_CLASSICAL_LARGE);
+        setCustomView(LAYOUT_QQMENU, ITEM_LAYOUT_CLASSICAL_LARGE,chooseMode);
         setWidthMatch();
         setHeightWrap();
         setPopupFromScreen(Gravity.BOTTOM);
@@ -100,7 +100,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     public ListDialog setPopupMenuLayoutStyle(int chooseMode){
         setStyle(STYLE_BASE);
         setElevation(8.0f);
-        setChooseMode(chooseMode,LAYOUT_XQ, ITEM_LAYOUT_CLASSICAL);
+        setCustomView(LAYOUT_XQ, ITEM_LAYOUT_CLASSICAL,chooseMode);
         setWidthWrap();
         setHeightWrap();
         return this;
@@ -108,7 +108,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     private void init() {
         setStyle(STYLE_DEFAULT);
-        setChooseMode(CHOOSE_MODE_SINGLE,LAYOUT_DEFAULT, ITEM_LAYOUT_DEFAULT);
+        setCustomView(LAYOUT_DEFAULT, ITEM_LAYOUT_DEFAULT,CHOOSE_MODE_SINGLE);
     }
 
 }

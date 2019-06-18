@@ -50,9 +50,9 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
         return (T) this;
     }
 
-    public T setIndeterminate(boolean indeterminate,int layoutId) {
-        setIndeterminate(indeterminate);
+    public T setCustomView(int layoutId,boolean indeterminate) {
         setCustomView(layoutId);
+        setIndeterminate(indeterminate);
         return (T) this;
     }
 

@@ -242,9 +242,9 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public T setChooseMode(int chooseMode,int layoutId,int itemLayoutId) {
-        setChooseMode(chooseMode);
+    public T setCustomView(int layoutId,int itemLayoutId,int chooseMode) {
         setCustomView(layoutId,itemLayoutId);
+        setChooseMode(chooseMode);
         return (T) this;
     }
 
@@ -254,7 +254,6 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    @Deprecated
     @Override
     public T setCustomView(int layoutId) {
         return super.setCustomView(layoutId);
