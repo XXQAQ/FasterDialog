@@ -7,7 +7,7 @@ public class FasterDialog {
     private static Application app;
 
     public static void init(Application app){
-        init(app);
+        FasterDialog.app = app;
     }
 
     public static Application getApp() {
