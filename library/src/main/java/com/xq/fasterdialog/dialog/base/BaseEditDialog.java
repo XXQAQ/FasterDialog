@@ -19,8 +19,6 @@ import java.util.List;
 
 public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T> {
 
-    protected OnEditCompletedListener editListener;
-
     protected SparseArray<EditText> array_edit = new SparseArray<>();
     protected SparseArray<InputBean> array_input = new SparseArray();
 
@@ -54,13 +52,6 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
                 if (fixedView != null) fixedView.setText(bean.getFixedText());
             }
         }
-
-        if (TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
-        setOnEditCompletedListener(editListener != null? editListener : new OnEditCompletedListener() {
-            @Override
-            public void onEditCompleted(BaseEditDialog dialog, SparseArray<CharSequence> array) {
-            }
-        });
     }
 
     @Override
@@ -74,33 +65,19 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         }
     }
 
-    //确认键监听已被默认占用，不再建议自行设置
-    @Deprecated
-    @Override
-    public T setPositiveListener(OnDialogClickListener positiveListener) {
-        return super.setPositiveListener(new OnDialogClickListener(false) {
-            @Override
-            public void onClick(BaseDialog dialog) {
-                if (editListener != null)
-                {
-                    SparseArray<CharSequence> array = new SparseArray<>();
-                    for (int index=0;index < array_edit.size();index++)
-                    {
-                        int key = array_edit.keyAt(index);
-                        EditText editText = array_edit.get(key);
-                        array.put(key,editText.getText().toString());
-                    }
-
-                    editListener.onEditCompleted(BaseEditDialog.this,array);
-                    if (editListener.isDismiss())  dismiss();
-                }
-            }
-        });
+    public CharSequence getText(){
+        return getTextArray().get(0);
     }
 
-    public T setOnEditCompletedListener(OnEditCompletedListener listener){
-        this.editListener = listener;
-        return (T) this;
+    public SparseArray<CharSequence> getTextArray(){
+        SparseArray<CharSequence> array = new SparseArray<>();
+        for (int index=0;index < array_edit.size();index++)
+        {
+            int key = array_edit.keyAt(index);
+            EditText editText = array_edit.get(key);
+            array.put(key,editText.getText().toString());
+        }
+        return array;
     }
 
     public T setErro(int no,CharSequence text){
@@ -177,18 +154,6 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         {
             invisibleEdit(editText,View.GONE);
         }
-    }
-
-    public static abstract class OnEditCompletedListener extends DialogBehaviorListener{
-
-        public OnEditCompletedListener() {
-        }
-
-        public OnEditCompletedListener(boolean isDismiss) {
-            super(isDismiss);
-        }
-
-        public abstract void onEditCompleted(BaseEditDialog dialog, SparseArray<CharSequence> array);
     }
 }
 

@@ -18,31 +18,30 @@ import android.widget.TextView;
 import com.xq.fasterdialog.bean.behavior.ItemBehavior;
 import com.xq.worldbean.util.ImageLoader;
 import com.xq.worldbean.util.callback.UniverseCallback;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T> {
 
+    public static final int CHOOSE_MODE_MULTI = 0;
     public static final int CHOOSE_MODE_SINGLE = 1;
-    public static final int CHOOSE_MODE_MULTI = 2;
 
     protected RecyclerView recyclerView;
     protected RecyclerView.LayoutManager layoutManager;
     protected Drawable dividerDrawable;
 
-    protected int chooseMode = CHOOSE_MODE_SINGLE;
+    protected int maxChoose = CHOOSE_MODE_SINGLE;
 
     protected int itemLayoutId;
 
     //数据源
     protected List<ItemBehavior> list_item = new LinkedList<>();
     //选择项
-    protected List<ItemBehavior> list_selection = new LinkedList<>();
+    protected CustomList<ItemBehavior> list_selection = new CustomList<>(maxChoose);
 
-    //单选模式的监听
+    //选择监听器
     protected OnItemSelectedListener onItemSelectedListener;
-    //多选模式的监听
-    protected OnItemListSelectedListener onItemListSelectedListener;
 
 
     public BaseListDialog(@NonNull Context context) {
@@ -87,8 +86,12 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             @Override
             public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder h, final int position) {
                 final ViewHolder holder = (ViewHolder)h;
+
                 final ItemBehavior bean = list_item.get(position);
+                //设置位置属性
                 bean.setPosition(position);
+                //如果存在交互，则设置交互Callback
+                if (bean.getCallback() != null)     bean.getCallback().onCallback(list_item.get(position));
 
                 //标题相关
                 if (holder.titleView != null)
@@ -112,30 +115,17 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                 final UniverseCallback callback = new UniverseCallback() {
                     @Override
                     public void onCallback(Object... objects) {
-                        if (chooseMode == CHOOSE_MODE_SINGLE)
+                        if (!list_selection.contains(bean))
+                            list_selection.add(bean);
+                        else
+                            list_selection.remove(bean);
+
+                        recyclerView.getAdapter().notifyDataSetChanged();
+
+                        if (onItemSelectedListener != null)
                         {
-                            if (!list_selection.contains(bean))
-                            {
-                                list_selection.clear();
-                                list_selection.add(bean);
-                            }
-                            else
-                            {
-                                list_selection.remove(bean);
-                            }
-
-                            recyclerView.getAdapter().notifyDataSetChanged();
-
-                            if (bean.getCallback() != null)     bean.getCallback().onCallback(list_selection.isEmpty()?null:list_selection.get(0));
-
-                            positiveListener.onClick(BaseListDialog.this);
-                        }
-                        else    if (chooseMode == CHOOSE_MODE_MULTI)
-                        {
-                            if (!list_selection.contains(bean))
-                                list_selection.add(bean);
-                            else
-                                list_selection.remove(bean);
+                            onItemSelectedListener.onItemSelected(BaseListDialog.this,bean);
+                            if (onItemSelectedListener.isDismiss() && maxChoose != 0 && list_selection.size() >= maxChoose) dismiss();
                         }
                     }
                 };
@@ -191,49 +181,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                 }
             }
         });
-
-        if (chooseMode == CHOOSE_MODE_MULTI && TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
-        setOnItemSelectedListener(onItemSelectedListener != null? onItemSelectedListener:new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(BaseListDialog dialog, ItemBehavior bean) {
-            }
-        });
-        setOnItemListSelectedListener(onItemListSelectedListener != null? onItemListSelectedListener:new OnItemListSelectedListener() {
-            @Override
-            public void onItemListSelected(BaseListDialog dialog, List<ItemBehavior> list) {
-            }
-        });
     }
 
     protected void afterBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
 
-    }
-
-    //确认键监听已被默认占用，不建议再自行设置
-    @Deprecated
-    @Override
-    public T setPositiveListener(OnDialogClickListener positiveListener) {
-        return super.setPositiveListener(new OnDialogClickListener(false) {
-            @Override
-            public void onClick(BaseDialog dialog) {
-                if (chooseMode == CHOOSE_MODE_SINGLE)
-                {
-                    if (onItemSelectedListener != null)
-                    {
-                        onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
-                        if (onItemSelectedListener.isDismiss()) dismiss();
-                    }
-                }
-                else    if (chooseMode == CHOOSE_MODE_MULTI)
-                {
-                    if (onItemListSelectedListener != null)
-                    {
-                        onItemListSelectedListener.onItemListSelected(BaseListDialog.this, list_selection);
-                        if (onItemListSelectedListener.isDismiss())  dismiss();
-                    }
-                }
-            }
-        });
     }
 
     public T setLayoutManager(RecyclerView.LayoutManager layoutManager) {
@@ -246,8 +197,14 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
+    public T setMaxChoose(int maxChoose) {
+        this.maxChoose = maxChoose;
+        list_selection.setMax(maxChoose);
+        return (T) this;
+    }
+
     public T setChooseMode(int chooseMode) {
-        this.chooseMode = chooseMode;
+        setMaxChoose(chooseMode);
         return (T) this;
     }
 
@@ -288,15 +245,21 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return setItemList(list,false);
     }
 
+    public List<ItemBehavior> getSelectionList() {
+        return list_selection;
+    }
+
+    public ItemBehavior getSelection() {
+        return getSelectionList().isEmpty()?null:getSelectionList().get(0);
+    }
+
     public T setSelection(ItemBehavior selection){
-        list_selection.clear();
         list_selection.add(selection);
         if(recyclerView != null)    recyclerView.getAdapter().notifyDataSetChanged();
         return (T) this;
     }
 
     public T setSelectionList(List list){
-        list_selection.clear();
         list_selection.addAll(list);
         if(recyclerView != null)    recyclerView.getAdapter().notifyDataSetChanged();
         return (T) this;
@@ -304,11 +267,6 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
     public T setOnItemSelectedListener(OnItemSelectedListener listener){
         this.onItemSelectedListener = listener;
-        return (T) this;
-    }
-
-    public T setOnItemListSelectedListener(OnItemListSelectedListener listener) {
-        this.onItemListSelectedListener = listener;
         return (T) this;
     }
 
@@ -324,16 +282,38 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         public abstract void onItemSelected(BaseListDialog dialog, ItemBehavior bean);
     }
 
-    public static abstract class OnItemListSelectedListener extends DialogBehaviorListener{
+    protected static class CustomList<T> extends LinkedList<T>{
 
-        public OnItemListSelectedListener() {
+        private int max;
+
+        public CustomList(int max) {
+            this.max = max;
         }
 
-        public OnItemListSelectedListener(boolean isDismiss) {
-            super(isDismiss);
+        public void setMax(int max) {
+            this.max = max;
         }
 
-        public abstract void onItemListSelected(BaseListDialog dialog, List<ItemBehavior> list);
+        @Override
+        public boolean add(T t) {
+            if (max != 0 && size() >= max)
+            {
+                super.removeFirst();
+                super.add(t);
+            }
+            else
+            {
+                super.add(t);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean addAll(Collection c) {
+            for (Object o:c)
+                add((T) o);
+            return true;
+        }
     }
 
 }
