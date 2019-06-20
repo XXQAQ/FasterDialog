@@ -98,6 +98,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                     else
                         holder.titleView.setText("");
                 }
+
                 //图片相关
                 if (holder.imageView != null)
                 {
@@ -106,6 +107,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                     if (!TextUtils.isEmpty(bean.getImageUrl()))
                         ImageLoader.loadImage(getContext(),bean.getImageUrl(),holder.imageView);
                 }
+
                 //状态相关
                 final UniverseCallback callback = new UniverseCallback() {
                     @Override
@@ -167,6 +169,8 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                         }
                     });
                 }
+
+                BaseListDialog.this.afterBindViewHolder(holder,position);
             }
 
             @Override
@@ -189,6 +193,20 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         });
 
         if (chooseMode == CHOOSE_MODE_MULTI && TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
+        setOnItemSelectedListener(onItemSelectedListener != null? onItemSelectedListener:new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(BaseListDialog dialog, ItemBehavior bean) {
+            }
+        });
+        setOnItemListSelectedListener(onItemListSelectedListener != null? onItemListSelectedListener:new OnItemListSelectedListener() {
+            @Override
+            public void onItemListSelected(BaseListDialog dialog, List<ItemBehavior> list) {
+            }
+        });
+    }
+
+    protected void afterBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+
     }
 
     //确认键监听已被默认占用，不建议再自行设置
@@ -250,13 +268,13 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return super.setCustomView(layoutId);
     }
 
-    public T setItemList(List list){
+    public T setItemList(List list,boolean isAppend){
         //删除多余的选择项
         for (ItemBehavior bean : list_selection)
             if (!list.contains(bean))
                 list_selection.remove(bean);
 
-        list_item.clear();
+        if (!isAppend) list_item.clear();
         list_item.addAll(list);
         if (recyclerView != null)
         {
@@ -264,6 +282,10 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             measure();
         }
         return (T) this;
+    }
+
+    public T setItemList(List list){
+        return setItemList(list,false);
     }
 
     public T setSelection(ItemBehavior selection){

@@ -40,7 +40,7 @@
             android:paddingRight="@dimen/spacing_min"
             android:text="确认"
             android:textSize="@dimen/text_medium"
-            android:textColor="@color/press_text_normal" />
+            android:textColor="@color/press_text_primary" />
 
         <TextView
             android:id="@+id/titleView"
@@ -59,7 +59,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         />
 
 </LinearLayout>

@@ -56,6 +56,11 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         }
 
         if (TextUtils.isEmpty(positiveText)) setPositiveText(CONFIRM);
+        setOnEditCompletedListener(editListener != null? editListener : new OnEditCompletedListener() {
+            @Override
+            public void onEditCompleted(BaseEditDialog dialog, SparseArray<CharSequence> array) {
+            }
+        });
     }
 
     @Override
