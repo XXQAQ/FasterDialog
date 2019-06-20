@@ -126,8 +126,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
 
                             if (bean.getCallback() != null)     bean.getCallback().onCallback(list_selection.isEmpty()?null:list_selection.get(0));
 
-                            onItemSelectedListener.onItemSelected(BaseListDialog.this, list_selection.isEmpty()?null:list_selection.get(0));
-                            if (onItemSelectedListener.isDismiss()) dismiss();
+                            positiveListener.onClick(BaseListDialog.this);
                         }
                         else    if (chooseMode == CHOOSE_MODE_MULTI)
                         {

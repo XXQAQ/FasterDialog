@@ -46,9 +46,15 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         setNegativeText(negativeText);
         setNeutralText(neutralText);
 
-        setPositiveListener(positiveListener);
-        setNegativeListener(negativeListener);
-        setNeutralListener(neutralListener);
+        OnDialogClickListener listener = new OnDialogClickListener(true) {
+            @Override
+            public void onClick(BaseDialog dialog) {
+
+            }
+        };
+        setPositiveListener(positiveListener != null?positiveListener:listener);
+        setNegativeListener(negativeListener != null?negativeListener:listener);
+        setNeutralListener(neutralListener != null?neutralListener:listener);
     }
 
     public T setNegativeText(CharSequence negativeText) {
