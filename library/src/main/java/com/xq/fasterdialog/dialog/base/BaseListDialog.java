@@ -107,7 +107,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                         ImageLoader.loadImage(getContext(),bean.getImageUrl(),holder.imageView);
                 }
                 //状态相关
-                UniverseCallback callback = new UniverseCallback() {
+                final UniverseCallback callback = new UniverseCallback() {
                     @Override
                     public void onCallback(Object... objects) {
                         if (chooseMode == CHOOSE_MODE_SINGLE)

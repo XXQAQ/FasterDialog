@@ -123,18 +123,20 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
 
-        int mWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth(getContext()):rootView.getMeasuredWidth();
-        int mHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight(getContext()):rootView.getMeasuredHeight();
-
-        if (maxWidth > 0 && mWidth > maxWidth)
-            lp.width = maxWidth;
-        else
-            lp.width = mWidth;
-
-        if (maxHeight > 0 && mHeight > maxHeight)
-            lp.height = maxHeight;
-        else
-            lp.height = mHeight;
+//        int mWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth(getContext()):rootView.getMeasuredWidth();
+//        int mHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight(getContext()):rootView.getMeasuredHeight();
+//
+//        if (maxWidth > 0 && mWidth > maxWidth)
+//            lp.width = maxWidth;
+//        else
+//            lp.width = mWidth;
+//
+//        if (maxHeight > 0 && mHeight > maxHeight)
+//            lp.height = maxHeight;
+//        else
+//            lp.height = mHeight;
+        lp.width = width;
+        lp.height = height;
     }
 
     //当Dialog需要调整弹出位置的时候，请调用此方法
