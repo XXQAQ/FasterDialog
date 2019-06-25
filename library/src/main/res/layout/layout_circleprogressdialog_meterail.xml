@@ -43,13 +43,14 @@
         android:paddingLeft="@dimen/spacing_more"
         android:paddingRight="@dimen/spacing_more"
         android:orientation="horizontal"
+        android:showDividers="middle"
+        android:divider="@drawable/spacing_medium"
         >
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="@dimen/icon_medium"
             android:layout_height="@dimen/icon_medium"
-            android:layout_marginRight="@dimen/spacing_medium"
             android:indeterminateTint="@color/colorPrimary"
             />
 
@@ -58,7 +59,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="left"
             android:lineSpacingMultiplier="1.2"
             android:text="是的只有充钱才能变得更强"
             android:textColor="@color/text_normal"

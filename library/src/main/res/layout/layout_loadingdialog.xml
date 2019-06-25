@@ -29,7 +29,8 @@
             android:id="@+id/loadingView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:textSize="@dimen/text_medium"
             android:textColor="@android:color/white"
             android:text="@string/loading" />

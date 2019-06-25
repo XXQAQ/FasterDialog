@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="@integer/selector_duration" android:exitFadeDuration="@integer/selector_duration">
+    <item android:state_selected="true" android:drawable="@drawable/layer_rect_tbprimary_solidwidely"/>
+    <item android:state_checked="true" android:drawable="@drawable/layer_rect_tbprimary_solidwidely"/>
+    <item android:state_activated="true" android:drawable="@drawable/layer_rect_tbprimary_solidwidely"/>
+    <item android:state_pressed="true" android:drawable="@drawable/layer_rect_tbprimary_solidwidely"/>
+    <item android:drawable="@drawable/rect_solidwidely"/>
+</selector>

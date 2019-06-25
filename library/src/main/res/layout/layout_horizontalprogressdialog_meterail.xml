@@ -51,7 +51,6 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/spacing_more"
             android:paddingRight="@dimen/spacing_more"
-            android:gravity="left"
             android:lineSpacingMultiplier="1.2"
             android:text="是的只有充钱才能变得更强"
             android:textColor="@color/text_normal"
