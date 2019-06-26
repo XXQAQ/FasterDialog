@@ -316,4 +316,21 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         }
     }
 
+    public static abstract class OnItemCompletedListener extends OnDialogClickListener{
+
+        public OnItemCompletedListener() {
+        }
+
+        public OnItemCompletedListener(boolean isDismiss) {
+            super(isDismiss);
+        }
+
+        @Override
+        public void onClick(BaseDialog dialog) {
+            onItemCompleted((BaseListDialog) dialog,((BaseListDialog)dialog).getSelectionList());
+        }
+
+        public abstract void onItemCompleted(BaseListDialog dialog, List<ItemBehavior> list);
+    }
+
 }

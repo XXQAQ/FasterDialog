@@ -155,5 +155,23 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
             invisibleEdit(editText,View.GONE);
         }
     }
+
+    public static abstract class OnEditCompletedListener extends OnDialogClickListener{
+
+        public OnEditCompletedListener() {
+        }
+
+        public OnEditCompletedListener(boolean isDismiss) {
+            super(isDismiss);
+        }
+
+        @Override
+        public void onClick(BaseDialog dialog) {
+            onEditCompleted((BaseEditDialog) dialog,((BaseEditDialog)dialog).getTextArray());
+        }
+
+        public abstract void onEditCompleted(BaseEditDialog dialog, SparseArray<CharSequence> array);
+    }
+
 }
 
