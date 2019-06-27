@@ -52,11 +52,12 @@
             android:layout_width="@dimen/icon_medium"
             android:layout_height="@dimen/icon_medium"
             android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTintMode="src_atop"
             />
 
         <TextView
             android:id="@+id/contentView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:lineSpacingMultiplier="1.2"
