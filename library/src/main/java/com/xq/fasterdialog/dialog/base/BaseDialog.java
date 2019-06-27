@@ -123,20 +123,16 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
 
-//        int mWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth(getContext()):rootView.getMeasuredWidth();
-//        int mHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight(getContext()):rootView.getMeasuredHeight();
-//
-//        if (maxWidth > 0 && mWidth > maxWidth)
-//            lp.width = maxWidth;
-//        else
-//            lp.width = mWidth;
-//
-//        if (maxHeight > 0 && mHeight > maxHeight)
-//            lp.height = maxHeight;
-//        else
-//            lp.height = mHeight;
-        lp.width = width;
-        lp.height = height;
+        int reallyWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth(getContext()):rootView.getMeasuredWidth();
+        int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight(getContext()):rootView.getMeasuredHeight();
+        if (maxWidth > 0 && reallyWidth > maxWidth)
+            lp.width = maxWidth;
+        else
+            lp.width = width;
+        if (maxHeight > 0 && reallyHeight > maxHeight)
+            lp.height = maxHeight;
+        else
+            lp.height = height;
     }
 
     //当Dialog需要调整弹出位置的时候，请调用此方法
@@ -241,7 +237,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         cardView.setCardElevation(elevation);
         cardView.setUseCompatPadding(elevation != 0);
 
-        ViewGroup target = customView.findViewById(getContext().getResources().getIdentifier("cardLayout", "id", getContext().getPackageName()));
+        ViewGroup target = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
         if (target == null || target.getParent() == null)
         {
             customView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
@@ -259,6 +255,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
             targetParent.addView(cardView,index,cardView.getLayoutParams());
             rootView = customView;
         }
+        
         getDialog().getWindow().setContentView(rootView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
 
         getDialog().getWindow().setWindowAnimations(animate);
