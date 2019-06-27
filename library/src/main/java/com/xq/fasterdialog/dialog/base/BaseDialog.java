@@ -59,7 +59,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     private View customView;
 
     //自定义相关属性
-    protected int gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
+    protected int gravity = Gravity.CENTER;
     protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int maxWidth;
@@ -431,6 +431,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     public T setPopupFromScreen(int gravity){
         setGravity(gravity);
+        if (gravity == Gravity.CENTER)
+            setAnimate(ANIMATE_ALPHA);
         if (gravity == Gravity.BOTTOM)
             setAnimate(ANIMATE_BOTTOM);
         else    if (gravity == Gravity.TOP)
