@@ -443,7 +443,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public T setPopupFromView(View view){
-        setPopupFromView(view,Gravity.BOTTOM);
+        setPopupFromView(view,Gravity.BOTTOM|Gravity.RIGHT);
         return (T) this;
     }
 
