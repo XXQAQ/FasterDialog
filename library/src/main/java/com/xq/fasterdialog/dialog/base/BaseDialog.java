@@ -429,6 +429,10 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
+    public T setPopupFromScreen(){
+        return setPopupFromScreen(Gravity.CENTER);
+    }
+
     public T setPopupFromScreen(int gravity){
         setGravity(gravity);
         if (gravity == Gravity.CENTER)
