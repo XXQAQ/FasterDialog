@@ -80,6 +80,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(itemLayoutId, parent, false);
                 ViewHolder viewHolder = new ViewHolder(view);
+                afterInitView(viewHolder,viewType);
                 return viewHolder;
             }
 
@@ -160,7 +161,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                     });
                 }
 
-                BaseListDialog.this.afterBindViewHolder(holder,position);
+                BaseListDialog.this.afterConvertView(holder,position);
             }
 
             @Override
@@ -183,7 +184,11 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         });
     }
 
-    protected void afterBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+    protected void afterConvertView(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+
+    }
+
+    protected void afterInitView(@NonNull final RecyclerView.ViewHolder holder, final int viewType) {
 
     }
 
@@ -270,7 +275,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public static abstract class OnItemSelectedListener extends DialogBehaviorListener{
+    public static abstract class OnItemSelectedListener extends BaseDialogListener {
 
         public OnItemSelectedListener() {
         }

@@ -685,15 +685,15 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         public void onCancel(BaseDialog dialog);
     }
 
-    public static abstract class DialogBehaviorListener{
+    public static abstract class BaseDialogListener {
 
         private boolean isDismiss;
 
-        public DialogBehaviorListener() {
+        public BaseDialogListener() {
             this(true);
         }
 
-        public DialogBehaviorListener(boolean isDismiss) {
+        public BaseDialogListener(boolean isDismiss) {
             this.isDismiss = isDismiss;
         }
 
@@ -706,7 +706,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         }
     }
 
-    public static abstract class OnDialogClickListener extends DialogBehaviorListener {
+    public static abstract class OnDialogClickListener extends BaseDialogListener {
 
         public OnDialogClickListener() {
         }
