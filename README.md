@@ -1,6 +1,8 @@
 最新gradle依赖库请自行前往
 https://www.jitpack.io/#XXQAQ/FasterDialog
 
+PS:注意注意注意：最新版FasterDialog使用了接口默认实现技术，所以依赖于jdk1.8及以上版本。如果要使用FasterDialog，请将自己的Studio工程设置为1.8！
+
         //以下所有Dialog均继承自BaseDialog，所以其子类可直接调用以下方法
         new BaseDialog(context) {}
                 .setCustomView(R.layout.yourlayout) //设置你自己的布局方案，请保证你自己创建的layout文件中的关键控件Id名称与本框架指定控件Id一致即可
