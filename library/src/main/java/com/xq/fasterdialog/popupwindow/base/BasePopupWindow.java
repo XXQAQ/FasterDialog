@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+//需要使用BasePopupWindow请与本人联系
+@Deprecated
 public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     //弹出动画（包含进入与进出）

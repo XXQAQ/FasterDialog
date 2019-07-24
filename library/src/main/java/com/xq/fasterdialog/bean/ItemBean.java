@@ -1,4 +1,4 @@
-package com.xq.fasterdialog.bean.entity;
+package com.xq.fasterdialog.bean;
 
 import com.xq.fasterdialog.bean.behavior.ItemBehavior;
 import com.xq.worldbean.bean.entity.base.BaseBean;

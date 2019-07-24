@@ -13,7 +13,7 @@ public class ListDialog extends BaseListDialog<ListDialog> {
     public static int LAYOUT_XQ = R.layout.layout_listdialog_xq;
     public static int LAYOUT_METERAIL = R.layout.layout_listdialog_meterail;
     public static int LAYOUT_BOTTOM = R.layout.layout_listdialog_bottom;
-    public static int LAYOUT_QQMENU = R.layout.layout_listdialog_qqmenu;
+    public static int LAYOUT_MENU = R.layout.layout_listdialog_menu;
 
     public static int ITEM_LAYOUT_CLASSICAL = R.layout.item_classical;
     public static int ITEM_LAYOUT_CLASSICAL_LARGE = R.layout.item_classical_large;
@@ -77,14 +77,14 @@ public class ListDialog extends BaseListDialog<ListDialog> {
         return this;
     }
 
-    public ListDialog setQQMenuLayoutStyle(){
-        setQQMenuLayoutStyle(CHOOSE_MODE_SINGLE);
+    public ListDialog setMenuLayoutStyle(){
+        setMenuLayoutStyle(CHOOSE_MODE_SINGLE);
         return this;
     }
 
-    public ListDialog setQQMenuLayoutStyle(int chooseMode){
+    public ListDialog setMenuLayoutStyle(int chooseMode){
         setStyle(STYLE_TRANSLUCENT);
-        setCustomView(LAYOUT_QQMENU, ITEM_LAYOUT_CLASSICAL_LARGE,chooseMode);
+        setCustomView(LAYOUT_MENU, ITEM_LAYOUT_CLASSICAL_LARGE,chooseMode);
         setWidthMatch();
         setHeightWrap();
         setPopupFromScreen(Gravity.BOTTOM);

@@ -449,7 +449,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public T setPopupFromView(View view){
-        setPopupFromView(view,Gravity.BOTTOM|Gravity.RIGHT);
+        setPopupFromView(view,Gravity.BOTTOM);
         return (T) this;
     }
 
@@ -652,6 +652,10 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     //所有get
     public View getRootView() {
         return rootView;
+    }
+
+    public View getCustomView(){
+        return customView;
     }
 
     public Object getTag() {

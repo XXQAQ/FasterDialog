@@ -12,8 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.xq.fasterdialog.bean.entity.InputBean;
+import com.xq.fasterdialog.bean.InputBean;
 
 import java.util.List;
 

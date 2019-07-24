@@ -1,4 +1,4 @@
-package com.xq.fasterdialog.bean.entity;
+package com.xq.fasterdialog.bean;
 
 import android.text.InputType;
 
