@@ -72,13 +72,13 @@ PS:注意注意注意：最新版FasterDialog使用了接口默认实现技术�
         //NormalDialog继承于SimpleDialog
         new NormalDialog(context)
                 //设置你自己的布局方案，以下为高定制化布局
-//                .setCustomView(R.layout.yourlayout)
+                .setCustomView(R.layout.yourlayout)
                 //Meterail布局样式
-//                .setMeterailLayoutStyle()
+                .setMeterailLayoutStyle()
                 //标准自定义样式
                 .setXQLayoutStyle()
                 //大图样式，参照常见广告弹窗
-//                .setBigImageLayoutStyle()
+                .setBigImageLayoutStyle()
                 //设置图标(Res文件资源)
                 .setImageRes(R.mipmap.icon)
                 //设置图标(网络资源)
@@ -119,21 +119,21 @@ PS:注意注意注意：最新版FasterDialog使用了接口默认实现技术�
         //ListDialog继承与NormalDialog，可以使用NormalDialog所有功能
         new ListDialog(context)
                 //设置Dialog布局与Item布局，以下为高定制化布局
-//                .setCustomView(R.layout.yourLayout,R.layout.itemLayout)
+                .setCustomView(R.layout.yourLayout,R.layout.itemLayout)
                 //Meterail标准样式
-//                .setMeterailLayoutStyle()
+                .setMeterailLayoutStyle()
                 //Android标准底部弹窗样式
-//                .setBottomLayoutStyle()
+                .setBottomLayoutStyle()
                 //标准自定义样式
                 .setXQLayoutStyle()
                 //参照QQ菜单Menu样式
-//                .setMenuLayoutStyle()
+                .setMenuLayoutStyle()
                 //PopupMenu样式
-//                .setPopupMenuLayoutStyle()
+                .setPopupMenuLayoutStyle()
                 //设置Item数据列表（这里其实并不限制具体数据类型，只要你提供的对象实现了ItemBehavior接口，那么ListDialog就能识别你的数据源）
                 .setItemList(list)
                 //设置Item数据列表并追加
-//                .setItemList(list,true)
+                .setItemList(list,true)
                 //Item选择回调方法
                 .setOnItemSelectedListener(new BaseListDialog.OnItemSelectedListener() {
                     @Override
@@ -160,7 +160,7 @@ PS:注意注意注意：最新版FasterDialog使用了接口默认实现技术�
         //LoadingDialog ...
         new LoadingDialog(context)
                 //设置你自己的布局方案
-//                .setCustomView(R.layout.yourlayout)
+                .setCustomView(R.layout.yourlayout)
                 //设置加载中 文字提示
                 .setLoadingText("加载中")
                 .show();
@@ -169,13 +169,13 @@ PS:注意注意注意：最新版FasterDialog使用了接口默认实现技术�
         //ProgressDialog继承于SimpleDialog
         new ProgressDialog(context)
                 //设置你自己的布局方案，以下为高定制化布局
-//                .setCustomView(R.layout.yourlayout)
+                .setCustomView(R.layout.yourlayout)
                 //圆形Meterail布局样式
-//                .setCircleMeterailLayoutStyle()
+                .setCircleMeterailLayoutStyle()
                 //圆形标准自定义样式
-//                .setCircleXQLayoutStyle()
+                .setCircleXQLayoutStyle()
                 //水平Meterail布局样式
-//                .setHorizontalMeterailLayoutStyle()
+                .setHorizontalMeterailLayoutStyle()
                 //水平标准自定义样式
                 .setHorizontalXQLayoutStyle()
                 //设置进度（0—1.0f）
@@ -189,15 +189,15 @@ PS:注意注意注意：最新版FasterDialog使用了接口默认实现技术�
         //EditDialog继承于NormalDialog
         new EditDialog(context)
                 //设置你自己的布局方案，以下为高定制化布局
-//                .setCustomView(R.layout.yourlayout)
+                .setCustomView(R.layout.yourlayout)
                 //Meterail布局样式
-//                .setMeterailLayoutStyle()
+                .setMeterailLayoutStyle()
                 //标准自定义样式
                 .setXQLayoutStyle()
                 //EditDialog天生支持任意数量个EditText，因此可以设置多个InputBean，每个InputBean都代表对应EditText的具体内容，切记如果不设置InputBean将会导致对应的EditText无法显示
-                .setInputBean0(new InputBean())
-                .setInputBean1(new InputBean())
-                .setInputBean(2,new InputBean())
+                .setInputBean0(new InputBean("请输入昵称","张三"))
+                .setInputBean1(new InputBean("请输入密码"))
+                .setInputBean(2,new InputBean("验证码",null,null,10, InputType.TYPE_CLASS_NUMBER))
                 //输入完成回调
                 .setPositiveListener(new BaseEditDialog.OnEditCompletedListener() {
                     @Override
@@ -215,7 +215,7 @@ PS:注意注意注意：最新版FasterDialog使用了接口默认实现技术�
         DialogManager.showAnywhere(new DialogManager.DialogDelegateActivity.DialogContextProvider() {
             @Override
             public BaseDialog createDialog(Context context) {
-                //这里Dialog只需要new 出来即可，千万不要手贱去主动show~！！！
+                //这里Dialog只需要new出来即可，千万不要手贱去主动show！！！
                 return new ProgressDialog(context).setTitle("手机正在被黑客攻击\n10秒后即将重启").setAutoDismissTime(10*1000);
             }
         });
