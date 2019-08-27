@@ -6,7 +6,12 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -24,7 +29,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.xq.fasterdialog.R;
-import com.xq.worldbean.util.ImageLoader;
+import com.xq.androidfaster.util.ImageLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -230,29 +235,22 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
             }
         };
 
-        if (customView == null) customView = getDialog().getLayoutInflater().inflate(layoutId,null);
-
         CardView cardView = new CardView(getContext());
         cardView.setCardBackgroundColor(Color.TRANSPARENT);
         cardView.setCardElevation(elevation);
         cardView.setUseCompatPadding(elevation != 0);
 
-        ViewGroup target = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
-        if (target == null || target.getParent() == null)
+        if (customView == null) customView = getDialog().getLayoutInflater().inflate(layoutId,null);
+
+        ViewGroup targetView = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
+        if (targetView == null || targetView.getParent() == null)
         {
-            customView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            cardView.addView(customView);
+            cardView.addView(customView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
             rootView = cardView;
         }
         else
         {
-            ViewGroup targetParent=((ViewGroup)target.getParent());
-            int index = targetParent.indexOfChild(target);
-            targetParent.removeView(target);
-            cardView.setLayoutParams(target.getLayoutParams());
-            target.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            cardView.addView(target);
-            targetParent.addView(cardView,index,cardView.getLayoutParams());
+            insertView(targetView,cardView);
             rootView = customView;
         }
         
@@ -284,6 +282,17 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
             }
         });
         return (T) this;
+    }
+
+    //将insertView替换至targetView的所在的节点位置
+    protected void insertView(View targetView, ViewGroup insertView){
+        ViewGroup targetParent=((ViewGroup)targetView.getParent());
+        int index = targetParent.indexOfChild(targetView);
+        targetParent.removeView(targetView);
+        insertView.setLayoutParams(targetView.getLayoutParams());
+        targetView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        insertView.addView(targetView);
+        targetParent.addView(insertView,index,insertView.getLayoutParams());
     }
 
     @Override
@@ -548,16 +557,16 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         }
     }
 
-    protected void setImageRes(ImageView view, int id,int visibilityIfNot){
+    protected void setImageDrawable(ImageView view, Drawable drawable,int visibilityIfNot){
         if (view == null) return;
 
-        if (id == 0)
+        if (drawable == null)
         {
             invisibleView(view,visibilityIfNot);
         }
         else
         {
-            view.setImageResource(id);
+            view.setImageDrawable(drawable);
             visibleView(view);
         }
     }
@@ -647,7 +656,31 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return list;
     }
 
-
+    protected Bitmap drawable2Bitmap(final Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+        Bitmap bitmap;
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1,
+                    drawable.getOpacity() != PixelFormat.OPAQUE
+                            ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(),
+                    drawable.getOpacity() != PixelFormat.OPAQUE
+                            ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+        }
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
 
     //所有get
     public View getRootView() {

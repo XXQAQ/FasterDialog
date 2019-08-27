@@ -1,14 +1,18 @@
 package com.xq.fasterdialog.dialog.base;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.text.TextUtils;
+
+import com.xq.androidfaster.util.tools.ResourceUtils;
 
 public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseDialog<T> {
 
@@ -20,7 +24,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
 
     protected CharSequence title;
     protected CharSequence content;
-    protected int imageRes;
+    protected Drawable imageDrawable;
     protected String imageUrl;
 
     public BaseSimpleDialog(@NonNull Context context) {
@@ -43,7 +47,7 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
 
         setTitle(title);
         setContent(content);
-        setImageRes(imageRes);
+        setImageDrawable(imageDrawable);
         if (!TextUtils.isEmpty(imageUrl))   setImageUrl(imageUrl);
 
         setClickListener(closeView, new OnDialogClickListener(true) {
@@ -66,9 +70,15 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         return (T) this;
     }
 
+    public T setImageDrawable(Drawable imageDrawable){
+        this.imageDrawable = imageDrawable;
+        setImageDrawable(imageView,imageDrawable, View.GONE);
+        return (T) this;
+    }
+
     public T setImageRes(int imageRes){
-        this.imageRes = imageRes;
-        setImageRes(imageView,imageRes, View.GONE);
+        this.imageDrawable = ResourceUtils.getDrawable(imageRes);
+        setImageDrawable(imageView,imageDrawable, View.GONE);
         return (T) this;
     }
 
@@ -86,8 +96,8 @@ public abstract class BaseSimpleDialog<T extends BaseSimpleDialog> extends BaseD
         return content;
     }
 
-    public int getImageRes() {
-        return imageRes;
+    public Drawable getImageDrawable() {
+        return imageDrawable;
     }
 
     public String getImageUrl() {

@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.xq.fasterdialog.R;
-import com.xq.worldbean.util.ImageLoader;
+import com.xq.androidfaster.util.ImageLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

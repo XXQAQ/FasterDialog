@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import com.xq.fasterdialog.FasterDialog;
 import com.xq.fasterdialog.dialog.base.BaseDialog;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import static com.xq.androidfaster.util.tools.Utils.getApp;
 
 public class DialogManager {
 
@@ -58,9 +58,9 @@ public class DialogManager {
 
         public static void startActivity(DialogContextProvider contextProvider){
             DialogDelegateActivity.contextProvider = contextProvider;
-            Intent intent = new Intent(FasterDialog.getApp(), DialogDelegateActivity.class);
+            Intent intent = new Intent(getApp(), DialogDelegateActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            FasterDialog.getApp().startActivity(intent);
+            getApp().startActivity(intent);
         }
 
         @Override

@@ -16,7 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.xq.fasterdialog.bean.behavior.ItemBehavior;
-import com.xq.worldbean.util.ImageLoader;
+import com.xq.androidfaster.util.ImageLoader;
 import com.xq.worldbean.util.callback.UniverseCallback;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -106,8 +106,8 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
                 //图片相关
                 if (holder.imageView != null)
                 {
-                    if (bean.getImageRes() != 0)
-                        holder.imageView.setImageResource(bean.getImageRes());
+                    if (bean.getImageDrawable() != null)
+                        holder.imageView.setImageDrawable(bean.getImageDrawable());
                     if (!TextUtils.isEmpty(bean.getImageUrl()))
                         ImageLoader.loadImage(getContext(),bean.getImageUrl(),holder.imageView);
                 }
@@ -230,7 +230,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return super.setCustomView(layoutId);
     }
 
-    public T setItemList(List list,boolean isAppend){
+    public T setItemList(List<? extends ItemBehavior> list,boolean isAppend){
         //删除多余的选择项
         for (ItemBehavior bean : list_selection)
             if (!list.contains(bean))
@@ -246,7 +246,7 @@ public class BaseListDialog<T extends BaseListDialog>extends BaseNormalDialog<T>
         return (T) this;
     }
 
-    public T setItemList(List list){
+    public T setItemList(List<? extends ItemBehavior> list){
         return setItemList(list,false);
     }
 

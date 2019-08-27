@@ -5,7 +5,7 @@ import com.xq.worldbean.bean.behavior.PositionBehavior;
 import com.xq.worldbean.bean.behavior.SwitchStateBehavior;
 import com.xq.worldbean.bean.behavior.TitleBehavior;
 
-public interface ItemBehavior<T extends ItemBehavior> extends TitleBehavior<T>, ImageBehavior<T>, PositionBehavior<T>, SwitchStateBehavior<T> {
+public interface ItemBehavior extends TitleBehavior, ImageBehavior, PositionBehavior, SwitchStateBehavior {
 
     @Override
     default int getPosition() {

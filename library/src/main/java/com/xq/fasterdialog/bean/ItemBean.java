@@ -1,14 +1,16 @@
 package com.xq.fasterdialog.bean;
 
+import android.graphics.drawable.Drawable;
+import com.xq.androidfaster.util.tools.ResourceUtils;
 import com.xq.fasterdialog.bean.behavior.ItemBehavior;
 import com.xq.worldbean.bean.entity.base.BaseBean;
 
-public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBean> {
+public class ItemBean extends BaseBean implements ItemBehavior {
 
     private int position;
     private CharSequence title;
     private String imageUrl;
-    private int imageRes;
+    private Drawable imageDrawable;
 
     public ItemBean() {
     }
@@ -24,7 +26,7 @@ public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBea
 
     public ItemBean(CharSequence title, int imageRes) {
         this.title = title;
-        this.imageRes = imageRes;
+        this.imageDrawable = ResourceUtils.getDrawable(imageRes);
     }
 
     public ItemBean(CharSequence title, String imageUrl, Object tag) {
@@ -35,7 +37,7 @@ public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBea
 
     public ItemBean(CharSequence title, int imageRes, Object tag) {
         this.title = title;
-        this.imageRes = imageRes;
+        this.imageDrawable = ResourceUtils.getDrawable(imageRes);
         this.tag = tag;
     }
 
@@ -45,7 +47,7 @@ public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBea
                 "position=" + position +
                 ", title=" + title +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", imageRes=" + imageRes +
+                ", imageDrawable=" + imageDrawable +
                 ", id='" + id + '\'' +
                 ", tag=" + tag +
                 '}';
@@ -59,7 +61,7 @@ public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBea
         ItemBean that = (ItemBean) o;
 
         if (position != that.position) return false;
-        if (imageRes != that.imageRes) return false;
+        if (imageDrawable != null ? !imageDrawable.equals(that.imageDrawable) : that.imageDrawable != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (imageUrl != null ? !imageUrl.equals(that.imageUrl) : that.imageUrl != null)
             return false;
@@ -73,7 +75,7 @@ public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBea
         int result = position;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
-        result = 31 * result + imageRes;
+        result = 31 * result + (imageDrawable != null ? imageDrawable.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (tag != null ? tag.hashCode() : 0);
         return result;
@@ -85,9 +87,8 @@ public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBea
     }
 
     @Override
-    public ItemBean setPosition(int position) {
+    public void setPosition(int position) {
         this.position = position;
-        return this;
     }
 
     @Override
@@ -96,9 +97,8 @@ public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBea
     }
 
     @Override
-    public ItemBean setTitle(CharSequence title) {
+    public void setTitle(CharSequence title) {
         this.title = title;
-        return this;
     }
 
     @Override
@@ -107,20 +107,18 @@ public class ItemBean extends BaseBean<ItemBean> implements ItemBehavior<ItemBea
     }
 
     @Override
-    public ItemBean setImageUrl(String imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        return this;
     }
 
     @Override
-    public int getImageRes() {
-        return imageRes;
+    public Drawable getImageDrawable() {
+        return imageDrawable;
     }
 
     @Override
-    public ItemBean setImageRes(int imageRes) {
-        this.imageRes = imageRes;
-        return this;
+    public void setImageDrawable(Drawable imageDrawable) {
+        this.imageDrawable = imageDrawable;
     }
 
 }
