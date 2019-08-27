@@ -24,6 +24,11 @@ public class ItemBean extends BaseBean implements ItemBehavior {
         this.imageUrl = imageUrl;
     }
 
+    public ItemBean(CharSequence title, Drawable imageDrawable) {
+        this.title = title;
+        this.imageDrawable = imageDrawable;
+    }
+
     public ItemBean(CharSequence title, int imageRes) {
         this.title = title;
         this.imageDrawable = ResourceUtils.getDrawable(imageRes);
@@ -32,6 +37,12 @@ public class ItemBean extends BaseBean implements ItemBehavior {
     public ItemBean(CharSequence title, String imageUrl, Object tag) {
         this.title = title;
         this.imageUrl = imageUrl;
+        this.tag = tag;
+    }
+
+    public ItemBean(CharSequence title, Drawable imageDrawable, Object tag) {
+        this.title = title;
+        this.imageDrawable = imageDrawable;
         this.tag = tag;
     }
 
