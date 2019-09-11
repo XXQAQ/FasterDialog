@@ -68,17 +68,14 @@ public class ItemBean extends BaseBean implements ItemBehavior {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
-        ItemBean that = (ItemBean) o;
+        ItemBean itemBean = (ItemBean) o;
 
-        if (position != that.position) return false;
-        if (imageDrawable != null ? !imageDrawable.equals(that.imageDrawable) : that.imageDrawable != null) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (imageUrl != null ? !imageUrl.equals(that.imageUrl) : that.imageUrl != null)
+        if (title != null ? !title.equals(itemBean.title) : itemBean.title != null) return false;
+        if (imageUrl != null ? !imageUrl.equals(itemBean.imageUrl) : itemBean.imageUrl != null)
             return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        return tag != null ? tag.equals(that.tag) : that.tag == null;
-
+        return imageDrawable != null ? imageDrawable.equals(itemBean.imageDrawable) : itemBean.imageDrawable == null;
     }
 
     @Override
