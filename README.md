@@ -1,6 +1,8 @@
 最新gradle依赖库请自行前往
 https://www.jitpack.io/#XXQAQ/FasterDialog
 
+效果参见：https://www.jianshu.com/p/c6143fe91c2c
+
 PS:注意注意注意：最新版FasterDialog使用了接口默认实现技术，所以依赖于jdk1.8及以上版本。如果要使用FasterDialog，请将自己的Studio工程设置为1.8！
 
         //以下所有Dialog均继承自BaseDialog，所有子类可直接调用以下方法
