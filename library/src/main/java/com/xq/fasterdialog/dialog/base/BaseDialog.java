@@ -50,7 +50,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public static int ANIMATE_RIGHT = R.style.Animate_Right;
 
     //进度精度(值越大精度越细，但是也不可以过大)
-    protected static int PROGRESS_ACCURACY = 3600;
+    protected static int PROGRESS_ACCURACY = 1000;
 
     //Dialog
     private Dialog dialog;
@@ -328,7 +328,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     protected CountDownTimer timer;
     protected void autoDismiss() {
 
-        new CountDownTimer(autoDismissTime, autoDismissTime/PROGRESS_ACCURACY) {
+        new CountDownTimer(autoDismissTime, (long) ((float)autoDismissTime/(float)PROGRESS_ACCURACY)) {
             @Override
             public void onFinish() {
                 dismiss();
