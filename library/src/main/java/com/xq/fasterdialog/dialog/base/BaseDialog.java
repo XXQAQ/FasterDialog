@@ -28,6 +28,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.xq.androidfaster.util.tools.BarUtils;
+import com.xq.androidfaster.util.tools.ScreenUtils;
 import com.xq.fasterdialog.R;
 import com.xq.androidfaster.util.ImageLoader;
 import java.util.ArrayList;
@@ -128,8 +130,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
 
-        int reallyWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth(getContext()):rootView.getMeasuredWidth();
-        int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight(getContext()):rootView.getMeasuredHeight();
+        int reallyWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth():rootView.getMeasuredWidth();
+        int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
         if (maxWidth > 0 && reallyWidth > maxWidth)
             lp.width = maxWidth;
         else
@@ -151,12 +153,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
             //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
             int[] location = new int[2] ;attchView.getLocationOnScreen(location);
             //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
-            location[1] = location[1] - ScreenUtils.getStatusBarHeight();
+            location[1] = location[1] - (BarUtils.isStatusBarVisible((Activity) getContext())? BarUtils.getStatusBarHeight() : 0);
 
             rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
 
-            int mWidth = lp.width > 0?lp.width:lp.width == MATCH_PARENT?ScreenUtils.getScreenWidth(getContext()):rootView.getMeasuredWidth();
-            int mHeight = lp.height > 0?lp.height:lp.height == MATCH_PARENT?ScreenUtils.getScreenHeight(getContext()):rootView.getMeasuredHeight();
+            int mWidth = lp.width > 0?lp.width:lp.width == MATCH_PARENT?ScreenUtils.getScreenWidth():rootView.getMeasuredWidth();
+            int mHeight = lp.height > 0?lp.height:lp.height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
             int aWidth = attchView.getMeasuredWidth();
             int aHeight = attchView.getMeasuredHeight();
 
@@ -379,12 +381,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public T setWidthPercent(float percent) {
-        this.width = (int) (percent * ScreenUtils.getScreenWidth(getContext()));
+        this.width = (int) (percent * ScreenUtils.getScreenWidth());
         return (T) this;
     }
 
     public T setHeightPercent(float percent) {
-        this.height = (int) (percent * ScreenUtils.getScreenHeight(getContext()));
+        this.height = (int) (percent * ScreenUtils.getScreenHeight());
         return (T) this;
     }
 
@@ -419,12 +421,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public T setMaxWidthPercent(float percent) {
-        this.maxWidth = (int) (percent * ScreenUtils.getScreenWidth(getContext()));
+        this.maxWidth = (int) (percent * ScreenUtils.getScreenWidth());
         return (T) this;
     }
 
     public T setMaxHeightPercent(float percent) {
-        this.maxHeight = (int) (percent * ScreenUtils.getScreenHeight(getContext()));
+        this.maxHeight = (int) (percent * ScreenUtils.getScreenHeight());
         return (T) this;
     }
 
@@ -485,7 +487,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
                 setX((int) (event.getRawX()));
                 //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
                 //因为dialog总是在状态栏下方，所以需要减去状态栏的高度
-                setY((int) (event.getRawY()-ScreenUtils.getStatusBarHeight()));
+                setY((int) (event.getRawY()-(BarUtils.isStatusBarVisible((Activity) getContext())?BarUtils.getStatusBarHeight():0)));
                 setGravity(Gravity.TOP|Gravity.START);
                 return false;
             }
@@ -753,50 +755,5 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         }
 
         public abstract void onClick(BaseDialog dialog);
-    }
-
-    protected static class ScreenUtils {
-
-        public static int dip2px(Context c, float dpValue) {
-            final float scale = c.getResources().getDisplayMetrics().density;
-            return (int) (dpValue * scale + 0.5f);
-        }
-
-        public static int dip2sp(Context c, float dpValue) {
-            return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, c.getResources().getDisplayMetrics()));
-        }
-
-        public static int px2dip(Context c, float pxValue) {
-            final float scale = c.getResources().getDisplayMetrics().density;
-            return (int) (pxValue / scale + 0.5f);
-        }
-
-        public static int px2sp(Context c, float pxValue) {
-            float fontScale = c.getResources().getDisplayMetrics().scaledDensity;
-            return (int) (pxValue / fontScale + 0.5f);
-        }
-
-        public static int sp2px(Context c, float spValue) {
-            float fontScale = c.getResources().getDisplayMetrics().scaledDensity;
-            return (int) (spValue * fontScale + 0.5f);
-        }
-
-        public static int sp2dip(Context c, float spValue) {
-            return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, c.getResources().getDisplayMetrics()));
-        }
-
-        public static int getScreenWidth(Context c) {
-            return c.getResources().getDisplayMetrics().widthPixels;
-        }
-
-        public static int getScreenHeight(Context c) {
-            return c.getResources().getDisplayMetrics().heightPixels;
-        }
-
-        public static int getStatusBarHeight() {
-            Resources resources = Resources.getSystem();
-            int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-            return resources.getDimensionPixelSize(resourceId);
-        }
     }
 }
