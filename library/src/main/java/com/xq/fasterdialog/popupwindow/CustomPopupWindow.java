@@ -1,15 +1,15 @@
-package com.xq.fasterdialog.dialog;
+package com.xq.fasterdialog.popupwindow;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
-import com.xq.fasterdialog.dialog.base.BaseDialog;
+import com.xq.fasterdialog.popupwindow.base.BasePopupWindow;
 
-public class CustomDialog extends BaseDialog<CustomDialog> {
+public class CustomPopupWindow extends BasePopupWindow<CustomPopupWindow> {
 
     protected boolean disconView = true;
 
-    public CustomDialog(@NonNull Context context) {
+    public CustomPopupWindow(@NonNull Context context) {
         super(context);
     }
 
@@ -19,7 +19,7 @@ public class CustomDialog extends BaseDialog<CustomDialog> {
         if (disconView) ((ViewGroup)getCustomView().getParent()).removeAllViews();
     }
 
-    public CustomDialog setDisconViewOnDismiss(boolean disconView) {
+    public CustomPopupWindow setDisconViewOnDismiss(boolean disconView) {
         this.disconView = disconView;
         return this;
     }

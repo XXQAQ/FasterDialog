@@ -329,7 +329,6 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     protected CountDownTimer timer;
     protected void autoDismiss() {
-
         new CountDownTimer(autoDismissTime, (long) ((float)autoDismissTime/(float)PROGRESS_ACCURACY)) {
             @Override
             public void onFinish() {

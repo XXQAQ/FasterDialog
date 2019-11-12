@@ -3,43 +3,47 @@ package com.xq.fasterdialog.popupwindow.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
-import android.util.TypedValue;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import com.xq.androidfaster.util.tools.ScreenUtils;
 import com.xq.fasterdialog.R;
 import com.xq.androidfaster.util.ImageLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-//需要使用BasePopupWindow请与本人联系
-@Deprecated
 public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     //弹出动画（包含进入与进出）
-    public static int ANIMAT_ALPHA = R.style.Animate_Alpha;
-    public static int ANIMAT_BOTTOM = R.style.Animate_Bottom;
-    public static int ANIMAT_TOP = R.style.Animate_Top;
-    public static int ANIMAT_LEFT = R.style.Animate_Left;
-    public static int ANIMAT_RIGHT = R.style.Animate_Right;
+    public static int ANIMATE_ALPHA = R.style.Animate_Alpha;
+    public static int ANIMATE_BOTTOM = R.style.Animate_Bottom;
+    public static int ANIMATE_TOP = R.style.Animate_Top;
+    public static int ANIMATE_LEFT = R.style.Animate_Left;
+    public static int ANIMATE_RIGHT = R.style.Animate_Right;
 
-    protected static int PROGRESS_ACCURACY = 3600;  //进度值精度(值越大精度越细，但是也不可以过大)
+    //进度精度(值越大精度越细，但是也不可以过大)
+    protected static int PROGRESS_ACCURACY = 1000;
 
     //PopupWindow
     private PopupWindow popupWindow;
@@ -47,11 +51,13 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     //上下文
     private Context context;
 
-    //根布局
-    protected View rootView;
+    //对用户自定义布局包裹后的顶层布局（某些情况下等于customView）
+    private View rootView;
+    //用户的自定义布局
+    private View customView;
 
-    //自定义属性
-    protected int gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
+    //自定义相关属性
+    protected int gravity = Gravity.CENTER;
     protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
     protected int maxWidth;
@@ -62,10 +68,9 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     protected float elevation;
     protected int autoDismissTime;
     protected Object tag;
-    //AttchView
     protected View attchView;
-    //需要在初始化的时候传值给PopupWindow设置的属性
-    protected int animatStyle = ANIMAT_ALPHA;
+    //PopupWindow初始化相关属性
+    protected int animate = ANIMATE_ALPHA;
     protected int layoutId;
     protected boolean cancelable = false;
     protected List<OnPopupWindowDismissListener> list_dismissListener = new LinkedList<>();
@@ -89,36 +94,8 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         throw new IllegalStateException("The Context is not an Activity.");
     }
 
-
-    private boolean isCreated = false;
     public void onCreate(Bundle savedInstanceState) {
 
-        isCreated = true;
-
-        if (rootView == null) rootView = LayoutInflater.from(getContext()).inflate(layoutId,null);
-        CardView cardView = new CardView(getContext());
-        cardView.setCardElevation(elevation);
-        cardView.setUseCompatPadding(true);
-        cardView.addView(rootView);
-        getPopupWindow().setContentView(cardView);
-
-        cardView.setAlpha(alpha);
-
-        getPopupWindow().setAnimationStyle(animatStyle);
-        getPopupWindow().setTouchable(true);
-        getPopupWindow().setOutsideTouchable(cancelable);
-        getPopupWindow().setFocusable(cancelable);
-        getPopupWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                for (OnPopupWindowDismissListener l : list_dismissListener)
-                    l.onDismiss(BasePopupWindow.this);
-            }
-        });
-//        getPopupWindow().setInputMethodMode(INPUT_METHOD_NEEDED);
-//        getPopupWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-//        getPopupWindow().setFocusable(true);
     }
 
     public void onStart() {
@@ -134,63 +111,84 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     //当PopupWindow需要动态调整宽高的时候，请调用此方法
     protected void measure() {
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
-        if (maxHeight > 0 && rootView.getMeasuredHeight() > maxHeight)
-            getPopupWindow().setHeight(maxHeight);
-        else
-            getPopupWindow().setHeight(height);
-        if (maxWidth > 0 && rootView.getMeasuredWidth() > maxWidth)
+
+        int reallyWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth():rootView.getMeasuredWidth();
+        int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
+
+        if (maxWidth > 0 && reallyWidth > maxWidth)
             getPopupWindow().setWidth(maxWidth);
         else
             getPopupWindow().setWidth(width);
+        if (maxHeight > 0 && reallyHeight > maxHeight)
+            getPopupWindow().setHeight(maxHeight);
+        else
+            getPopupWindow().setHeight(height);
     }
 
     //当PopupWindow需要调整弹出位置的时候，请调用此方法
     protected void showAtLocation(){
-        View decorView = ((Activity)getContext()).getWindow().getDecorView().findViewById(android.R.id.content);
         if (attchView != null)
         {
-            int[] location = new int[2] ;attchView.getLocationOnScreen(location);
-            rootView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            View attachRootView = attchView.getRootView();
+
+            //注意这里获取的是屏幕的绝对坐标
+            int[] location = new int[2] ;
+            int[] attachRootLocation = new int[2];
+            int[] attachLocation = new int[2];
+
+            attachRootView.getLocationOnScreen(attachRootLocation);
+            attchView.getLocationOnScreen(attachLocation);
+
+            location[0] = attachLocation[0] - attachRootLocation[0];
+            location[1] = attachLocation[1] - attachRootLocation[1];
+
+            rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
+
+            int mWidth = getPopupWindow().getWidth() > 0?getPopupWindow().getWidth():getPopupWindow().getWidth() == MATCH_PARENT?ScreenUtils.getScreenWidth():rootView.getMeasuredWidth();
+            int mHeight = getPopupWindow().getHeight() > 0?getPopupWindow().getHeight():getPopupWindow().getHeight() == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
+            int aWidth = attchView.getMeasuredWidth();
+            int aHeight = attchView.getMeasuredHeight();
+
             if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
             {
-                location[0] = location[0] + attchView.getMeasuredWidth();
-                location[1] = location[1] + attchView.getMeasuredHeight();
+                location[0] = location[0] + aWidth;
+                location[1] = location[1] + aHeight;
             }
             else    if (gravity == Gravity.BOTTOM)
             {
-                location[0] = location[0]+((attchView.getMeasuredWidth()-rootView.getMeasuredWidth())/2);
-                location[1] = location[1] + attchView.getMeasuredHeight();
+                location[0] = location[0] + ((aWidth-mWidth)/2);
+                location[1] = location[1] + aHeight;
             }
             else    if (gravity == Gravity.TOP)
             {
-                location[0] = location[0]+((attchView.getMeasuredWidth()-rootView.getMeasuredWidth())/2);
-                location[1] = location[1] - attchView.getMeasuredHeight();
+                location[0] = location[0] + ((aWidth-mWidth)/2);
+                location[1] = location[1] - mHeight;
             }
             else    if (gravity == Gravity.LEFT)
             {
-                location[0] = location[0] - attchView.getMeasuredWidth();
-                location[1] = location[1] +((attchView.getMeasuredHeight()-rootView.getMeasuredHeight())/2);
+                location[0] = location[0] - mWidth;
+                location[1] = location[1] + ((aHeight-mHeight)/2);
             }
             else    if (gravity == Gravity.RIGHT)
             {
-                location[0] = location[0] + attchView.getMeasuredWidth();
-                location[1] = location[1] +((attchView.getMeasuredHeight()-rootView.getMeasuredHeight())/2);
+                location[0] = location[0] + aWidth;
+                location[1] = location[1] + ((aHeight-mHeight)/2);
             }
-            getPopupWindow().showAtLocation(decorView,Gravity.TOP|Gravity.START,location[0],location[1]);
+            getPopupWindow().showAtLocation(attachRootView,Gravity.TOP|Gravity.START,location[0],location[1]);
         }
         else
         {
+            View attachRootView = ((Activity)getContext()).getWindow().getDecorView().findViewById(android.R.id.content);
+
             int[] location = new int[]{x,y};
-            getPopupWindow().showAtLocation(decorView,gravity,location[0],location[1]);
+            getPopupWindow().showAtLocation(attachRootView,gravity,location[0],location[1]);
         }
     }
 
     public void show() {
         if (((Activity)getContext()).isFinishing()) return;
 
-        if (!isCreated) popupWindow = new PopupWindow(getContext());
-
-        onCreate(null);
+        if (!isCreated) create();
 
         onStart();
 
@@ -199,6 +197,68 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         for(OnPopupWindowShowListener l : list_showListener) l.onShow(BasePopupWindow.this);
 
         if (autoDismissTime > 0) autoDismiss();
+    }
+
+    private boolean isCreated = false;
+    public T create(){
+        if (isCreated) return (T) this;
+
+        isCreated = true;
+
+        popupWindow = new PopupWindow(getContext());
+
+        CardView cardView = new CardView(getContext());
+        cardView.setCardBackgroundColor(Color.TRANSPARENT);
+        cardView.setCardElevation(elevation);
+        cardView.setUseCompatPadding(elevation != 0);
+
+        if (customView == null) customView = LayoutInflater.from(getContext()).inflate(layoutId,null);
+
+        ViewGroup targetView = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
+        if (targetView == null || targetView.getParent() == null)
+        {
+            cardView.addView(customView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+            rootView = cardView;
+        }
+        else
+        {
+            insertView(targetView,cardView);
+            rootView = customView;
+        }
+
+        getPopupWindow().setContentView(rootView);
+
+        getPopupWindow().setAnimationStyle(animate);
+        rootView.setAlpha(alpha);
+        getPopupWindow().setTouchable(true);
+        getPopupWindow().setOutsideTouchable(cancelable);
+        getPopupWindow().setFocusable(cancelable);
+        getPopupWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                for (OnPopupWindowDismissListener l : list_dismissListener)
+                    l.onDismiss(BasePopupWindow.this);
+            }
+        });
+//        getPopupWindow().setInputMethodMode(INPUT_METHOD_NEEDED);
+//        getPopupWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        getPopupWindow().setFocusable(true);
+
+        onCreate(null);
+
+        return (T) this;
+    }
+
+    //将insertView替换至targetView的所在的节点位置
+    protected void insertView(View targetView, ViewGroup insertView){
+        ViewGroup targetParent=((ViewGroup)targetView.getParent());
+        int index = targetParent.indexOfChild(targetView);
+        targetParent.removeView(targetView);
+        insertView.setLayoutParams(targetView.getLayoutParams());
+        targetView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        insertView.addView(targetView);
+        targetParent.addView(insertView,index,insertView.getLayoutParams());
     }
 
     public void dismiss() {
@@ -211,14 +271,24 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         onStop();
     }
 
-    public <T_VIEW extends View> T_VIEW findViewById(int id) {
+    protected SparseArray<View> array_view = new SparseArray<>();
+    protected  <T_VIEW extends View> T_VIEW getView(int id) {
+        View view = array_view.get(id);
+        if (view == null)
+        {
+            view = findViewById(id);
+            array_view.put(id,view);
+        }
+        return (T_VIEW) view;
+    }
+
+    protected  <T_VIEW extends View> T_VIEW findViewById(int id) {
         return rootView.findViewById(id);
     }
 
     protected CountDownTimer timer;
     protected void autoDismiss() {
-
-        new CountDownTimer(autoDismissTime, autoDismissTime/PROGRESS_ACCURACY) {
+        new CountDownTimer(autoDismissTime, (long) ((float)autoDismissTime/(float)PROGRESS_ACCURACY)) {
             @Override
             public void onFinish() {
                 dismiss();
@@ -238,13 +308,18 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
 
     //所有set
-    public T setAnimat(int animatStyle) {
-        this.animatStyle = animatStyle;
+    public T setAnimate(int animate) {
+        this.animate = animate;
         return (T) this;
     }
 
     public T setCustomView(int layoutId){
         this.layoutId = layoutId;
+        return (T) this;
+    }
+
+    public T setCustomView(View view){
+        this.customView = view;
         return (T) this;
     }
 
@@ -259,12 +334,12 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     }
 
     public T setWidthPercent(float percent) {
-        this.width = (int) (percent * ScreenUtils.getScreenWidth(getContext()));
+        this.width = (int) (percent * ScreenUtils.getScreenWidth());
         return (T) this;
     }
 
     public T setHeightPercent(float percent) {
-        this.height = (int) (percent * ScreenUtils.getScreenHeight(getContext()));
+        this.height = (int) (percent * ScreenUtils.getScreenHeight());
         return (T) this;
     }
 
@@ -279,12 +354,12 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     }
 
     public T setWidthMatch() {
-        this.width = WindowManager.LayoutParams.MATCH_PARENT;
+        this.width = MATCH_PARENT;
         return (T) this;
     }
 
     public T setHeightMatch() {
-        this.height = WindowManager.LayoutParams.MATCH_PARENT;
+        this.height = MATCH_PARENT;
         return (T) this;
     }
 
@@ -299,12 +374,12 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     }
 
     public T setMaxWidthPercent(float percent) {
-        this.maxWidth = (int) (percent * ScreenUtils.getScreenWidth(getContext()));
+        this.maxWidth = (int) (percent * ScreenUtils.getScreenWidth());
         return (T) this;
     }
 
     public T setMaxHeightPercent(float percent) {
-        this.maxHeight = (int) (percent * ScreenUtils.getScreenHeight(getContext()));
+        this.maxHeight = (int) (percent * ScreenUtils.getScreenHeight());
         return (T) this;
     }
 
@@ -318,21 +393,27 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         return (T) this;
     }
 
+    public T setPopupFromScreen(){
+        return setPopupFromScreen(Gravity.CENTER);
+    }
+
     public T setPopupFromScreen(int gravity){
         setGravity(gravity);
+        if (gravity == Gravity.CENTER)
+            setAnimate(ANIMATE_ALPHA);
         if (gravity == Gravity.BOTTOM)
-            setAnimat(ANIMAT_BOTTOM);
+            setAnimate(ANIMATE_BOTTOM);
         else    if (gravity == Gravity.TOP)
-            setAnimat(ANIMAT_TOP);
+            setAnimate(ANIMATE_TOP);
         else    if (gravity == Gravity.LEFT)
-            setAnimat(ANIMAT_LEFT);
+            setAnimate(ANIMATE_LEFT);
         else    if (gravity == Gravity.RIGHT)
-            setAnimat(ANIMAT_RIGHT);
+            setAnimate(ANIMATE_RIGHT);
         return (T) this;
     }
 
     public T setPopupFromView(View view){
-        setPopupFromView(view,Gravity.BOTTOM|Gravity.RIGHT);
+        setPopupFromView(view,Gravity.BOTTOM);
         return (T) this;
     }
 
@@ -342,26 +423,29 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
             ;
         else    if (gravity == Gravity.BOTTOM)
-            setAnimat(ANIMAT_TOP);
+            setAnimate(ANIMATE_TOP);
         else    if (gravity == Gravity.TOP)
-            setAnimat(ANIMAT_BOTTOM);
+            setAnimate(ANIMATE_BOTTOM);
         else    if (gravity == Gravity.LEFT)
-            setAnimat(ANIMAT_RIGHT);
+            setAnimate(ANIMATE_RIGHT);
         else    if (gravity == Gravity.RIGHT)
-            setAnimat(ANIMAT_LEFT);
+            setAnimate(ANIMATE_LEFT);
         return (T) this;
     }
 
     public T setPopupFromViewTouchLocation(View view){
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                setX((int) (event.getRawX()));
-                setY((int) (event.getRawY()));
-                setGravity(Gravity.TOP|Gravity.START);
-                return false;
-            }
-        });
+//        TODO
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                setX((int) (event.getRawX()));
+//                //注意这里获取的是屏幕的绝对坐标，其包含了状态栏的高度
+//                //因为PopupWindow总是在状态栏下方，所以需要减去状态栏的高度
+//                setY((int) (event.getRawY()-(BarUtils.isStatusBarVisible((Activity) getContext())?BarUtils.getStatusBarHeight():0)));
+//                setGravity(Gravity.TOP|Gravity.START);
+//                return false;
+//            }
+//        });
         return (T) this;
     }
 
@@ -390,32 +474,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         return (T) this;
     }
 
-    //可以通过自定义布局的控件Id快速设置一些常用的控件属性
-    public T setText(int id,CharSequence text){
-        setTextToView((TextView) findViewById(id),text,View.VISIBLE);
-        return (T) this;
-    }
-
-    public T setImage(int id,int imageRes){
-        setImageResourceToView((ImageView) findViewById(id),imageRes,View.VISIBLE);
-        return (T) this;
-    }
-
-    public T setImage(int id,String imageUrl){
-        setImageUrlToView((ImageView) findViewById(id),imageUrl,View.VISIBLE);
-        return (T) this;
-    }
-
-    public T setClickListener(int id, OnPopupWindowClickListener listener){
-        setClickListenerToView(findViewById(id),listener,true);
-        return (T) this;
-    }
-
-    public T setClickListener(int id, OnPopupWindowClickListener listener, boolean isAutoDismiss){
-        setClickListenerToView(findViewById(id),listener,isAutoDismiss);
-        return (T) this;
-    }
-
+    //对PopupWindow内部可调用set方法
     protected void setX(int x) {
         this.x = x;
     }
@@ -428,111 +487,87 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         this.gravity = gravity;
     }
 
-
-
-    //所有get
-    public View getCustomView() {
-        return rootView;
-    }
-
-    public Object getTag() {
-        return tag;
-    }
-
-    public boolean isShowing(){
-        return getPopupWindow().isShowing();
-    }
-
-    protected PopupWindow getPopupWindow() {
-        return popupWindow;
-    }
-
-    protected Context getContext() {
-        return context;
-    }
-
-
-
-    //便捷控件设置方法(包含了对父控件的处理)
-    protected void setTextToView(TextView view, CharSequence text,int visibilityIfNot){
-        if (view == null)
-            return;
+    //以下通过自定义布局的控件Id快速设置一些常用的控件属性
+    protected void setText(TextView view, CharSequence text,int visibilityIfNot){
+        if (view == null) return;
 
         if (TextUtils.isEmpty(text))
         {
-            view.setVisibility(visibilityIfNot);
-            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
+            invisibleView(view,visibilityIfNot);
         }
         else
         {
             view.setText(text);
-            view.setVisibility(View.VISIBLE);
-            visibleLayout((ViewGroup) view.getParent());
+            visibleView(view);
         }
     }
 
-    protected void setImageResourceToView(ImageView view, int id,int visibilityIfNot){
-        if (view == null)
-            return;
+    protected void setImageDrawable(ImageView view, Drawable drawable,int visibilityIfNot){
+        if (view == null) return;
 
-        if (id == 0)
+        if (drawable == null)
         {
-            view.setVisibility(visibilityIfNot);
-            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
+            invisibleView(view,visibilityIfNot);
         }
         else
         {
-            view.setImageResource(id);
-            view.setVisibility(View.VISIBLE);
-            visibleLayout((ViewGroup) view.getParent());
+            view.setImageDrawable(drawable);
+            visibleView(view);
         }
     }
 
-    protected void setImageUrlToView(final ImageView view, final String url,int visibilityIfNot){
-        if (view == null)
-            return;
+    protected void setImageUrl(final ImageView view, final String url,int visibilityIfNot){
+        if (view == null) return;
 
         if (TextUtils.isEmpty(url))
         {
-            view.setVisibility(visibilityIfNot);
-            invisibleEmptyLayout((ViewGroup) view.getParent(),visibilityIfNot);
+            invisibleView(view,visibilityIfNot);
         }
         else
         {
             ImageLoader.loadImage(getContext(),url,view);
-            view.setVisibility(View.VISIBLE);
-            visibleLayout((ViewGroup) view.getParent());
+            visibleView(view);
         }
     }
 
-    protected void setClickListenerToView(View view, final OnPopupWindowClickListener listener, final boolean isAutoDismiss){
-        if (view == null)
-            return;
+    protected void setClickListener(View view, final OnPopupWindowClickListener listener){
+        if (view == null) return;
 
-        if (listener != null)
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null)
+                {
                     listener.onClick(BasePopupWindow.this);
-                    if (isAutoDismiss) dismiss();
+                    if (listener.isDismiss()) dismiss();
                 }
-            });
+            }
+        });
     }
 
+    protected void invisibleView(View view,int visibilityIfNot){
+        view.setVisibility(visibilityIfNot);
+        invisibleLayout((ViewGroup) view.getParent(),visibilityIfNot);
+    }
+
+    protected void visibleView(View view){
+        view.setVisibility(View.VISIBLE);
+        visibleLayout((ViewGroup) view.getParent());
+    }
 
     //如果指定的ViewGroup下的所有子控件均未不可见，则直接隐藏该ViewGroup
-    protected void invisibleEmptyLayout(ViewGroup viewGroup,int visibilityIfNot){
+    protected void invisibleLayout(ViewGroup viewGroup, int visibilityIfNot){
         if (viewGroup.getParent() == null)  return;
 
-        boolean isGone =true;
+        boolean isInvisible =true;
         for (int i = 0; i < viewGroup.getChildCount(); i++)
         {
             if (viewGroup.getChildAt(i).getVisibility() == View.VISIBLE)
                 break;
-            if (i == viewGroup.getChildCount()-1 && isGone)
+            if (i == viewGroup.getChildCount()-1 && isInvisible)
             {
-                viewGroup.setVisibility(View.GONE);
-                invisibleEmptyLayout((ViewGroup) viewGroup.getParent(),visibilityIfNot);
+                viewGroup.setVisibility(visibilityIfNot);
+                invisibleLayout((ViewGroup) viewGroup.getParent(),visibilityIfNot);
             }
         }
     }
@@ -566,13 +601,60 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         return list;
     }
 
+    protected Bitmap drawable2Bitmap(final Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+        Bitmap bitmap;
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1,
+                    drawable.getOpacity() != PixelFormat.OPAQUE
+                            ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(),
+                    drawable.getOpacity() != PixelFormat.OPAQUE
+                            ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+        }
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    //所有get
+    public View getRootView() {
+        return rootView;
+    }
+
+    public View getCustomView(){
+        return customView;
+    }
+
+    public Object getTag() {
+        return tag;
+    }
+
+    public boolean isShowing(){
+        return getPopupWindow().isShowing();
+    }
+
+    protected PopupWindow getPopupWindow() {
+        return popupWindow;
+    }
+
+    protected Context getContext() {
+        return context;
+    }
+
 
 
     //内部工具类或者监听
-    public static interface OnPopupWindowClickListener {
-        public void onClick(BasePopupWindow popupWindow);
-    }
-
     public static interface OnPopupWindowShowListener {
         public void onShow(BasePopupWindow popupWindow);
     }
@@ -581,48 +663,36 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         public void onDismiss(BasePopupWindow popupWindow);
     }
 
-    protected static class ScreenUtils {
+    public static abstract class BasePopupWindowListener {
 
-        public static int dip2px(Context c, float dpValue) {
-            final float scale = c.getResources().getDisplayMetrics().density;
-            return (int) (dpValue * scale + 0.5f);
+        private boolean isDismiss;
+
+        public BasePopupWindowListener() {
+            this(true);
         }
 
-        public static int dip2sp(Context c, float dpValue) {
-            return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, c.getResources().getDisplayMetrics()));
+        public BasePopupWindowListener(boolean isDismiss) {
+            this.isDismiss = isDismiss;
         }
 
-        public static int px2dip(Context c, float pxValue) {
-            final float scale = c.getResources().getDisplayMetrics().density;
-            return (int) (pxValue / scale + 0.5f);
+        public boolean isDismiss() {
+            return isDismiss;
         }
 
-        public static int px2sp(Context c, float pxValue) {
-            float fontScale = c.getResources().getDisplayMetrics().scaledDensity;
-            return (int) (pxValue / fontScale + 0.5f);
+        public void setDismiss(boolean dismiss) {
+            isDismiss = dismiss;
+        }
+    }
+
+    public static abstract class OnPopupWindowClickListener extends BasePopupWindowListener {
+
+        public OnPopupWindowClickListener() {
         }
 
-        public static int sp2px(Context c, float spValue) {
-            float fontScale = c.getResources().getDisplayMetrics().scaledDensity;
-            return (int) (spValue * fontScale + 0.5f);
+        public OnPopupWindowClickListener(boolean isDismiss) {
+            super(isDismiss);
         }
 
-        public static int sp2dip(Context c, float spValue) {
-            return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, c.getResources().getDisplayMetrics()));
-        }
-
-        public static int getScreenWidth(Context c) {
-            return c.getResources().getDisplayMetrics().widthPixels;
-        }
-
-        public static int getScreenHeight(Context c) {
-            return c.getResources().getDisplayMetrics().heightPixels;
-        }
-
-        public static int getStatusBarHeight() {
-            Resources resources = Resources.getSystem();
-            int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
-            return resources.getDimensionPixelSize(resourceId);
-        }
+        public abstract void onClick(BasePopupWindow popupWindow);
     }
 }
