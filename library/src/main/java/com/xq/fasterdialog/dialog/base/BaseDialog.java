@@ -211,7 +211,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     private boolean isCreated = false;
-    public final T create(){
+    public T create(){
         if (isCreated) return (T) this;
 
         isCreated = true;
