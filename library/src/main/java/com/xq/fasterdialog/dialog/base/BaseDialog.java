@@ -19,13 +19,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.SparseArray;
-import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.xq.androidfaster.util.tools.BarUtils;
@@ -67,14 +68,15 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     //自定义相关属性
     protected int gravity = Gravity.CENTER;
-    protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
-    protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
+    protected int width;
+    protected int height;
     protected int maxWidth;
     protected int maxHeight;
     protected int x;
     protected int y;
     protected float alpha = 1.0f;
     protected float elevation;
+    protected int radius;
     protected int autoDismissTime;
     protected Object tag;
     protected View attchView;
@@ -131,11 +133,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
 
         int reallyWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth():rootView.getMeasuredWidth();
-        int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
         if (maxWidth > 0 && reallyWidth > maxWidth)
             lp.width = maxWidth;
         else
             lp.width = width;
+
+        int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
         if (maxHeight > 0 && reallyHeight > maxHeight)
             lp.height = maxHeight;
         else
@@ -237,12 +240,13 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
             }
         };
 
+        if (customView == null) customView = inflate(layoutId);
+
         CardView cardView = new CardView(getContext());
+        cardView.setRadius(radius);
         cardView.setCardBackgroundColor(Color.TRANSPARENT);
         cardView.setCardElevation(elevation);
         cardView.setUseCompatPadding(elevation != 0);
-
-        if (customView == null) customView = getDialog().getLayoutInflater().inflate(layoutId,null);
 
         ViewGroup targetView = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
         if (targetView == null || targetView.getParent() == null)
@@ -255,11 +259,10 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
             insertView(targetView,cardView);
             rootView = customView;
         }
-        
-        getDialog().getWindow().setContentView(rootView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        getDialog().getWindow().setContentView(rootView);
 
-        getDialog().getWindow().setWindowAnimations(animate);
         getDialog().getWindow().getAttributes().alpha = alpha;
+        getDialog().getWindow().setWindowAnimations(animate);
         getDialog().setCancelable(cancelable);
         getDialog().setCanceledOnTouchOutside(cancelableOutside);
         getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
@@ -286,7 +289,21 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
-    //将insertView替换至targetView的所在的节点位置
+    public View inflate(int layoutId) {
+        FrameLayout tempLayout = new FrameLayout(getContext());
+        View result = LayoutInflater.from(getContext()).inflate(layoutId, tempLayout, false);
+        ViewGroup.LayoutParams tempParams = result.getLayoutParams();
+
+        if (width == 0){
+            setWidth(tempParams.width);
+        }
+        if (height == 0){
+            setHeight(tempParams.height);
+        }
+        return result;
+    }
+
+    //将insertView插至targetView的所在的节点位置
     protected void insertView(View targetView, ViewGroup insertView){
         ViewGroup targetParent=((ViewGroup)targetView.getParent());
         int index = targetParent.indexOfChild(targetView);
@@ -436,6 +453,11 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     public T setElevation(float elevation) {
         this.elevation = elevation;
+        return (T) this;
+    }
+
+    public T setRadius(int radius) {
+        this.radius = radius;
         return (T) this;
     }
 

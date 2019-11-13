@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -58,14 +59,15 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     //自定义相关属性
     protected int gravity = Gravity.CENTER;
-    protected int width = WindowManager.LayoutParams.WRAP_CONTENT;
-    protected int height = WindowManager.LayoutParams.WRAP_CONTENT;
+    protected int width;
+    protected int height;
     protected int maxWidth;
     protected int maxHeight;
     protected int x;
     protected int y;
     protected float alpha = 1.0f;
     protected float elevation;
+    protected int radius;
     protected int autoDismissTime;
     protected Object tag;
     protected View attchView;
@@ -110,15 +112,17 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     //当PopupWindow需要动态调整宽高的时候，请调用此方法
     protected void measure() {
+
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
 
         int reallyWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth():rootView.getMeasuredWidth();
-        int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
 
         if (maxWidth > 0 && reallyWidth > maxWidth)
             getPopupWindow().setWidth(maxWidth);
         else
             getPopupWindow().setWidth(width);
+
+        int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
         if (maxHeight > 0 && reallyHeight > maxHeight)
             getPopupWindow().setHeight(maxHeight);
         else
@@ -207,12 +211,13 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
         popupWindow = new PopupWindow(getContext());
 
+        if (customView == null) customView = inflate(layoutId);
+
         CardView cardView = new CardView(getContext());
+        cardView.setRadius(radius);
         cardView.setCardBackgroundColor(Color.TRANSPARENT);
         cardView.setCardElevation(elevation);
         cardView.setUseCompatPadding(elevation != 0);
-
-        if (customView == null) customView = LayoutInflater.from(getContext()).inflate(layoutId,null);
 
         ViewGroup targetView = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
         if (targetView == null || targetView.getParent() == null)
@@ -225,11 +230,10 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
             insertView(targetView,cardView);
             rootView = customView;
         }
-
         getPopupWindow().setContentView(rootView);
 
-        getPopupWindow().setAnimationStyle(animate);
         rootView.setAlpha(alpha);
+        getPopupWindow().setAnimationStyle(animate);
         getPopupWindow().setTouchable(true);
         getPopupWindow().setOutsideTouchable(cancelable);
         getPopupWindow().setFocusable(cancelable);
@@ -250,7 +254,21 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         return (T) this;
     }
 
-    //将insertView替换至targetView的所在的节点位置
+    public View inflate(int layoutId) {
+        FrameLayout tempLayout = new FrameLayout(getContext());
+        View result = LayoutInflater.from(getContext()).inflate(layoutId, tempLayout, false);
+        ViewGroup.LayoutParams tempParams = result.getLayoutParams();
+
+        if (width == 0){
+            setWidth(tempParams.width);
+        }
+        if (height == 0){
+            setHeight(tempParams.height);
+        }
+        return result;
+    }
+
+    //将insertView插至targetView的所在的节点位置
     protected void insertView(View targetView, ViewGroup insertView){
         ViewGroup targetParent=((ViewGroup)targetView.getParent());
         int index = targetParent.indexOfChild(targetView);
@@ -390,6 +408,11 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     public T setElevation(float elevation) {
         this.elevation = elevation;
+        return (T) this;
+    }
+
+    public T setRadius(int radius) {
+        this.radius = radius;
         return (T) this;
     }
 
