@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -92,7 +93,29 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
 
     public BaseDialog(@NonNull Context context) {
+
         this.context = getReallyActivityContext(context);
+
+        //生命周期同步
+        dialog = new Dialog(getContext(),style){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                BaseDialog.this.onCreate(savedInstanceState);
+            }
+
+            @Override
+            protected void onStart() {
+                super.onStart();
+                BaseDialog.this.onStart();
+            }
+
+            @Override
+            protected void onStop() {
+                super.onStop();
+                BaseDialog.this.onStop();
+            }
+        };
     }
 
     protected Activity getReallyActivityContext(Context context) {
@@ -110,6 +133,52 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     public void onCreate(Bundle savedInstanceState) {
 
+        if (customView == null) customView = inflate(layoutId);
+
+        CardView cardView = new CardView(getContext());
+        cardView.setRadius(radius);
+        cardView.setCardBackgroundColor(Color.TRANSPARENT);
+        cardView.setCardElevation(elevation);
+        cardView.setUseCompatPadding(elevation != 0);
+
+        ViewGroup targetView = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
+        if (targetView == null || targetView.getParent() == null)
+        {
+            cardView.addView(customView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+            rootView = cardView;
+        }
+        else
+        {
+            insertView(targetView,cardView);
+            rootView = customView;
+        }
+        getDialog().getWindow().setContentView(rootView);
+
+        getDialog().getWindow().getAttributes().alpha = alpha;
+        getDialog().getWindow().setWindowAnimations(animate);
+        getDialog().setCancelable(cancelable);
+        getDialog().setCanceledOnTouchOutside(cancelableOutside);
+        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                for(OnDialogShowListener l : list_showListener)
+                    l.onShow(BaseDialog.this);
+            }
+        });
+        getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                for (OnDialogDismissListener l : list_dismissListener)
+                    l.onDismiss(BaseDialog.this);
+            }
+        });
+        getDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                for (OnDialogCancelListener l : list_cancelListener)
+                    l.onCancel(BaseDialog.this);
+            }
+        });
     }
 
     public void onStart() {
@@ -206,86 +275,20 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public void show() {
         if (((Activity)getContext()).isFinishing()) return;
 
-        if (!isCreated) create();
+        create();
 
         getDialog().show();
 
         if (autoDismissTime > 0) autoDismiss();
     }
 
-    private boolean isCreated = false;
     public T create(){
-        if (isCreated) return (T) this;
-
-        isCreated = true;
-
-        //生命周期同步
-        dialog = new Dialog(getContext(),style){
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                BaseDialog.this.onCreate(savedInstanceState);
-            }
-
-            @Override
-            protected void onStart() {
-                super.onStart();
-                BaseDialog.this.onStart();
-            }
-
-            @Override
-            protected void onStop() {
-                super.onStop();
-                BaseDialog.this.onStop();
-            }
-        };
-
-        if (customView == null) customView = inflate(layoutId);
-
-        CardView cardView = new CardView(getContext());
-        cardView.setRadius(radius);
-        cardView.setCardBackgroundColor(Color.TRANSPARENT);
-        cardView.setCardElevation(elevation);
-        cardView.setUseCompatPadding(elevation != 0);
-
-        ViewGroup targetView = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
-        if (targetView == null || targetView.getParent() == null)
-        {
-            cardView.addView(customView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            rootView = cardView;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialog.create();
+        } else {
+            dialog.show();
+            dialog.hide();
         }
-        else
-        {
-            insertView(targetView,cardView);
-            rootView = customView;
-        }
-        getDialog().getWindow().setContentView(rootView);
-
-        getDialog().getWindow().getAttributes().alpha = alpha;
-        getDialog().getWindow().setWindowAnimations(animate);
-        getDialog().setCancelable(cancelable);
-        getDialog().setCanceledOnTouchOutside(cancelableOutside);
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                for(OnDialogShowListener l : list_showListener)
-                    l.onShow(BaseDialog.this);
-            }
-        });
-        getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                for (OnDialogDismissListener l : list_dismissListener)
-                    l.onDismiss(BaseDialog.this);
-            }
-        });
-        getDialog().setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                for (OnDialogCancelListener l : list_cancelListener)
-                    l.onCancel(BaseDialog.this);
-            }
-        });
         return (T) this;
     }
 
