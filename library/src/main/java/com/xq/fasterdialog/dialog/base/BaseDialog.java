@@ -31,6 +31,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.xq.androidfaster.util.tools.BarUtils;
+import com.xq.androidfaster.util.tools.ReflectUtils;
 import com.xq.androidfaster.util.tools.ScreenUtils;
 import com.xq.fasterdialog.R;
 import com.xq.androidfaster.util.ImageLoader;
@@ -275,20 +276,24 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public void show() {
         if (((Activity)getContext()).isFinishing()) return;
 
-        create();
+        if (!isCreated) create();
 
         getDialog().show();
 
         if (autoDismissTime > 0) autoDismiss();
     }
 
+    private boolean isCreated = false;
     public T create(){
+        if (isCreated){
+            return (T) this;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             dialog.create();
         } else {
-            dialog.show();
-            dialog.hide();
+            ReflectUtils.reflect(dialog).method("dispatchOnCreate",new Object[]{null});
         }
+        isCreated = true;
         return (T) this;
     }
 
