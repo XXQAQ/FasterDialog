@@ -81,6 +81,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     public BasePopupWindow(@NonNull Context context) {
         this.context = getReallyActivityContext(context);
+        this.popupWindow = new PopupWindow(getContext());
     }
 
     protected Activity getReallyActivityContext(Context context) {
@@ -97,6 +98,44 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     }
 
     public void onCreate(Bundle savedInstanceState) {
+
+        if (customView == null) customView = inflate(layoutId);
+
+        CardView cardView = new CardView(getContext());
+        cardView.setRadius(radius);
+        cardView.setCardBackgroundColor(Color.TRANSPARENT);
+        cardView.setCardElevation(elevation);
+        cardView.setUseCompatPadding(elevation != 0);
+
+        ViewGroup targetView = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
+        if (targetView == null || targetView.getParent() == null)
+        {
+            cardView.addView(customView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+            rootView = cardView;
+        }
+        else
+        {
+            insertView(targetView,cardView);
+            rootView = customView;
+        }
+        getPopupWindow().setContentView(rootView);
+
+        rootView.setAlpha(alpha);
+        getPopupWindow().setAnimationStyle(animate);
+        getPopupWindow().setTouchable(true);
+        getPopupWindow().setOutsideTouchable(cancelable);
+        getPopupWindow().setFocusable(cancelable);
+        getPopupWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                for (OnPopupWindowDismissListener l : list_dismissListener)
+                    l.onDismiss(BasePopupWindow.this);
+            }
+        });
+//        getPopupWindow().setInputMethodMode(INPUT_METHOD_NEEDED);
+//        getPopupWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        getPopupWindow().setFocusable(true);
 
     }
 
@@ -205,51 +244,13 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     private boolean isCreated = false;
     public T create(){
-        if (isCreated) return (T) this;
-
-        isCreated = true;
-
-        popupWindow = new PopupWindow(getContext());
-
-        if (customView == null) customView = inflate(layoutId);
-
-        CardView cardView = new CardView(getContext());
-        cardView.setRadius(radius);
-        cardView.setCardBackgroundColor(Color.TRANSPARENT);
-        cardView.setCardElevation(elevation);
-        cardView.setUseCompatPadding(elevation != 0);
-
-        ViewGroup targetView = customView.findViewById(getContext().getResources().getIdentifier("contentLayout", "id", getContext().getPackageName()));
-        if (targetView == null || targetView.getParent() == null)
-        {
-            cardView.addView(customView,new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-            rootView = cardView;
+        if (isCreated){
+            return (T) this;
         }
-        else
-        {
-            insertView(targetView,cardView);
-            rootView = customView;
-        }
-        getPopupWindow().setContentView(rootView);
-
-        rootView.setAlpha(alpha);
-        getPopupWindow().setAnimationStyle(animate);
-        getPopupWindow().setTouchable(true);
-        getPopupWindow().setOutsideTouchable(cancelable);
-        getPopupWindow().setFocusable(cancelable);
-        getPopupWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                for (OnPopupWindowDismissListener l : list_dismissListener)
-                    l.onDismiss(BasePopupWindow.this);
-            }
-        });
-//        getPopupWindow().setInputMethodMode(INPUT_METHOD_NEEDED);
-//        getPopupWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-//        getPopupWindow().setFocusable(true);
 
         onCreate(null);
+
+        isCreated = true;
 
         return (T) this;
     }
@@ -258,7 +259,6 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         FrameLayout tempLayout = new FrameLayout(getContext());
         View result = LayoutInflater.from(getContext()).inflate(layoutId, tempLayout, false);
         ViewGroup.LayoutParams tempParams = result.getLayoutParams();
-
         if (width == 0){
             setWidth(tempParams.width);
         }

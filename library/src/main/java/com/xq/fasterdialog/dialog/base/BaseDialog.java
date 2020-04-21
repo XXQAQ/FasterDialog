@@ -301,7 +301,6 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         FrameLayout tempLayout = new FrameLayout(getContext());
         View result = LayoutInflater.from(getContext()).inflate(layoutId, tempLayout, false);
         ViewGroup.LayoutParams tempParams = result.getLayoutParams();
-
         if (width == 0){
             setWidth(tempParams.width);
         }
