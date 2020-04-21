@@ -722,6 +722,9 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public boolean isShowing(){
+        if (getDialog() == null){
+            return false;
+        }
         return getDialog().isShowing();
     }
 

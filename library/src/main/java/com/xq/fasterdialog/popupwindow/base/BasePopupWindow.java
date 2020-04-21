@@ -664,6 +664,9 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     }
 
     public boolean isShowing(){
+        if (getPopupWindow() == null){
+            return false;
+        }
         return getPopupWindow().isShowing();
     }
 
