@@ -81,7 +81,6 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     public BasePopupWindow(@NonNull Context context) {
         this.context = getReallyActivityContext(context);
-        this.popupWindow = new PopupWindow(getContext());
     }
 
     protected Activity getReallyActivityContext(Context context) {
@@ -248,6 +247,8 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
             return (T) this;
         }
 
+        this.popupWindow = new PopupWindow(getContext());
+
         onCreate(null);
 
         isCreated = true;
@@ -280,7 +281,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     }
 
     public void dismiss() {
-        if (((Activity)getContext()).isFinishing()) return;
+        if (getPopupWindow() == null || ((Activity)getContext()).isFinishing()) return;
 
         if (autoDismissTime > 0 && timer != null) timer.cancel();
 

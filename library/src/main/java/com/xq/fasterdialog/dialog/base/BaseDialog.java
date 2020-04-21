@@ -94,29 +94,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
 
     public BaseDialog(@NonNull Context context) {
-
         this.context = getReallyActivityContext(context);
-
-        //生命周期同步
-        dialog = new Dialog(getContext(),style){
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                BaseDialog.this.onCreate(savedInstanceState);
-            }
-
-            @Override
-            protected void onStart() {
-                super.onStart();
-                BaseDialog.this.onStart();
-            }
-
-            @Override
-            protected void onStop() {
-                super.onStop();
-                BaseDialog.this.onStop();
-            }
-        };
     }
 
     protected Activity getReallyActivityContext(Context context) {
@@ -288,6 +266,26 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         if (isCreated){
             return (T) this;
         }
+        //生命周期同步
+        dialog = new Dialog(getContext(),style){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                BaseDialog.this.onCreate(savedInstanceState);
+            }
+
+            @Override
+            protected void onStart() {
+                super.onStart();
+                BaseDialog.this.onStart();
+            }
+
+            @Override
+            protected void onStop() {
+                super.onStop();
+                BaseDialog.this.onStop();
+            }
+        };
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             dialog.create();
         } else {
@@ -323,17 +321,18 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     @Override
     public void cancel() {
+        if (getDialog() == null) return;
+
         getDialog().cancel();
     }
 
     @Override
     public void dismiss() {
-        if (((Activity)getContext()).isFinishing()) return;
+        if (getDialog() == null || ((Activity)getContext()).isFinishing()) return;
 
         if (autoDismissTime > 0 && timer != null) timer.cancel();
 
         getDialog().dismiss();
-
     }
 
     protected SparseArray<View> array_view = new SparseArray<>();
