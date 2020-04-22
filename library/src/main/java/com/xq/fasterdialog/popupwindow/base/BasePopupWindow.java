@@ -44,7 +44,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     public static int ANIMATE_RIGHT = R.style.Animate_Right;
 
     //进度精度(值越大精度越细，但是也不可以过大)
-    protected static int PROGRESS_ACCURACY = 1000;
+    protected int progressAccuracy = 1000;
 
     //PopupWindow
     private PopupWindow popupWindow;
@@ -58,22 +58,22 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     private View customView;
 
     //自定义相关属性
+    protected int layoutId;
+    protected int animate = ANIMATE_ALPHA;
+
     protected int gravity = Gravity.CENTER;
-    protected int width;
-    protected int height;
-    protected int maxWidth;
-    protected int maxHeight;
     protected int x;
     protected int y;
-    protected float alpha = 1.0f;
-    protected float elevation;
-    protected int radius;
-    protected int autoDismissTime;
+    protected Integer width;
+    protected Integer height;
+    protected Integer maxWidth;
+    protected Integer maxHeight;
+    protected Float alpha = 1.0f;
+    protected float elevation = 0f;
+    protected float radius = 0f;
+    protected Integer autoDismissTime;
     protected Object tag;
     protected View attchView;
-    //PopupWindow初始化相关属性
-    protected int animate = ANIMATE_ALPHA;
-    protected int layoutId;
     protected boolean cancelable = false;
     protected List<OnPopupWindowDismissListener> list_dismissListener = new LinkedList<>();
     protected List<OnPopupWindowShowListener> list_showListener = new LinkedList<>();
@@ -119,7 +119,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         }
         getPopupWindow().setContentView(rootView);
 
-        rootView.setAlpha(alpha);
+        if (alpha != null) rootView.setAlpha(alpha);
         getPopupWindow().setAnimationStyle(animate);
         getPopupWindow().setTouchable(true);
         getPopupWindow().setOutsideTouchable(cancelable);
@@ -155,13 +155,13 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
         int reallyWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth():rootView.getMeasuredWidth();
 
-        if (maxWidth > 0 && reallyWidth > maxWidth)
+        if (maxWidth != null && reallyWidth > maxWidth)
             getPopupWindow().setWidth(maxWidth);
         else
             getPopupWindow().setWidth(width);
 
         int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
-        if (maxHeight > 0 && reallyHeight > maxHeight)
+        if (maxHeight != null && reallyHeight > maxHeight)
             getPopupWindow().setHeight(maxHeight);
         else
             getPopupWindow().setHeight(height);
@@ -238,7 +238,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
         for(OnPopupWindowShowListener l : list_showListener) l.onShow(BasePopupWindow.this);
 
-        if (autoDismissTime > 0) autoDismiss();
+        if (autoDismissTime != null) autoDismiss();
     }
 
     private boolean isCreated = false;
@@ -260,10 +260,10 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         FrameLayout tempLayout = new FrameLayout(getContext());
         View result = LayoutInflater.from(getContext()).inflate(layoutId, tempLayout, false);
         ViewGroup.LayoutParams tempParams = result.getLayoutParams();
-        if (width == 0){
+        if (width != null){
             setWidth(tempParams.width);
         }
-        if (height == 0){
+        if (height != null){
             setHeight(tempParams.height);
         }
         return result;
@@ -283,7 +283,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     public void dismiss() {
         if (getPopupWindow() == null || ((Activity)getContext()).isFinishing()) return;
 
-        if (autoDismissTime > 0 && timer != null) timer.cancel();
+        if (autoDismissTime != null && timer != null) timer.cancel();
 
         getPopupWindow().dismiss();
 
@@ -307,7 +307,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
 
     protected CountDownTimer timer;
     protected void autoDismiss() {
-        new CountDownTimer(autoDismissTime, (long) ((float)autoDismissTime/(float)PROGRESS_ACCURACY)) {
+        new CountDownTimer(autoDismissTime, (long) ((float)autoDismissTime/(float)progressAccuracy)) {
             @Override
             public void onFinish() {
                 dismiss();
@@ -412,7 +412,7 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
         return (T) this;
     }
 
-    public T setRadius(int radius) {
+    public T setRadius(float radius) {
         this.radius = radius;
         return (T) this;
     }
@@ -444,9 +444,9 @@ public abstract class BasePopupWindow<T extends BasePopupWindow>{
     public T setPopupFromView(View view,int gravity){
         this.attchView = view;
         setGravity(gravity);
-        if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
-            ;
-        else    if (gravity == Gravity.BOTTOM)
+//        if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
+//            ;
+        if (gravity == Gravity.BOTTOM)
             setAnimate(ANIMATE_TOP);
         else    if (gravity == Gravity.TOP)
             setAnimate(ANIMATE_BOTTOM);

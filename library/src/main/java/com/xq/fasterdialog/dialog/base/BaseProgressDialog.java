@@ -24,7 +24,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
         progressBar = getView(getContext().getResources().getIdentifier("progressBar", "id", getContext().getPackageName()));
 
         //设置ProgressBar最大进度值
-        if (progressBar != null)    progressBar.setMax(PROGRESS_ACCURACY);
+        if (progressBar != null)    progressBar.setMax(progressAccuracy);
 
         setIndeterminate(indeterminate);
 
@@ -40,7 +40,7 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
 
     public T setProgress(float progress) {
         this.progress = progress;
-        if (progressBar != null && progress >= 0) progressBar.setProgress((int) (progress*PROGRESS_ACCURACY));
+        if (progressBar != null && progress >= 0) progressBar.setProgress((int) (progress*progressAccuracy));
         return (T) this;
     }
 

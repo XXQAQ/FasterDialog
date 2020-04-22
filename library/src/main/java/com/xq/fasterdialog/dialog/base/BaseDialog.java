@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public abstract class BaseDialog<T extends BaseDialog> implements DialogInterface{
 
@@ -55,7 +56,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public static int ANIMATE_RIGHT = R.style.Animate_Right;
 
     //进度精度(值越大精度越细，但是也不可以过大)
-    protected static int PROGRESS_ACCURACY = 1000;
+    protected int progressAccuracy = 1000;
 
     //Dialog
     private Dialog dialog;
@@ -69,23 +70,24 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     private View customView;
 
     //自定义相关属性
-    protected int gravity = Gravity.CENTER;
-    protected int width;
-    protected int height;
-    protected int maxWidth;
-    protected int maxHeight;
-    protected int x;
-    protected int y;
-    protected float alpha = 1.0f;
-    protected float elevation;
-    protected int radius;
-    protected int autoDismissTime;
-    protected Object tag;
-    protected View attchView;
-    //Dialog初始化相关属性
+    protected int layoutId;
     protected int style = STYLE_BASE;
     protected int animate = ANIMATE_ALPHA;
-    protected int layoutId;
+
+    protected int gravity = Gravity.CENTER;
+    protected int x = 0;
+    protected int y = 0;
+    protected Integer width;
+    protected Integer height;
+    protected Integer maxWidth;
+    protected Integer maxHeight;
+    protected Float dimAmount;
+    protected Float alpha;
+    protected float elevation = 0f;
+    protected float radius = 0f;
+    protected Integer autoDismissTime;
+    protected Object tag;
+    protected View attchView;
     protected boolean cancelable = true;
     protected boolean cancelableOutside = true;
     protected List<OnDialogCancelListener> list_cancelListener = new LinkedList<>();
@@ -133,7 +135,8 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         }
         getDialog().getWindow().setContentView(rootView);
 
-        getDialog().getWindow().getAttributes().alpha = alpha;
+        if (alpha != null) getDialog().getWindow().getAttributes().alpha = alpha;
+        if (dimAmount != null) getDialog().getWindow().setDimAmount(dimAmount);
         getDialog().getWindow().setWindowAnimations(animate);
         getDialog().setCancelable(cancelable);
         getDialog().setCanceledOnTouchOutside(cancelableOutside);
@@ -181,13 +184,13 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         rootView.measure(View.MeasureSpec.UNSPECIFIED,View.MeasureSpec.UNSPECIFIED);
 
         int reallyWidth = width > 0?width:width == MATCH_PARENT?ScreenUtils.getScreenWidth():rootView.getMeasuredWidth();
-        if (maxWidth > 0 && reallyWidth > maxWidth)
+        if (maxWidth != null && reallyWidth > maxWidth)
             lp.width = maxWidth;
         else
             lp.width = width;
 
         int reallyHeight = height > 0?height:height == MATCH_PARENT?ScreenUtils.getScreenHeight():rootView.getMeasuredHeight();
-        if (maxHeight > 0 && reallyHeight > maxHeight)
+        if (maxHeight != null && reallyHeight > maxHeight)
             lp.height = maxHeight;
         else
             lp.height = height;
@@ -258,7 +261,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
         getDialog().show();
 
-        if (autoDismissTime > 0) autoDismiss();
+        if (autoDismissTime != null) autoDismiss();
     }
 
     private boolean isCreated = false;
@@ -299,10 +302,10 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         FrameLayout tempLayout = new FrameLayout(getContext());
         View result = LayoutInflater.from(getContext()).inflate(layoutId, tempLayout, false);
         ViewGroup.LayoutParams tempParams = result.getLayoutParams();
-        if (width == 0){
+        if (width == null){
             setWidth(tempParams.width);
         }
-        if (height == 0){
+        if (height == null){
             setHeight(tempParams.height);
         }
         return result;
@@ -330,7 +333,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public void dismiss() {
         if (getDialog() == null || ((Activity)getContext()).isFinishing()) return;
 
-        if (autoDismissTime > 0 && timer != null) timer.cancel();
+        if (autoDismissTime != null && timer != null) timer.cancel();
 
         getDialog().dismiss();
     }
@@ -352,7 +355,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
 
     protected CountDownTimer timer;
     protected void autoDismiss() {
-        new CountDownTimer(autoDismissTime, (long) ((float)autoDismissTime/(float)PROGRESS_ACCURACY)) {
+        new CountDownTimer(autoDismissTime, (long) ((float)autoDismissTime/(float)progressAccuracy)) {
             @Override
             public void onFinish() {
                 dismiss();
@@ -375,6 +378,10 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public T setStyle(int style) {
         this.style = style;
         return (T) this;
+    }
+
+    public void setDimAmount(Float dimAmount) {
+        this.dimAmount = dimAmount;
     }
 
     public T setAnimate(int animate) {
@@ -413,12 +420,12 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     }
 
     public T setWidthWrap() {
-        this.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        this.width = WRAP_CONTENT;
         return (T) this;
     }
 
     public T setHeightWrap() {
-        this.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        this.height = WRAP_CONTENT;
         return (T) this;
     }
 
@@ -462,7 +469,7 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
         return (T) this;
     }
 
-    public T setRadius(int radius) {
+    public T setRadius(float radius) {
         this.radius = radius;
         return (T) this;
     }
@@ -494,9 +501,9 @@ public abstract class BaseDialog<T extends BaseDialog> implements DialogInterfac
     public T setPopupFromView(View view,int gravity){
         this.attchView = view;
         setGravity(gravity);
-        if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
-            ;
-        else    if (gravity == Gravity.BOTTOM)
+//        if (gravity == (Gravity.BOTTOM|Gravity.RIGHT))
+//            ;
+        if (gravity == Gravity.BOTTOM)
             setAnimate(ANIMATE_TOP);
         else    if (gravity == Gravity.TOP)
             setAnimate(ANIMATE_BOTTOM);
