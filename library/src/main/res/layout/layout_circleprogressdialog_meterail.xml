@@ -16,7 +16,7 @@
         android:orientation="horizontal"
         >
 
-        <pl.droidsonroids.gif.GifImageView
+        <ImageView
             android:id="@+id/imageView"
             android:layout_width="@dimen/icon_medium"
             android:layout_height="@dimen/icon_medium"

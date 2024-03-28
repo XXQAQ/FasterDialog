@@ -17,7 +17,7 @@
         android:paddingBottom="@dimen/spacing_more"
         >
 
-        <pl.droidsonroids.gif.GifImageView
+        <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
