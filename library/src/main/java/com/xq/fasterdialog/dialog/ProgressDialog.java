@@ -2,7 +2,8 @@ package com.xq.fasterdialog.dialog;
 
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.xq.fasterdialog.R;
 import com.xq.fasterdialog.dialog.base.BaseProgressDialog;
@@ -32,7 +33,8 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     public ProgressDialog setHorizontalXQLayoutStyle(){
         setStyle(STYLE_ALERT);
-        setCustomView(LAYOUT_HORIZONTAL_XQ,false);
+        setCustomView(LAYOUT_HORIZONTAL_XQ);
+        setIndeterminate(false);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -40,7 +42,8 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     public ProgressDialog setHorizontalMeterailLayoutStyle(){
         setStyle(STYLE_ALERT);
-        setCustomView(LAYOUT_HORIZONTAL_METERAIL,false);
+        setCustomView(LAYOUT_HORIZONTAL_METERAIL);
+        setIndeterminate(false);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -48,7 +51,8 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     public ProgressDialog setCircleXQLayoutStyle(){
         setStyle(STYLE_ALERT);
-        setCustomView(LAYOUT_CIRCLE_XQ,true);
+        setCustomView(LAYOUT_CIRCLE_XQ);
+        setIndeterminate(true);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -56,7 +60,8 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
 
     public ProgressDialog setCircleMeterailLayoutStyle(){
         setStyle(STYLE_ALERT);
-        setCustomView(LAYOUT_CIRCLE_METERAIL,true);
+        setCustomView(LAYOUT_CIRCLE_METERAIL);
+        setIndeterminate(true);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -65,7 +70,8 @@ public class ProgressDialog extends BaseProgressDialog<ProgressDialog> {
     private void init() {
 
         setStyle(STYLE_DEFAULT);
-        setCustomView(LAYOUT_DEFAULT,true);
+        setCustomView(LAYOUT_DEFAULT);
+        setIndeterminate(true);
 
         setCancelable(false);
     }

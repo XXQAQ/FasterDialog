@@ -1,7 +1,8 @@
 package com.xq.fasterdialog.dialog;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.xq.fasterdialog.R;
 import com.xq.fasterdialog.dialog.base.BaseEditDialog;

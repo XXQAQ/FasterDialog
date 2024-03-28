@@ -1,8 +1,11 @@
 package com.xq.fasterdialog.dialog;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DividerItemDecoration;
+
 import com.xq.fasterdialog.R;
 import com.xq.fasterdialog.dialog.base.BaseListDialog;
 
@@ -44,7 +47,9 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setXQLayoutStyle(int chooseMode){
         setStyle(STYLE_ALERT);
-        setCustomView(LAYOUT_XQ, ITEM_LAYOUT_CLASSICAL,chooseMode);
+        setCustomView(LAYOUT_XQ);
+        setItemView(ITEM_LAYOUT_CLASSICAL);
+        setChooseMode(chooseMode);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -57,7 +62,9 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setMeterailLayoutStyle(int chooseMode){
         setStyle(STYLE_ALERT);
-        setCustomView(LAYOUT_METERAIL, chooseMode == CHOOSE_MODE_SINGLE?ITEM_LAYOUT_METERAIL_SINGLE:chooseMode == CHOOSE_MODE_MULTI?ITEM_LAYOUT_METERAIL_MULTI:0,chooseMode);
+        setCustomView(LAYOUT_METERAIL);
+        setItemView(chooseMode == CHOOSE_MODE_SINGLE?ITEM_LAYOUT_METERAIL_SINGLE:chooseMode == CHOOSE_MODE_MULTI?ITEM_LAYOUT_METERAIL_MULTI:0);
+        setChooseMode(chooseMode);
         setWidthMatch();
         setHeightWrap();
         return this;
@@ -70,7 +77,9 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setBottomLayoutStyle(int chooseMode){
         setStyle(STYLE_TRANSLUCENT);
-        setCustomView(LAYOUT_BOTTOM, ITEM_LAYOUT_CLASSICAL,chooseMode);
+        setCustomView(LAYOUT_BOTTOM);
+        setItemView(ITEM_LAYOUT_CLASSICAL);
+        setChooseMode(chooseMode);
         setWidthMatch();
         setHeightWrap();
         setPopupFromScreen(Gravity.BOTTOM);
@@ -84,11 +93,15 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setMenuLayoutStyle(int chooseMode){
         setStyle(STYLE_TRANSLUCENT);
-        setCustomView(LAYOUT_MENU, ITEM_LAYOUT_CLASSICAL_LARGE,chooseMode);
+        setCustomView(LAYOUT_MENU);
+        setItemView(ITEM_LAYOUT_CLASSICAL_LARGE);
+        setChooseMode(chooseMode);
         setWidthMatch();
         setHeightWrap();
         setPopupFromScreen(Gravity.BOTTOM);
-        setDividerDrawable(getContext().getResources().getDrawable(R.drawable.line_divider));
+        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        decoration.setDrawable(getContext().getResources().getDrawable(R.drawable.line_divider));
+        setItemDecoration(decoration);
         return this;
     }
 
@@ -99,8 +112,10 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     public ListDialog setPopupMenuLayoutStyle(int chooseMode){
         setStyle(STYLE_BASE);
-        setElevation(8.0f);
-        setCustomView(LAYOUT_XQ, ITEM_LAYOUT_CLASSICAL,chooseMode);
+//        setElevation(8.0f);
+        setCustomView(LAYOUT_XQ);
+        setItemView(ITEM_LAYOUT_CLASSICAL);
+        setChooseMode(chooseMode);
         setWidthWrap();
         setHeightWrap();
         return this;
@@ -108,7 +123,9 @@ public class ListDialog extends BaseListDialog<ListDialog> {
 
     private void init() {
         setStyle(STYLE_DEFAULT);
-        setCustomView(LAYOUT_DEFAULT, ITEM_LAYOUT_DEFAULT,CHOOSE_MODE_SINGLE);
+        setCustomView(LAYOUT_DEFAULT);
+        setItemView(ITEM_LAYOUT_DEFAULT);
+        setChooseMode(CHOOSE_MODE_SINGLE);
     }
 
 }

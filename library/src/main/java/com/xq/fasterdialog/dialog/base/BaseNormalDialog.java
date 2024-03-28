@@ -2,16 +2,12 @@ package com.xq.fasterdialog.dialog.base;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-import com.xq.fasterdialog.R;
 
-public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseSimpleDialog<T> {
+import androidx.annotation.NonNull;
 
-    public static String CONFIRM;
-    public static String CANCEL;
+public abstract class BaseNormalDialog<T extends BaseNormalDialog<?>> extends BaseSimpleDialog<T> {
 
     protected TextView negativeView;
     protected TextView positiveView;
@@ -26,12 +22,6 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
 
     public BaseNormalDialog(@NonNull Context context) {
         super(context);
-        init();
-    }
-
-    private void init(){
-        CONFIRM = getContext().getResources().getString(R.string.confirm);
-        CANCEL = getContext().getResources().getString(R.string.cancel);
     }
 
     @Override
@@ -46,15 +36,10 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         setNegativeText(negativeText);
         setNeutralText(neutralText);
 
-        OnDialogClickListener listener = new OnDialogClickListener(true) {
-            @Override
-            public void onClick(BaseDialog dialog) {
+        setNegativeListener(negativeListener);
+        setPositiveListener(positiveListener);
+        setNeutralListener(neutralListener);
 
-            }
-        };
-        setPositiveListener(positiveListener != null?positiveListener:listener);
-        setNegativeListener(negativeListener != null?negativeListener:listener);
-        setNeutralListener(neutralListener != null?neutralListener:listener);
     }
 
     public T setNegativeText(CharSequence negativeText) {
@@ -105,15 +90,4 @@ public abstract class BaseNormalDialog<T extends BaseNormalDialog> extends BaseS
         return neutralText;
     }
 
-    public OnDialogClickListener getNegativeListener() {
-        return negativeListener;
-    }
-
-    public OnDialogClickListener getPositiveListener() {
-        return positiveListener;
-    }
-
-    public OnDialogClickListener getNeutralListener() {
-        return neutralListener;
-    }
 }

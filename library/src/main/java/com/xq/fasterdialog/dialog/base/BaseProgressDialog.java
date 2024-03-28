@@ -2,10 +2,11 @@ package com.xq.fasterdialog.dialog.base;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.widget.ProgressBar;
 
-public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends BaseSimpleDialog<T> {
+import androidx.annotation.NonNull;
+
+public abstract class BaseProgressDialog<T extends BaseProgressDialog<?>> extends BaseSimpleDialog<T> {
 
     protected ProgressBar progressBar;
 
@@ -47,12 +48,6 @@ public abstract class BaseProgressDialog<T extends BaseProgressDialog> extends B
     public T setIndeterminate(boolean indeterminate) {
         this.indeterminate = indeterminate;
         if (progressBar != null) progressBar.setIndeterminate(indeterminate);
-        return (T) this;
-    }
-
-    public T setCustomView(int layoutId,boolean indeterminate) {
-        setCustomView(layoutId);
-        setIndeterminate(indeterminate);
         return (T) this;
     }
 

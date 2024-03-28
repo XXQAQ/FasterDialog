@@ -3,8 +3,7 @@ package com.xq.fasterdialog.dialog.base;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
+
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -12,11 +11,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
 import com.xq.fasterdialog.bean.InputBean;
 
 import java.util.List;
 
-public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T> {
+public class BaseEditDialog<T extends BaseEditDialog<?>> extends BaseNormalDialog<T> {
 
     protected SparseArray<EditText> array_edit = new SparseArray<>();
     protected SparseArray<InputBean> array_input = new SparseArray();
@@ -106,45 +108,32 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
     }
 
     protected void invisibleEdit(EditText editText,int visibilityIfNot){
-        if (editText.getParent().getParent() instanceof TextInputLayout)
-            ((TextInputLayout) editText.getParent().getParent()).setVisibility(visibilityIfNot);
-        else
-            editText.setVisibility(visibilityIfNot);
+        editText.setVisibility(visibilityIfNot);
+
     }
 
     protected void visibleEdit(EditText editText){
-        if (editText.getParent().getParent() instanceof TextInputLayout)
-            ((TextInputLayout) editText.getParent().getParent()).setVisibility(View.VISIBLE);
-        else
-            editText.setVisibility(View.VISIBLE);
+        editText.setVisibility(View.VISIBLE);
+
     }
 
     protected void setEditErro(EditText editText, CharSequence text, Drawable drawable){
         if (TextUtils.isEmpty(text))
             return;
-        if (editText.getParent().getParent() instanceof TextInputLayout && ((TextInputLayout) editText.getParent().getParent()).isErrorEnabled())
-            ((TextInputLayout) editText.getParent().getParent()).setError(text);
+        if (drawable == null)
+            editText.setError(text);
         else
-            if (drawable == null)
-                editText.setError(text);
-            else
-                editText.setError(text,drawable);
+            editText.setError(text,drawable);
     }
 
     protected void setEditMaxLength(EditText editText, int maxLength){
         if (maxLength <= 0)
             return;
-        if (editText.getParent().getParent() instanceof TextInputLayout && ((TextInputLayout) editText.getParent().getParent()).isCounterEnabled())
-            ((TextInputLayout) editText.getParent().getParent()).setCounterMaxLength(maxLength);
-        else
-            editText.setFilters(new InputFilter.LengthFilter[]{new InputFilter.LengthFilter(maxLength)});
+        editText.setFilters(new InputFilter.LengthFilter[]{new InputFilter.LengthFilter(maxLength)});
     }
 
     protected void setEditHint(EditText editText, CharSequence text){
-        if (editText.getParent().getParent() instanceof TextInputLayout && ((TextInputLayout) editText.getParent().getParent()).isHintEnabled())
-            ((TextInputLayout) editText.getParent().getParent()).setHint(text);
-        else
-            editText.setHint(text);
+        editText.setHint(text);
     }
 
     protected void goneAllEdit() {
@@ -153,23 +142,6 @@ public class BaseEditDialog<T extends BaseEditDialog> extends BaseNormalDialog<T
         {
             invisibleEdit(editText,View.GONE);
         }
-    }
-
-    public static abstract class OnEditCompletedListener extends OnDialogClickListener{
-
-        public OnEditCompletedListener() {
-        }
-
-        public OnEditCompletedListener(boolean isDismiss) {
-            super(isDismiss);
-        }
-
-        @Override
-        public void onClick(BaseDialog dialog) {
-            onEditCompleted((BaseEditDialog) dialog,((BaseEditDialog)dialog).getTextArray());
-        }
-
-        public abstract void onEditCompleted(BaseEditDialog dialog, SparseArray<CharSequence> array);
     }
 
 }
